@@ -1,0 +1,65 @@
+[
+  {
+    "id": "mod_2",
+    "title": "Prompts schrijven voor de klas",
+    "description": "Leer effectieve prompts formuleren die echt bruikbare output opleveren voor lesvoorbereiding, differentiatie en evaluatie. Van rubrics tot remediëringsoefeningen.",
+    "icon": "pen",
+    "duration": "±40 min",
+    "audience": "Alle leerkrachten",
+    "order": 2
+  },
+  {
+    "id": "mod_3",
+    "title": "AI en taalonderwijs",
+    "description": "Specifiek voor taaldocenten: hoe zet je AI in bij leesvaardigheid, schrijfopdrachten, woordenschat en grammatica? Met concrete voorbeelden voor Engels, Frans, Nederlands en andere talen.",
+    "icon": "book",
+    "duration": "±40 min",
+    "audience": "Taaldocenten",
+    "order": 3
+  },
+  {
+    "id": "mod_4",
+    "title": "AI-beleid op school",
+    "description": "Hoe formuleer je als school een helder AI-beleid? Wat mag, wat mag niet, en hoe communiceer je dat naar leerlingen en ouders? Met voorbeeldkaders en checklists.",
+    "icon": "shield",
+    "duration": "±40 min",
+    "audience": "Directies & beleidsmakers",
+    "order": 4
+  },
+  {
+    "id": "mod_5",
+    "title": "AI-detectie & academische integriteit",
+    "description": "Hoe herken je AI-gegenereerd werk? Wat werkt wel en niet bij detectie? En hoe ontwerp je opdrachten die AI-fraude moeilijker maken zonder creativiteit te beperken?",
+    "icon": "eye",
+    "duration": "±40 min",
+    "audience": "Alle leerkrachten",
+    "order": 5
+  },
+  {
+    "id": "mod_6",
+    "title": "Differentiëren met AI",
+    "description": "Ontdek hoe AI je kan helpen om effectiever te differentiëren: van aangepaste oefeningen tot gepersonaliseerde feedback. Praktische werkvormen die je meteen kunt inzetten.",
+    "icon": "layers",
+    "duration": "±40 min",
+    "audience": "Alle leerkrachten",
+    "order": 6
+  },
+  {
+    "id": "mod_7",
+    "title": "AI voor evaluatie & feedback",
+    "description": "Gebruik AI als assistent bij het nakijken, opstellen van rubrics en het geven van formatieve feedback. Bespaar tijd zonder aan kwaliteit in te boeten.",
+    "icon": "check",
+    "duration": "±40 min",
+    "audience": "Alle leerkrachten",
+    "order": 7
+  },
+  {
+    "id": "mod_8",
+    "title": "Privacy & ethiek in AI",
+    "description": "Welke data deel je met AI-tools? Wat zijn de ethische implicaties? Een module over verantwoord gebruik, GDPR-compliance en kritisch denken over technologie.",
+    "icon": "lock",
+    "duration": "±40 min",
+    "audience": "Alle onderwijsprofessionals",
+    "order": 8
+  }
+]

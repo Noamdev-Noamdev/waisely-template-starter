@@ -1,0 +1,51 @@
+[
+  {
+    "id": "sub_mu4b8p3nv0tmf7",
+    "submittedAt": "2026-09-16T16:23:46.451Z",
+    "answers": {
+      "if_email": "n@n.com",
+      "if_school": "n",
+      "if_contact_name": "n",
+      "if_contact_function": "n",
+      "if_phone": "n",
+      "if_date": "n",
+      "if_location": "n",
+      "if_participants": "11-20",
+      "if_session_type": "Workshop op maat (3u)",
+      "if_topics": [
+        "De werking van taalmodellen",
+        "Efficiënt leren werken met een taalmodel (privacy, personalisatie en prompting)",
+        "Ethische implicaties en gevolgen voor milieu & klimaat",
+        "Evaluatie en feedback"
+      ],
+      "if_audience": "Leerkrachten",
+      "if_level": "Kleuter",
+      "if_subjects": [
+        "Taal",
+        "STEM",
+        "Mens & maatschappij",
+        "Kunst & creatie",
+        "Alle vakken",
+        "Andere"
+      ],
+      "if_experience": "1",
+      "if_previous_training": "Ja",
+      "if_previous_detail": " ",
+      "if_reason": " ",
+      "if_challenges": " ",
+      "if_tools_used": "ChatGPT",
+      "if_ai_policy": "Ja",
+      "if_guidelines": " ",
+      "if_infra": [
+        "Eigen laptop/tablet per deelnemer",
+        "Computerlokaal beschikbaar",
+        "Wifi voor iedereen",
+        "Beamer/scherm aanwezig",
+        "Geen van bovenstaande"
+      ],
+      "if_setup": "Computerlokaal",
+      "if_onsite_contact": " ",
+      "if_remarks": " "
+    }
+  }
+]

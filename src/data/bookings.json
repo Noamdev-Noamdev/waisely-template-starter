@@ -1,0 +1,26 @@
+[
+  {
+    "id": "bkg_1",
+    "userId": "usr_demo",
+    "type": "workshop",
+    "topic": "[Onderwerp workshop]",
+    "audience": "[Doelgroep]",
+    "date": "2026-09-25T20:27:34.261Z",
+    "participants": "[20]",
+    "notes": "[Extra context of wensen.]",
+    "status": "confirmed",
+    "createdAt": "2026-09-11T20:27:34.261Z"
+  },
+  {
+    "id": "bkg_2",
+    "userId": "usr_demo",
+    "type": "webinar",
+    "topic": "[Onderwerp webinar]",
+    "audience": "[Doelgroep]",
+    "date": "2026-10-11T20:27:34.261Z",
+    "participants": "[40]",
+    "notes": "[Extra context.]",
+    "status": "confirmed",
+    "createdAt": "2026-09-11T20:27:34.261Z"
+  }
+]

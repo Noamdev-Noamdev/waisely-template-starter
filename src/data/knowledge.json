@@ -1,0 +1,20 @@
+[
+  {
+    "id": "knw_1",
+    "title": "[Materiaal 1 — bv. Cheat sheet AI-tools voor in de klas]",
+    "description": "[Korte beschrijving van dit kennisbank-item; alleen zichtbaar voor ingelogde gebruikers.]",
+    "kind": "pdf",
+    "url": "#",
+    "tag": "[Categorie]",
+    "order": 1
+  },
+  {
+    "id": "knw_2",
+    "title": "[Materiaal 2 — bv. Slides workshop AI-basics]",
+    "description": "[Korte beschrijving van deze slides.]",
+    "kind": "slides",
+    "url": "#",
+    "tag": "[Categorie]",
+    "order": 2
+  }
+]

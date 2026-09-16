@@ -1,0 +1,27 @@
+[
+  {
+    "id": "usr_admin",
+    "email": "admin@waisely.be",
+    "passwordHash": "$2b$10$1G55gpcY1sDxarBlwnsr6OsOgatgMzPnCEeDzv2ti0QWMEAiFaVhO",
+    "name": "[Naam admin]",
+    "role": "admin",
+    "createdAt": "2026-09-11T20:27:34.100Z"
+  },
+  {
+    "id": "usr_demo",
+    "email": "demo@waisely.be",
+    "passwordHash": "$2b$10$pTVLfB4XKM7d8mQ7TrJrpeNQmrnSTnQ42NqgiHBZFKQc7TKO8wtvm",
+    "name": "[Demo-gebruiker]",
+    "organization": "[Naam school]",
+    "role": "user",
+    "createdAt": "2026-09-11T20:27:34.234Z"
+  },
+  {
+    "id": "usr_mtxery0kbxhmkk",
+    "email": "n@hot.com",
+    "passwordHash": "$2b$10$9DLMC8FW6JgZMdBXyCcnUemw5s5MRsppU4smmE6RzOEcLNcVY0ahe",
+    "name": "Noam",
+    "role": "user",
+    "createdAt": "2026-09-11T20:28:20.303Z"
+  }
+]

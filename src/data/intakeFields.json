@@ -1,0 +1,215 @@
+[
+  {
+    "id": "if_email",
+    "section": "1. Praktische gegevens",
+    "label": "E-mailadres",
+    "type": "email",
+    "required": true,
+    "order": 1
+  },
+  {
+    "id": "if_school",
+    "section": "1. Praktische gegevens",
+    "label": "Naam school",
+    "type": "text",
+    "required": true,
+    "order": 2
+  },
+  {
+    "id": "if_contact_name",
+    "section": "1. Praktische gegevens",
+    "label": "Naam contactpersoon",
+    "type": "text",
+    "required": true,
+    "order": 3
+  },
+  {
+    "id": "if_contact_function",
+    "section": "1. Praktische gegevens",
+    "label": "Functie contactpersoon",
+    "type": "text",
+    "required": true,
+    "order": 4
+  },
+  {
+    "id": "if_phone",
+    "section": "1. Praktische gegevens",
+    "label": "Telefoonnummer",
+    "type": "tel",
+    "required": true,
+    "order": 5
+  },
+  {
+    "id": "if_date",
+    "section": "1. Praktische gegevens",
+    "label": "Gewenste datum/data (indicatief) voor de workshop(s)/webinar(s)",
+    "type": "text",
+    "required": true,
+    "order": 6
+  },
+  {
+    "id": "if_location",
+    "section": "1. Praktische gegevens",
+    "label": "Locatie",
+    "type": "text",
+    "required": true,
+    "order": 7
+  },
+  {
+    "id": "if_participants",
+    "section": "1. Praktische gegevens",
+    "label": "Aantal deelnemers per workshop/webinar",
+    "type": "radio",
+    "options": "1-10|11-20|21-35",
+    "required": true,
+    "order": 8
+  },
+  {
+    "id": "if_session_type",
+    "section": "1. Praktische gegevens",
+    "label": "Type sessie",
+    "type": "radio",
+    "options": "Workshop op maat (3u)|Webinar op maat (2u)|Vrije webinar",
+    "required": true,
+    "order": 9
+  },
+  {
+    "id": "if_topics",
+    "section": "1. Praktische gegevens",
+    "label": "Over welke onderwerpen zou u een workshop/webinar wensen? (max. 3 aanvinken)",
+    "type": "checkbox",
+    "options": "De werking van taalmodellen|Efficiënt leren werken met een taalmodel (privacy, personalisatie en prompting)|Ethische implicaties en gevolgen voor milieu & klimaat|Een AI-beleid uitwerken voor de school|Een taalmodel inzetten als (schrijf)assistent|Evaluatie en feedback|Administratieve taken uitbesteden en planlast verminderen",
+    "required": true,
+    "order": 10
+  },
+  {
+    "id": "if_audience",
+    "section": "2. Doelgroep",
+    "label": "Is de sessie bedoeld voor",
+    "type": "radio",
+    "options": "Leerkrachten|Beleidsmedewerkers/directie|Beide",
+    "required": true,
+    "order": 11
+  },
+  {
+    "id": "if_level",
+    "section": "2. Doelgroep",
+    "label": "Indien voor leerkrachten, voor welke leerkrachten is de sessie bedoeld?",
+    "type": "radio",
+    "options": "Kleuter|Lager|Secundair|Alle niveaus|Andere",
+    "required": true,
+    "order": 12
+  },
+  {
+    "id": "if_subjects",
+    "section": "2. Doelgroep",
+    "label": "Vakgebied(en) van de deelnemers",
+    "type": "checkbox",
+    "options": "Taal|STEM|Mens & maatschappij|Kunst & creatie|Alle vakken|Andere",
+    "required": true,
+    "order": 13
+  },
+  {
+    "id": "if_experience",
+    "section": "2. Doelgroep",
+    "label": "Ervaring van deelnemers met AI-tools",
+    "type": "scale",
+    "scaleRange": "1|5",
+    "scaleLabels": "Geen ervaring|Dagelijks gebruik",
+    "required": true,
+    "order": 14
+  },
+  {
+    "id": "if_previous_training",
+    "section": "2. Doelgroep",
+    "label": "Werden er al eerdere vormingen rond AI of digitale geletterdheid gevolgd op school/in de instelling?",
+    "type": "radio",
+    "options": "Ja|Nee|Niet zeker",
+    "required": true,
+    "order": 15
+  },
+  {
+    "id": "if_previous_detail",
+    "section": "2. Doelgroep",
+    "label": "Zo ja, welke?",
+    "type": "textarea",
+    "required": false,
+    "order": 16
+  },
+  {
+    "id": "if_reason",
+    "section": "3. Noden en verwachtingen",
+    "label": "Wat is de belangrijkste reden om deze workshop te organiseren?",
+    "type": "textarea",
+    "required": true,
+    "order": 17
+  },
+  {
+    "id": "if_challenges",
+    "section": "3. Noden en verwachtingen",
+    "label": "Welke concrete vragen of uitdagingen leven er rond AI op school?",
+    "type": "textarea",
+    "required": true,
+    "order": 18
+  },
+  {
+    "id": "if_tools_used",
+    "section": "3. Noden en verwachtingen",
+    "label": "Welke AI-tools worden al gebruikt?",
+    "type": "radio",
+    "options": "ChatGPT|Copilot|Claude|Gemini|Nog geen tools gebruikt",
+    "required": true,
+    "order": 19
+  },
+  {
+    "id": "if_ai_policy",
+    "section": "4. Schoolcontext",
+    "label": "Heeft de school al een visie of beleid rond AI-gebruik?",
+    "type": "radio",
+    "options": "Ja|Nee|In ontwikkeling",
+    "required": true,
+    "order": 20
+  },
+  {
+    "id": "if_guidelines",
+    "section": "4. Schoolcontext",
+    "label": "Zijn er richtlijnen vanuit de scholengroep/koepel waarmee rekening gehouden moet worden?",
+    "type": "textarea",
+    "required": false,
+    "order": 21
+  },
+  {
+    "id": "if_infra",
+    "section": "4. Schoolcontext",
+    "label": "Beschikbare infrastructuur",
+    "type": "checkbox",
+    "options": "Eigen laptop/tablet per deelnemer|Computerlokaal beschikbaar|Wifi voor iedereen|Beamer/scherm aanwezig|Geen van bovenstaande",
+    "required": true,
+    "order": 22
+  },
+  {
+    "id": "if_setup",
+    "section": "5. Logistiek",
+    "label": "Opstelling",
+    "type": "radio",
+    "options": "Computerlokaal|Klaslokaal met beamer|Andere",
+    "required": true,
+    "order": 23
+  },
+  {
+    "id": "if_onsite_contact",
+    "section": "5. Logistiek",
+    "label": "Contactpersoon ter plaatse op de dag zelf",
+    "type": "text",
+    "required": true,
+    "order": 24
+  },
+  {
+    "id": "if_remarks",
+    "section": "6. Afsluitend",
+    "label": "Overige opmerkingen of wensen",
+    "type": "textarea",
+    "required": false,
+    "order": 25
+  }
+]

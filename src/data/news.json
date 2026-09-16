@@ -1,0 +1,27 @@
+[
+  {
+    "id": "news_1",
+    "title": "WAIsely lanceert modulair workshopaanbod voor scholen",
+    "excerpt": "Kies zelf welke modules je combineert in een workshop van 2 uur — volledig afgestemd op de noden van jouw team.",
+    "body": "Vanaf dit schooljaar biedt WAIsely een volledig modulair systeem aan. Scholen kiezen zelf uit acht thematische modules en combineren die tot een workshop op maat. Elke sessie duurt twee uur en bevat concrete lesvoorbeelden die direct inzetbaar zijn. Zo krijgt elk team precies de training die het nodig heeft.",
+    "date": "2026-09-01T10:00:00.000Z",
+    "type": "article"
+  },
+  {
+    "id": "news_2",
+    "title": "\"Leerkrachten hebben nood aan rust, niet aan meer tools\"",
+    "excerpt": "Sabrina Carota in Het Laatste Nieuws over de AI-druk op leerkrachten.",
+    "body": "In een interview met HLN bespreekt WAIsely-oprichtster Sabrina Carota hoe scholen omgaan met de snelle opkomst van AI in het onderwijs. 'De technologie gaat sneller dan de meeste leerkrachten kunnen volgen. Wat ze nodig hebben is geen extra tool, maar iemand die hen helpt om rust te vinden in de chaos.'",
+    "date": "2026-06-15T08:00:00.000Z",
+    "type": "press",
+    "externalUrl": "https://www.hln.be"
+  },
+  {
+    "id": "news_3",
+    "title": "Nieuwe module: AI-detectie & academische integriteit",
+    "excerpt": "Hoe herken je AI-gegenereerd werk? En belangrijker: hoe ontwerp je opdrachten die authentiek leren stimuleren?",
+    "body": "De nieuwste module van WAIsely richt zich op een van de meest gestelde vragen door leerkrachten: hoe ga je om met AI-gegenereerd werk? In plaats van een strijd tegen de technologie, focust deze module op het ontwerpen van opdrachten die authentiek leren centraal stellen.",
+    "date": "2026-08-20T09:00:00.000Z",
+    "type": "article"
+  }
+]

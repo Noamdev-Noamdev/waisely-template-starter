@@ -1,0 +1,64 @@
+{
+  "hero": {
+    "eyebrow": "AI in het onderwijs — met rust en richting",
+    "title": "Rust in de chaos",
+    "subtitle": "WAIsely begeleidt leerkrachten en scholen bij verantwoord, praktisch AI-gebruik. Via workshops op maat leer je hoe AI je lessen versterkt — zonder de controle te verliezen.",
+    "primaryCtaLabel": "Bekijk de modules",
+    "secondaryCtaLabel": "Meer over WAIsely"
+  },
+  "intro": {
+    "title": "AI hoeft niet overweldigend te zijn",
+    "body": "Veel leerkrachten voelen de druk om iets met AI te doen, maar weten niet waar te beginnen. WAIsely brengt daar verandering in. Geen technisch jargon, geen hype — wel concrete handvatten die je morgen al in je les kunt gebruiken. Elke training is afgestemd op jouw vak, je leerlingen en je eigen tempo."
+  },
+  "about": {
+    "title": "Over WAIsely",
+    "body": "Achter WAIsely staat Sabrina Carota — leerkracht Engels, taalwetenschapper en AI-enthousiasteling met meer dan 20 jaar ervaring in het onderwijs. Na jarenlang zelf in de klas te staan, weet ze precies waar de uitdagingen liggen. Haar aanpak is altijd praktisch: niet wat AI theoretisch kan, maar hoe jij het morgen in je les inzet.\n\nWAIsely staat voor wijsheid in het gebruik van AI. De naam combineert 'wise' (wijs) met 'AI' — een knipoog naar doordacht, verantwoord gebruik in plaats van blind meegaan in de hype.",
+    "highlights": [
+      {
+        "title": "20+ jaar onderwijservaring",
+        "body": "Van secundair tot hoger onderwijs — Sabrina kent de klaspraktijk door en door."
+      },
+      {
+        "title": "Taalwetenschap & taaltechnologie",
+        "body": "Een unieke achtergrond die de brug slaat tussen taal, technologie en didactiek."
+      },
+      {
+        "title": "Praktijk boven theorie",
+        "body": "Elke workshop vertrekt vanuit echte lesvoorbeelden, niet vanuit abstracte concepten."
+      }
+    ]
+  },
+  "why": {
+    "title": "Waarom kiezen voor WAIsely?",
+    "items": [
+      {
+        "title": "Rust in plaats van chaos",
+        "body": "AI kan overweldigend zijn. WAIsely brengt structuur en duidelijkheid zodat je met vertrouwen aan de slag gaat."
+      },
+      {
+        "title": "Op maat van jouw klas",
+        "body": "Geen one-size-fits-all. Elke workshop wordt samengesteld op basis van jouw vak, noden en leerlingen."
+      },
+      {
+        "title": "Concrete lesvoorbeelden",
+        "body": "Je gaat naar huis met kant-en-klare prompts, werkvormen en ideeën die je meteen kunt inzetten."
+      },
+      {
+        "title": "Door een leerkracht, voor leerkrachten",
+        "body": "Sabrina staat zelf in de klas. Ze begrijpt je uitdagingen en spreekt je taal."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Neem contact op",
+    "body": "Benieuwd wat WAIsely voor jouw school kan betekenen? Stuur een bericht of plan een vrijblijvend kennismakingsgesprek. Ik denk graag mee over een aanpak op maat.",
+    "email": "noam@waisely.be",
+    "phone": "+32 486 12 34 56",
+    "address": "Antwerpen, België"
+  },
+  "footer": {
+    "tagline": "Verantwoord AI-gebruik in het onderwijs. Rust in de chaos.",
+    "instagramUrl": "https://www.instagram.com/waisely",
+    "socialEmail": "sabrina@waisely.be"
+  }
+}
