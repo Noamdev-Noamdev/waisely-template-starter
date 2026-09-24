@@ -275,7 +275,7 @@ export const seedIntakeFields: IntakeField[] = [
   { id: "if_date", label: "Gewenste datum/data (indicatief) voor de workshop(s)/webinar(s)", type: "text", required: true, order: 6 },
   { id: "if_location", label: "Locatie", type: "text", required: true, order: 7 },
   { id: "if_participants", label: "Aantal deelnemers per workshop/webinar", type: "radio", options: "1-10|11-20|21-35", required: true, order: 8 },
-  { id: "if_session_type", label: "Type sessie", type: "radio", options: "Workshop op maat (3u)|Webinar op maat (2u)|Vrije webinar", required: true, order: 9 },
+  { id: "if_session_type", label: "Type sessie (wenst u een workshop of webinar?)", type: "radio", options: "Workshop op maat (3u)|Webinar op maat (2u)|Vrije webinar", required: true, order: 9 },
   { id: "if_topics", label: "Over welke onderwerpen zou u een workshop/webinar wensen? (max. 3 aanvinken)", type: "checkbox", options: "De werking van taalmodellen|Efficiënt leren werken met een taalmodel (privacy, personalisatie en prompting)|Ethische implicaties en gevolgen voor milieu & klimaat|Een AI-beleid uitwerken voor de school|Een taalmodel inzetten als (schrijf)assistent|Evaluatie en feedback|Administratieve taken uitbesteden en planlast verminderen", required: true, order: 10 },
   // 2. Doelgroep
   { id: "if_audience", section: "2. Doelgroep", label: "Is de sessie bedoeld voor", type: "radio", options: "Leerkrachten|Beleidsmedewerkers/directie|Beide", required: true, order: 11 },

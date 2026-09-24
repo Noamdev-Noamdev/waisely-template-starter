@@ -10,7 +10,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { get } from "@/lib/db";
 
 export const metadata = {
-  title: "Over Sabrina Carota",
+  title: "Wie is WAIsely?",
   description:
     "Maak kennis met Sabrina Carota — leerkracht Engels, taalwetenschapper en oprichtster van WAIsely.",
 };
@@ -88,8 +88,8 @@ export default async function OverPage() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/modules">
-                Bekijk de modules
+              <ButtonLink href="/boek-een-training">
+                Boek een training
                 <Icon name="arrow-right" size={16} />
               </ButtonLink>
               <ButtonLink href="/contact" variant="secondary">

@@ -301,8 +301,8 @@ textarea:focus-visible,
   background: var(--background);
 }
 
-/* WhyUs section — warm muted dark section */
+/* WhyUs section — light gray background (client requested lighter) */
 .section-warm-dark {
-  background: var(--accent);
-  color: var(--accent-foreground);
+  background: var(--surface);
+  color: var(--foreground);
 }

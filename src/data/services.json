@@ -1,5 +1,14 @@
 [
   {
+    "id": "mod_1",
+    "title": "AI-basis voor leerkrachten",
+    "description": "Wat is AI precies, en wat kan het (niet)? Een heldere, jargonvrije introductie met live demo's. Je leert hoe tools als ChatGPT, Copilot en Gemini werken — en waar de valkuilen liggen.",
+    "icon": "spark",
+    "duration": "±40 min",
+    "audience": "Alle leerkrachten",
+    "order": 1
+  },
+  {
     "id": "mod_2",
     "title": "Prompts schrijven voor de klas",
     "description": "Leer effectieve prompts formuleren die echt bruikbare output opleveren voor lesvoorbereiding, differentiatie en evaluatie. Van rubrics tot remediëringsoefeningen.",

@@ -68,8 +68,8 @@ export default function Services({ services }: { services: Service[] }) {
 
         <Reveal delay={200}>
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <ButtonLink href="/modules">
-              Bekijk alle modules
+            <ButtonLink href="/boek-een-training">
+              Boek een training
               <Icon name="arrow-right" size={16} />
             </ButtonLink>
             <Link

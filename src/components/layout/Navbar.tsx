@@ -21,6 +21,11 @@ export default function Navbar({ user }: { user: User | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [activeHash, setActiveHash] = useState<string | null>(null);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
   const ticking = useRef(false);
 
   /**
@@ -69,10 +74,6 @@ export default function Navbar({ user }: { user: User | null }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [updateActiveHash]);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   function isActive(link: { href: string }) {
     // Direct page match (e.g. /modules, /contact)
     if (!link.href.startsWith("/#") && pathname === link.href) return true;
@@ -84,6 +85,7 @@ export default function Navbar({ user }: { user: User | null }) {
   }
 
   return (
+    <>
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         scrolled
@@ -91,17 +93,7 @@ export default function Navbar({ user }: { user: User | null }) {
           : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-12 max-w-[1000px] items-center justify-between gap-4 px-4 sm:px-6">
-        {/* Logo — no tagline */}
-        <Link href="/" className="group flex items-center gap-2">
-          <span
-            className="text-lg tracking-tight text-foreground"
-            style={{ fontFamily: "var(--font-heading)" }}
-          >
-            <strong>{SITE_NAME}</strong>
-          </span>
-        </Link>
-
+      <nav className="mx-auto flex h-12 max-w-[1000px] items-center justify-end md:justify-between gap-4 px-4 sm:px-6">
         {/* Desktop pill navigation */}
         <div className="hidden items-center md:flex">
           <div className="nav-pill">
@@ -248,5 +240,24 @@ export default function Navbar({ user }: { user: User | null }) {
         </div>
       ) : null}
     </header>
+
+      {/* Brand banner — large site name + slogan placed UNDER the navigation bar */}
+      <div className="bg-background pb-3 pt-6 sm:pt-8 text-center px-4">
+        <Link href="/" className="inline-block group">
+          <span
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground group-hover:text-accent transition-colors block"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
+            {SITE_NAME}
+          </span>
+        </Link>
+        <p
+          className="mt-2 text-base sm:text-lg italic text-muted-foreground sm:text-xl"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
+          Choose WAIsely – putting humans first
+        </p>
+      </div>
+    </>
   );
 }

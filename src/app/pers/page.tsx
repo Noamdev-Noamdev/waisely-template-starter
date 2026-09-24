@@ -6,7 +6,6 @@
 
 import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
-import Badge from "@/components/ui/Badge";
 import { ButtonExternal } from "@/components/ui/Button";
 import { get } from "@/lib/db";
 import { formatDate } from "@/lib/format";

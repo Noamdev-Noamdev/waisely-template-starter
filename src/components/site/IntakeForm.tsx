@@ -84,15 +84,13 @@ export default function IntakeForm({ fields }: { fields: IntakeField[] }) {
     );
   }
 
-  // Group by section for visual structure
-  let currentSection: string | undefined;
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {sorted.map((field) => {
-        const showSection =
-          field.section && field.section !== currentSection;
-        if (field.section) currentSection = field.section;
+      {sorted.map((field, idx) => {
+        const prevField = idx > 0 ? sorted[idx - 1] : undefined;
+        const showSection = Boolean(
+          field.section && field.section !== prevField?.section
+        );
 
         return (
           <div key={field.id}>

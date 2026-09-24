@@ -42,7 +42,7 @@ export default function Hero({ content }: { content: SiteContent }) {
           {/* CTAs — ghost style */}
           <Reveal delay={300}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <ButtonLink href="/modules">
+              <ButtonLink href="/boek-een-training">
                 {content.hero.primaryCtaLabel}
                 <Icon name="arrow-right" size={16} />
               </ButtonLink>

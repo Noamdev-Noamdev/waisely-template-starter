@@ -12,10 +12,10 @@ export const SITE_TAGLINE = "Rust in de chaos";
 
 /** Navigation items */
 export const NAV_LINKS = [
-  { href: "/modules", label: "Modules" },
-  { href: "/over", label: "Over Sabrina" },
-  { href: "/#waarom", label: "Waarom WAIsely" },
-  { href: "/#nieuws", label: "Nieuws & pers" },
+  { href: "/#waarom", label: "Waarom WAIsely?" },
+  { href: "/over", label: "Wie is WAIsely?" },
+  { href: "/boek-een-training", label: "Boek een training" },
+  { href: "/pers", label: "Nieuws en Pers" },
   { href: "/contact", label: "Contact" },
 ];
 

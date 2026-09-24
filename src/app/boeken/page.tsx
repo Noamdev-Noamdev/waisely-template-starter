@@ -11,7 +11,6 @@
 import Link from "next/link";
 import { get } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
-import Icon from "@/components/ui/Icon";
 import BookingForm from "@/components/site/BookingForm";
 import Reveal from "@/components/ui/Reveal";
 

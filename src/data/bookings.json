@@ -22,5 +22,17 @@
     "notes": "[Extra context.]",
     "status": "confirmed",
     "createdAt": "2026-09-11T20:27:34.261Z"
+  },
+  {
+    "id": "bkg_mufuipfkkq98w7",
+    "userId": "usr_demo",
+    "type": "workshop",
+    "topic": "Prompts schrijven voor de klas + AI-detectie & academische integriteit",
+    "audience": "d",
+    "date": "2999-12-12",
+    "participants": "",
+    "notes": "",
+    "status": "new",
+    "createdAt": "2026-09-24T18:08:54.080Z"
   }
 ]

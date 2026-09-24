@@ -67,7 +67,7 @@
   {
     "id": "if_session_type",
     "section": "1. Praktische gegevens",
-    "label": "Type sessie",
+    "label": "Type sessie (wenst u een workshop of webinar?)",
     "type": "radio",
     "options": "Workshop op maat (3u)|Webinar op maat (2u)|Vrije webinar",
     "required": true,
