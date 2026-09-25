@@ -16,9 +16,9 @@ import type {
 } from "./types";
 import { save } from "./db";
 
-export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@waisely.be";
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@waisely.biz";
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "waisely-admin";
-export const DEMO_EMAIL = "demo@waisely.be";
+export const DEMO_EMAIL = "demo@waisely.biz";
 export const DEMO_PASSWORD = "waisely-demo";
 
 export const seedSiteContent: SiteContent = {
@@ -76,14 +76,14 @@ export const seedSiteContent: SiteContent = {
   contact: {
     title: "Neem contact op",
     body: "Benieuwd wat WAIsely voor jouw school kan betekenen? Stuur een bericht of plan een vrijblijvend kennismakingsgesprek. Ik denk graag mee over een aanpak op maat.",
-    email: "sabrina@waisely.be",
+    email: "info@waisely.biz",
     phone: "+32 486 12 34 56",
     address: "Antwerpen, België",
   },
   footer: {
     tagline: "Verantwoord AI-gebruik in het onderwijs. Rust in de chaos.",
     instagramUrl: "https://www.instagram.com/waisely",
-    socialEmail: "sabrina@waisely.be",
+    socialEmail: "sabrina@waisely.biz",
   },
 };
 

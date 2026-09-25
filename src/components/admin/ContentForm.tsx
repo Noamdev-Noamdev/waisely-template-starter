@@ -415,7 +415,7 @@ export default function ContentForm({
               type="email"
               value={content.footer.socialEmail}
               onChange={(e) => patch("footer", "socialEmail", e.target.value)}
-              placeholder="sabrina@waisely.be"
+              placeholder="sabrina@waisely.biz"
               help="De e-mail achter het mail-icoon in de footer."
             />
           </div>

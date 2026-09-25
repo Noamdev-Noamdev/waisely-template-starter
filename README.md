@@ -31,8 +31,8 @@ met startdata (accounts, placeholder-content, voorbeeldboekingen).
 
 | Rol | E-mail | Wachtwoord |
 |---|---|---|
-| Admin | `admin@waisely.be` | `waisely-admin` |
-| Gebruiker (demo) | `demo@waisely.be` | `waisely-demo` |
+| Admin | `admin@waisely.biz` | `waisely-admin` |
+| Gebruiker (demo) | `demo@waisely.biz` | `waisely-demo` |
 
 > Verwijder het blok "Template-accounts" onder het loginformulier
 > (`src/app/login/page.tsx`) vóór productie.

@@ -1,7 +1,7 @@
 [
   {
     "id": "usr_admin",
-    "email": "admin@waisely.be",
+    "email": "admin@waisely.biz",
     "passwordHash": "$2b$10$1G55gpcY1sDxarBlwnsr6OsOgatgMzPnCEeDzv2ti0QWMEAiFaVhO",
     "name": "[Naam admin]",
     "role": "admin",
@@ -9,7 +9,7 @@
   },
   {
     "id": "usr_demo",
-    "email": "demo@waisely.be",
+    "email": "demo@waisely.biz",
     "passwordHash": "$2b$10$pTVLfB4XKM7d8mQ7TrJrpeNQmrnSTnQ42NqgiHBZFKQc7TKO8wtvm",
     "name": "[Demo-gebruiker]",
     "organization": "[Naam school]",
