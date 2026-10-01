@@ -10,6 +10,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/Icon";
@@ -93,7 +94,27 @@ export default function Navbar({ user }: { user: User | null }) {
           : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-12 max-w-[1000px] items-center justify-end md:justify-between gap-4 px-4 sm:px-6">
+      <nav className="mx-auto flex h-14 max-w-[1000px] items-center justify-between gap-4 px-4 sm:px-6">
+        {/* Sticky navbar logo — clickable, smoothly transitions on scroll */}
+        <Link
+          href="/"
+          className={`flex shrink-0 items-center transition-all duration-300 ${
+            scrolled
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-1 pointer-events-none"
+          }`}
+          title="Naar het begin van de site"
+        >
+          <Image
+            src="/logo.png"
+            alt={SITE_NAME}
+            width={120}
+            height={28}
+            priority
+            className="h-6 sm:h-7 w-auto object-contain transition-transform hover:scale-105"
+          />
+        </Link>
+
         {/* Desktop pill navigation */}
         <div className="hidden items-center md:flex">
           <div className="nav-pill">
@@ -179,7 +200,23 @@ export default function Navbar({ user }: { user: User | null }) {
 
       {/* Mobile dropdown */}
       {open ? (
-        <div className="bg-surface px-4 pb-6 pt-2 shadow-[var(--shadow-md)] md:hidden">
+        <div className="bg-surface px-4 pb-6 pt-3 shadow-[var(--shadow-md)] md:hidden">
+          <div className="mb-3 border-b border-border pb-3">
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className="inline-block"
+              title="Naar het begin van de site"
+            >
+              <Image
+                src="/logo.png"
+                alt={SITE_NAME}
+                width={120}
+                height={28}
+                className="h-6 w-auto object-contain"
+              />
+            </Link>
+          </div>
           <div className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -241,18 +278,24 @@ export default function Navbar({ user }: { user: User | null }) {
       ) : null}
     </header>
 
-      {/* Brand banner — large site name + slogan placed UNDER the navigation bar */}
+      {/* Brand banner — large site logo + slogan placed UNDER the navigation bar */}
       <div className="bg-background pb-3 pt-6 sm:pt-8 text-center px-4">
-        <Link href="/" className="inline-block group">
-          <span
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground group-hover:text-accent transition-colors block"
-            style={{ fontFamily: "var(--font-heading)" }}
-          >
-            {SITE_NAME}
-          </span>
+        <Link
+          href="/"
+          className="inline-block group transition-transform hover:scale-[1.02]"
+          title="Naar het begin van de site"
+        >
+          <Image
+            src="/logo.png"
+            alt={SITE_NAME}
+            width={300}
+            height={68}
+            priority
+            className="h-12 sm:h-16 md:h-20 w-auto mx-auto object-contain"
+          />
         </Link>
         <p
-          className="mt-2 text-base sm:text-lg italic text-muted-foreground sm:text-xl"
+          className="mt-3 text-base sm:text-lg italic text-muted-foreground sm:text-xl"
           style={{ fontFamily: "var(--font-heading)" }}
         >
           Choose WAIsely – putting humans first

@@ -39,7 +39,7 @@ export default async function AdminIndexPage() {
       icon: "pen",
       title: "Site-teksten",
       count: null,
-      hint: "Hero, intro, over-sectie",
+      hint: "Hero & introductie",
     },
     {
       href: "/admin/content/diensten",
@@ -54,6 +54,13 @@ export default async function AdminIndexPage() {
       title: "Waarom-punten",
       count: content.why.items.length,
       hint: "Checklist op de homepage",
+    },
+    {
+      href: "/admin/content/over",
+      icon: "user",
+      title: "Over WAIsely",
+      count: content.about.highlights.length,
+      hint: "Bio, highlights & profiel",
     },
     {
       href: "/admin/content/contact",

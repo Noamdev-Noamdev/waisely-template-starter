@@ -46,6 +46,9 @@ export interface SiteContent {
   about: {
     title: string;
     body: string;
+    imageUrl?: string;
+    name?: string;
+    role?: string;
     highlights: { title: string; body: string }[];
   };
   why: {

@@ -11,6 +11,7 @@ const QUICK_LINKS = [
   { href: "/admin/content/teksten", label: "Teksten", icon: "pen" },
   { href: "/admin/content/diensten", label: "Modules", icon: "grid" },
   { href: "/admin/content/waarom", label: "Waarom-punten", icon: "check" },
+  { href: "/admin/content/over", label: "Over", icon: "user" },
   { href: "/admin/content/contact", label: "Contact", icon: "mail" },
 ];
 

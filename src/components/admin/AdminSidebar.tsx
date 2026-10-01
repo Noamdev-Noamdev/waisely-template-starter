@@ -38,6 +38,11 @@ const SECTIONS = [
     icon: "check",
   },
   {
+    href: "/admin/content/over",
+    label: "Over WAIsely",
+    icon: "user",
+  },
+  {
     href: "/admin/content/contact",
     label: "Contactgegevens",
     icon: "mail",

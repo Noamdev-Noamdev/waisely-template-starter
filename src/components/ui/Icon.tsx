@@ -57,6 +57,8 @@ export type IconName =
   | "layers"
   | "megaphone"
   | "pen"
+  | "image"
+  | "upload"
   | "tag";
 
 /** Standaard afmeting; overschrijf via className of width/height-props. */
@@ -367,6 +369,21 @@ export default function Icon({
         <svg {...common}>
           <path d="M12 2L2 7l10 5 10-5-10-5z" />
           <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg>
+      );
+    case "image":
+      return (
+        <svg {...common}>
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <path d="M21 15l-5-5L5 21" />
+        </svg>
+      );
+    case "upload":
+      return (
+        <svg {...common}>
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <path d="M17 8l-5-5-5 5M12 3v12" />
         </svg>
       );
     case "tag":

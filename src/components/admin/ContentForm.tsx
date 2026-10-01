@@ -47,6 +47,37 @@ export default function ContentForm({
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
     "idle"
   );
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Uploaden mislukt");
+      }
+
+      patch("about", "imageUrl", data.url);
+    } catch (err: unknown) {
+      setUploadError(err instanceof Error ? err.message : "Uploaden mislukt");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   /** Update één veld binnen één onderdeel, b.v. patch("hero", "title", v). */
   function patch<K extends ContentKey>(
@@ -232,10 +263,88 @@ export default function ContentForm({
             />
             <FieldTextarea
               label="Tekst"
-              rows={5}
+              rows={10}
               value={content.about.body}
               onChange={(e) => patch("about", "body", e.target.value)}
             />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <FieldInput
+                label="Naam profielkaart"
+                value={content.about.name ?? ""}
+                onChange={(e) => patch("about", "name", e.target.value)}
+                placeholder="bv. Sabrina Carota"
+              />
+              <FieldInput
+                label="Functie / rol profielkaart"
+                value={content.about.role ?? ""}
+                onChange={(e) => patch("about", "role", e.target.value)}
+                placeholder="bv. Leerkracht, taalwetenschapper & AI-trainer"
+              />
+            </div>
+
+            {/* Afbeelding sectie */}
+            <div className="rounded-[var(--radius)] border border-border bg-surface-muted p-4">
+              <FieldLabel>Afbeelding / Profielfoto</FieldLabel>
+              <p className="mb-3 text-xs text-muted-foreground">
+                Upload een foto vanaf je computer of geef een afbeeldings-URL op. Deze foto vervangt de standaard placeholder.
+              </p>
+
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                {/* Preview / Placeholder thumbnail */}
+                <div className="relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius)] border border-border bg-surface shadow-[var(--shadow-sm)]">
+                  {content.about.imageUrl ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={content.about.imageUrl}
+                        alt="Preview"
+                        className="h-full w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => patch("about", "imageUrl", "")}
+                        className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white shadow transition-colors hover:bg-red-700"
+                        title="Afbeelding verwijderen"
+                      >
+                        <Icon name="trash" size={13} />
+                      </button>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-muted-foreground">
+                      <Icon name="image" size={28} />
+                      <span className="mt-1 text-[10px]">Geen foto</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Upload controls */}
+                <div className="flex-1 space-y-3">
+                  <div>
+                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--radius)] border border-border bg-surface px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-muted">
+                      <Icon name="upload" size={16} />
+                      {uploading ? "Uploaden…" : "Kies afbeelding van computer"}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                        className="hidden"
+                        disabled={uploading}
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                    {uploadError ? (
+                      <p className="mt-1.5 text-xs text-red-600">{uploadError}</p>
+                    ) : null}
+                  </div>
+
+                  <FieldInput
+                    label="Of geef een afbeeldings-URL op"
+                    value={content.about.imageUrl ?? ""}
+                    onChange={(e) => patch("about", "imageUrl", e.target.value)}
+                    placeholder="https://... of /uploads/..."
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* Highlights-lijst */}
             <div>
