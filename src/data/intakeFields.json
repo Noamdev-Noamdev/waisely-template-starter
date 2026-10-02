@@ -211,5 +211,24 @@
     "type": "textarea",
     "required": false,
     "order": 25
+  },
+  {
+    "id": "if_time_pref",
+    "section": "7. Tijdsvoorkeur",
+    "label": "Algemene tijdsvoorkeur — wanneer past het voor uw school?",
+    "type": "checkbox",
+    "options": "Maandagvoormiddag|Maandagnamiddag|Dinsdagvoormiddag|Dinsdagnamiddag|Woensdagvoormiddag|Woensdagnamiddag|Donderdagvoormiddag|Donderdagnamiddag|Vrijdagvoormiddag|Vrijdagnamiddag",
+    "required": false,
+    "help": "Selecteer alle dagdelen die in aanmerking komen. Dit helpt ons om een passend moment te zoeken.",
+    "order": 26
+  },
+  {
+    "id": "if_date_proposal",
+    "section": "7. Tijdsvoorkeur",
+    "label": "Concrete datumvoorstellen (optioneel, onder voorbehoud)",
+    "type": "textarea",
+    "required": false,
+    "help": "Heeft u al specifieke data in gedachten? Noteer ze hier gerust — dit is vrijblijvend en geldt enkel als voorkeur. De definitieve datum wordt later in onderling overleg afgesproken.",
+    "order": 27
   }
 ]
