@@ -32,7 +32,19 @@
     "date": "2999-12-12",
     "participants": "",
     "notes": "",
-    "status": "new",
+    "status": "confirmed",
     "createdAt": "2026-09-24T18:08:54.080Z"
+  },
+  {
+    "id": "bkg_mur6sz7z4zdfpx",
+    "userId": "usr_demo",
+    "type": "workshop",
+    "topic": "Prompts schrijven voor de klas",
+    "audience": "Leerkrachtenb",
+    "date": "2026-10-19",
+    "participants": "5",
+    "notes": "",
+    "status": "new",
+    "createdAt": "2026-10-02T16:38:16.655Z"
   }
 ]

@@ -47,5 +47,44 @@
       "if_onsite_contact": " ",
       "if_remarks": " "
     }
+  },
+  {
+    "id": "sub_mur6q3t7qgh8g7",
+    "submittedAt": "2026-10-02T16:36:02.635Z",
+    "answers": {
+      "if_email": "n@n.com",
+      "if_school": "n",
+      "if_contact_name": "n",
+      "if_contact_function": "n",
+      "if_phone": "n",
+      "if_date": "19/10/2026",
+      "if_location": "n",
+      "if_participants": "1-10",
+      "if_session_type": "Workshop op maat (3u)",
+      "if_topics": [
+        "De werking van taalmodellen"
+      ],
+      "if_audience": "Leerkrachten",
+      "if_level": "Andere",
+      "if_subjects": [
+        "STEM"
+      ],
+      "if_experience": "3",
+      "if_previous_training": "Ja",
+      "if_reason": "n",
+      "if_challenges": "n",
+      "if_tools_used": "Claude",
+      "if_ai_policy": "In ontwikkeling",
+      "if_guidelines": "n",
+      "if_infra": [
+        "Wifi voor iedereen"
+      ],
+      "if_setup": "Klaslokaal met beamer",
+      "if_onsite_contact": "n",
+      "if_remarks": "n",
+      "if_time_pref": [
+        "Maandagnamiddag"
+      ]
+    }
   }
 ]
