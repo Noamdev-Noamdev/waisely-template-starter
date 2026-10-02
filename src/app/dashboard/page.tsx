@@ -29,25 +29,46 @@ export default async function DashboardPage() {
   if (!user) redirect("/login");
 
   // Alle aanvragen van deze gebruiker (nieuwste eerst).
-  const allBookings = await get("bookings");
+  const [allBookings, allIntakes, intakeFields, knowledgeRaw] = await Promise.all([
+    get("bookings"),
+    get("intakeSubmissions"),
+    get("intakeFields"),
+    get("knowledge"),
+  ]);
+
+  const userEmail = user.email.toLowerCase().trim();
+
+  // Bookings (via /boeken)
   const myBookings = allBookings
     .filter((b) => b.userId === user.id && b.type !== "contact")
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => (b.createdAt || b.date).localeCompare(a.createdAt || a.date));
 
-  const knowledge = (await get("knowledge")).sort((a, b) => a.order - b.order);
+  // Intake-aanvragen (via /boek-een-training)
+  const myIntakes = allIntakes
+    .filter((s) => {
+      if (s.userId && s.userId === user.id) return true;
+      const email = typeof s.answers?.if_email === "string" ? s.answers.if_email.toLowerCase().trim() : "";
+      return email && email === userEmail;
+    })
+    .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt));
+
+  const knowledge = knowledgeRaw.sort((a, b) => a.order - b.order);
+
+  const totalAankomend =
+    myBookings.filter((b) => b.status === "confirmed" || b.status === "new").length +
+    myIntakes.length;
+  const totalAfgelopen = myBookings.filter((b) => b.status === "done").length;
 
   // Statistiekjes voor de samenvatting bovenaan.
   const stats = [
     {
       label: "Aankomend",
-      value: myBookings.filter(
-        (b) => b.status === "confirmed" || b.status === "new"
-      ).length,
+      value: totalAankomend,
       icon: "calendar",
     },
     {
       label: "Afgelopen",
-      value: myBookings.filter((b) => b.status === "done").length,
+      value: totalAfgelopen,
       icon: "check",
     },
     {
@@ -103,7 +124,7 @@ export default async function DashboardPage() {
       {/* Aanvragen */}
       <section className="mt-12">
         <h2 className="text-xl font-bold text-foreground">Mijn aanvragen</h2>
-        {myBookings.length === 0 ? (
+        {myBookings.length === 0 && myIntakes.length === 0 ? (
           <div className="mt-4 rounded-[var(--radius)] border border-dashed border-border bg-surface-muted p-8 text-center">
             <p className="text-sm text-muted-foreground">
               Je hebt nog geen workshops of webinars aangevraagd.
@@ -117,7 +138,16 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <BookingsList bookings={myBookings} />
+          <BookingsList
+            bookings={myBookings}
+            intakes={myIntakes}
+            intakeFields={intakeFields}
+            currentUser={{
+              name: user.name,
+              email: user.email,
+              organization: user.organization,
+            }}
+          />
         )}
       </section>
 

@@ -165,6 +165,8 @@ export interface IntakeField {
 /** Eén ingevuld intake-formulier (opgeslagen submission). */
 export interface IntakeSubmission {
   id: string;
+  /** Optioneel gekoppelde gebruikers-id (indien ingelogd bij insturen). */
+  userId?: string;
   /** ISO-datum van het insturen. */
   submittedAt: string;
   /** Key-value paren: veld-id → antwoord (string of string[]). */

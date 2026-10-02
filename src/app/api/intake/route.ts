@@ -3,10 +3,12 @@
  */
 import { NextResponse } from "next/server";
 import { get, save, uid } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
 import type { IntakeSubmission } from "@/lib/types";
 
 export async function POST(request: Request) {
   try {
+    const user = await getCurrentUser();
     const body = await request.json();
     const fields = await get("intakeFields");
     const answers = body.answers as Record<string, string | string[]>;
@@ -26,6 +28,7 @@ export async function POST(request: Request) {
 
     const submission: IntakeSubmission = {
       id: uid("sub_"),
+      userId: user?.id,
       submittedAt: new Date().toISOString(),
       answers,
     };
