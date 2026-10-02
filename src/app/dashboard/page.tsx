@@ -16,13 +16,9 @@ import { redirect } from "next/navigation";
 import { get } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import Icon from "@/components/ui/Icon";
-import Badge, {
-  bookingStatusLabel,
-  bookingStatusTone,
-} from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
-import { formatDate } from "@/lib/format";
 import KnowledgeList from "@/components/dashboard/KnowledgeList";
+import BookingsList from "@/components/dashboard/BookingsList";
 
 export const metadata = {
   title: "Dashboard",
@@ -121,30 +117,7 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <div className="mt-4 space-y-3">
-            {myBookings.map((b) => (
-              <div
-                key={b.id}
-                className="card-hover flex flex-col gap-3 rounded-[var(--radius)] border border-border bg-surface p-5 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-accent-soft text-accent">
-                    <Icon name={b.type === "webinar" ? "video" : "users"} size={18} />
-                  </span>
-                  <div>
-                    <p className="font-semibold text-foreground">{b.topic}</p>
-                    <p className="mt-0.5 text-sm text-muted-foreground">
-                      {b.type === "webinar" ? "Webinar" : "Workshop"} ·{" "}
-                      {formatDate(b.date)} · {b.audience}
-                    </p>
-                  </div>
-                </div>
-                <Badge tone={bookingStatusTone(b.status)}>
-                  {bookingStatusLabel(b.status)}
-                </Badge>
-              </div>
-            ))}
-          </div>
+          <BookingsList bookings={myBookings} />
         )}
       </section>
 
