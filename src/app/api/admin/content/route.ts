@@ -9,10 +9,16 @@
  */
 
 import { NextResponse } from "next/server";
-import { get, save } from "@/lib/db";
+import { get, save, uid } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { seedSiteContent } from "@/lib/seed";
-import type { SiteContent } from "@/lib/types";
+import { normalizeInstagramUrl } from "@/lib/instagram";
+import type {
+  InstagramPost,
+  PressContent,
+  Review,
+  SiteContent,
+} from "@/lib/types";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -33,6 +39,15 @@ export async function PUT(request: Request) {
     const body = (await request.json()) as Partial<SiteContent>;
     const current = await get("siteContent");
 
+    let press = current.press;
+    if (body.press) {
+      const result = sanitizePress({ ...current.press, ...body.press });
+      if ("error" in result) {
+        return NextResponse.json({ error: result.error }, { status: 400 });
+      }
+      press = result.press;
+    }
+
     // Merge: alleen aangeleverde onderdelen worden overschreven, zodat één
     // formulier veilig kan opslaan zonder de rest van de content te raken.
     const merged: SiteContent = {
@@ -42,6 +57,8 @@ export async function PUT(request: Request) {
       why: { ...current.why, ...body.why },
       contact: { ...current.contact, ...body.contact },
       footer: { ...current.footer, ...body.footer },
+      bookTraining: { ...current.bookTraining, ...body.bookTraining },
+      press,
     };
 
     await save("siteContent", merged);
@@ -52,6 +69,65 @@ export async function PUT(request: Request) {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Valideert/normaliseert het pers-onderdeel: lege reviews worden geweigerd,
+ * Instagram-links worden omgezet naar een canonieke permalink en dubbele
+ * posts worden verwijderd.
+ */
+function sanitizePress(
+  press: PressContent
+): { press: PressContent } | { error: string } {
+  const str = (v: unknown) => (typeof v === "string" ? v : "");
+
+  const reviews: Review[] = [];
+  for (const r of Array.isArray(press.reviews) ? press.reviews : []) {
+    const review: Review = {
+      id: str(r.id) || uid("rev_"),
+      name: str(r.name).trim(),
+      role: str(r.role).trim(),
+      text: str(r.text).trim(),
+      visible: r.visible !== false,
+    };
+    if (!review.name || !review.text) {
+      return { error: "Elke review heeft minstens een naam en een tekst nodig." };
+    }
+    reviews.push(review);
+  }
+
+  const posts: InstagramPost[] = [];
+  const seen = new Set<string>();
+  for (const p of Array.isArray(press.instagramPosts) ? press.instagramPosts : []) {
+    const url = normalizeInstagramUrl(str(p.url));
+    if (!url) {
+      return { error: `Ongeldige Instagram-link: "${str(p.url)}".` };
+    }
+    if (seen.has(url)) continue;
+    seen.add(url);
+    posts.push({
+      id: str(p.id) || uid("ig_"),
+      url,
+      note: str(p.note).trim() || undefined,
+      visible: p.visible !== false,
+    });
+  }
+
+  return {
+    press: {
+      eyebrow: str(press.eyebrow),
+      title: str(press.title),
+      intro: str(press.intro),
+      reviewsTitle: str(press.reviewsTitle),
+      reviews,
+      pressTitle: str(press.pressTitle),
+      instagramTitle: str(press.instagramTitle),
+      instagramSubtitle: str(press.instagramSubtitle),
+      instagramButtonLabel: str(press.instagramButtonLabel),
+      instagramProfileUrl: str(press.instagramProfileUrl).trim(),
+      instagramPosts: posts,
+    },
+  };
 }
 
 /** POST herstelt de standaard (seed) content — handig bij demo's/reset. */

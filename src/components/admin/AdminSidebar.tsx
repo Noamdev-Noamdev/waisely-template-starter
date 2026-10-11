@@ -48,6 +48,11 @@ const SECTIONS = [
     icon: "mail",
   },
   {
+    href: "/admin/content/pers",
+    label: "Pers-pagina",
+    icon: "quote",
+  },
+  {
     href: "/admin/aanvragen",
     label: "Aanvragen",
     icon: "calendar",

@@ -70,6 +70,13 @@ export default async function AdminIndexPage() {
       hint: "E-mail, telefoon, adres",
     },
     {
+      href: "/admin/content/pers",
+      icon: "quote",
+      title: "Pers-pagina",
+      count: content.press.reviews.length,
+      hint: `Reviews · ${content.press.instagramPosts.length} Instagram-posts`,
+    },
+    {
       href: "/admin/kennisbank",
       icon: "book",
       title: "Kennisbank",

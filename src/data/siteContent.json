@@ -63,5 +63,36 @@
     "tagline": "Verantwoord AI-gebruik in het onderwijs. Rust in de chaos.",
     "instagramUrl": "https://www.instagram.com/waise.ly",
     "socialEmail": "info@waisely.biz"
+  },
+  "bookTraining": {
+    "title": "Workshop of webinar aanvragen",
+    "description": "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op uw school of instelling. Kies daarna de modules die het beste bij uw situatie passen."
+  },
+  "press": {
+    "eyebrow": "Pers & reviews",
+    "title": "Wat anderen zeggen",
+    "intro": "Persvermeldingen, ervaringen van deelnemers en de laatste posts van WAIsely op Instagram.",
+    "reviewsTitle": "Ervaringen van deelnemers",
+    "reviews": [
+      {
+        "id": "rev_1",
+        "name": "D.P.",
+        "role": "Leerkracht",
+        "text": "De workshop heeft mijn verwachtingen absoluut overtroffen. Het was niet alleen een heldere en praktische introductie tot de mogelijkheden van AI in het onderwijs, maar het heeft me ook concrete inzichten gegeven die ik meteen kan toepassen.\nIk voel me nu veel beter uitgerust om AI gerichter en doordachter in te zetten in mijn dagelijkse werking — van het efficiënter voorbereiden van lessn tot het ondersteunen van leerlingen op maat. Belangrijk daarbij is dat ik dit nu kan doen met een scherp oog voor privacy en gegevensbescherming.",
+        "visible": true
+      }
+    ],
+    "pressTitle": "In de pers",
+    "instagramTitle": "Volg WAIsely op Instagram",
+    "instagramSubtitle": "Dagelijkse tips, lesideeën en AI-inspiratie voor leerkrachten.",
+    "instagramButtonLabel": "Volg op Instagram",
+    "instagramProfileUrl": "",
+    "instagramPosts": [
+      {
+        "id": "ig_mv3xa390yp9i",
+        "url": "https://www.instagram.com/p/DddkD42DXmp/",
+        "visible": true
+      }
+    ]
   }
 }

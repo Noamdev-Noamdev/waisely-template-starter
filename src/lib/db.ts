@@ -18,8 +18,8 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import { seedAll } from "./seed";
-import type { Database } from "./types";
+import { seedAll, seedSiteContent } from "./seed";
+import type { Database, SiteContent } from "./types";
 
 /** Map met JSON-bestanden (binnen de repo, zodat alles lokaal blijft). */
 const DATA_DIR = path.join(process.cwd(), "src", "data");
@@ -103,16 +103,32 @@ async function tryRead<K extends keyof Database>(key: K): Promise<Database[K] | 
  */
 export async function get<K extends keyof Database>(key: K): Promise<Database[K]> {
   const direct = await tryRead(key);
-  if (direct !== null) return direct;
+  if (direct !== null) return withDefaults(key, direct);
 
   // Bestand ontbreekt. Alleen seeden bij een volledig verse store.
   const users = await tryRead("users");
   if (users === null || users.length === 0) {
     await ensureData();
     const retried = await tryRead(key);
-    if (retried !== null) return retried;
+    if (retried !== null) return withDefaults(key, retried);
   }
   return defaults[key];
+}
+
+/**
+ * Vult ontbrekende siteContent-onderdelen aan met de seed-standaard.
+ * Zo blijft een bestaande siteContent.json werken wanneer er later nieuwe
+ * onderdelen (b.v. "press" of "bookTraining") aan SiteContent toegevoegd
+ * worden — zonder migratiescript en zonder bestaande teksten te overschrijven.
+ */
+function withDefaults<K extends keyof Database>(key: K, value: Database[K]): Database[K] {
+  if (key !== "siteContent" || !value) return value;
+  const stored = value as Database["siteContent"];
+  const merged = { ...seedSiteContent } as Record<string, unknown>;
+  for (const section of Object.keys(seedSiteContent) as (keyof SiteContent)[]) {
+    merged[section] = { ...seedSiteContent[section], ...(stored[section] ?? {}) };
+  }
+  return merged as unknown as Database[K];
 }
 
 /**

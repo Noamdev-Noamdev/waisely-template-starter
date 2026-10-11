@@ -88,6 +88,48 @@ export const seedSiteContent: SiteContent = {
     instagramUrl: "https://www.instagram.com/waisely",
     socialEmail: "sabrina@waisely.biz",
   },
+  bookTraining: {
+    title: "Workshop of webinar aanvragen",
+    description:
+      "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op uw school of instelling. Kies daarna de modules die het beste bij uw situatie passen.",
+  },
+  press: {
+    eyebrow: "Pers & reviews",
+    title: "Wat anderen zeggen",
+    intro:
+      "Persvermeldingen, ervaringen van deelnemers en de laatste posts van WAIsely op Instagram.",
+    reviewsTitle: "Ervaringen van deelnemers",
+    reviews: [
+      {
+        id: "rev_1",
+        name: "Lisa D.",
+        role: "Leerkracht Engels, 3de graad",
+        text: "Eindelijk iemand die begrijpt dat wij leerkrachten geen techneuten zijn. De workshop was concreet, praktisch en ik kon alles meteen gebruiken in mijn lessen.",
+        visible: true,
+      },
+      {
+        id: "rev_2",
+        name: "Tom V.",
+        role: "ICT-coördinator, scholengroep",
+        text: "Sabrina's aanpak is uniek: ze vertrekt altijd vanuit de les, niet vanuit de tool. Dat maakt het verschil. Onze leerkrachten voelden zich gehoord.",
+        visible: true,
+      },
+      {
+        id: "rev_3",
+        name: "An S.",
+        role: "Directeur hoger onderwijs",
+        text: "We hadden WAIsely uitgenodigd voor een studiedag. De feedback van onze docenten was unaniem positief. Praktisch, duidelijk en inspirerend.",
+        visible: true,
+      },
+    ],
+    pressTitle: "In de pers",
+    instagramTitle: "Volg WAIsely op Instagram",
+    instagramSubtitle:
+      "Dagelijkse tips, lesideeën en AI-inspiratie voor leerkrachten.",
+    instagramButtonLabel: "Volg op Instagram",
+    instagramProfileUrl: "",
+    instagramPosts: [],
+  },
 };
 
 export const seedServices: Service[] = [

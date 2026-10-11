@@ -11,7 +11,6 @@
 
 import { get } from "@/lib/db";
 import ContentForm from "@/components/admin/ContentForm";
-import type { SiteContent } from "@/lib/types";
 
 export const metadata = { title: "Site-teksten" };
 
@@ -32,7 +31,7 @@ export default async function AdminTekstenPage() {
 
       <ContentForm
         initial={content}
-        saveKeys={["hero", "intro"]}
+        saveKeys={["hero", "intro", "bookTraining"]}
         submitLabel="Teksten opslaan"
       />
     </div>

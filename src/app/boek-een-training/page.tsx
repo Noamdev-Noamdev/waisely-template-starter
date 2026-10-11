@@ -22,9 +22,10 @@ export const metadata = {
 };
 
 export default async function BoekEenTrainingPage() {
-  const [fields, modules] = await Promise.all([
+  const [fields, modules, siteContent] = await Promise.all([
     get("intakeFields"),
     get("services"),
+    get("siteContent"),
   ]);
 
   return (
@@ -35,13 +36,10 @@ export default async function BoekEenTrainingPage() {
           Boek een training
         </p>
         <h1 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl">
-          Workshop of webinar aanvragen
+          {siteContent.bookTraining.title}
         </h1>
         <p className="prose-muted mt-4 max-w-2xl">
-          Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het
-          intake-formulier in zodat we de inhoud zo goed mogelijk kunnen
-          afstemmen op uw school of instelling. Kies daarna de modules die
-          het beste bij uw situatie passen. Liever eerst even bellen?{" "}
+          {siteContent.bookTraining.description} Liever eerst even bellen?{" "}
           <Link
             href="/contact"
             className="font-medium text-foreground underline-offset-2 hover:underline"

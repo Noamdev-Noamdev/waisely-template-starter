@@ -2,11 +2,16 @@
  * ---------------------------------------------------------------------------
  * PersPage (/pers) — Press, Instagram & Reviews
  * ---------------------------------------------------------------------------
+ * Alle teksten, reviews en Instagram-posts komen uit siteContent.press en
+ * zijn bewerkbaar via /admin/content/pers. Persvermeldingen komen uit
+ * "Nieuws & pers" (items met type "press").
+ * ---------------------------------------------------------------------------
  */
 
 import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
 import { ButtonExternal } from "@/components/ui/Button";
+import InstagramEmbeds from "@/components/site/InstagramEmbeds";
 import { get } from "@/lib/db";
 import { formatDate } from "@/lib/format";
 
@@ -17,83 +22,78 @@ export const metadata = {
 };
 
 export default async function PersPage() {
-  const news = await get("news");
+  const [news, content] = await Promise.all([get("news"), get("siteContent")]);
+  const press = content.press;
   const pressItems = news.filter((n) => n.type === "press");
-
-  // Placeholder reviews
-  const reviews = [
-    {
-      name: "Lisa D.",
-      role: "Leerkracht Engels, 3de graad",
-      text: "Eindelijk iemand die begrijpt dat wij leerkrachten geen techneuten zijn. De workshop was concreet, praktisch en ik kon alles meteen gebruiken in mijn lessen.",
-    },
-    {
-      name: "Tom V.",
-      role: "ICT-coördinator, scholengroep",
-      text: "Sabrina's aanpak is uniek: ze vertrekt altijd vanuit de les, niet vanuit de tool. Dat maakt het verschil. Onze leerkrachten voelden zich gehoord.",
-    },
-    {
-      name: "An S.",
-      role: "Directeur hoger onderwijs",
-      text: "We hadden WAIsely uitgenodigd voor een studiedag. De feedback van onze docenten was unaniem positief. Praktisch, duidelijk en inspirerend.",
-    },
-  ];
+  const reviews = press.reviews.filter((r) => r.visible);
+  const instagramUrls = press.instagramPosts
+    .filter((p) => p.visible)
+    .map((p) => p.url);
+  const profileUrl =
+    press.instagramProfileUrl || content.footer.instagramUrl || "";
 
   return (
     <div className="mx-auto max-w-[1000px] px-4 py-14 sm:px-6 md:py-20">
       {/* Header */}
       <Reveal>
-        <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Pers & reviews
-        </p>
+        {press.eyebrow ? (
+          <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            {press.eyebrow}
+          </p>
+        ) : null}
         <h1 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl">
-          Wat anderen zeggen
+          {press.title}
         </h1>
-        <p className="prose-muted mt-4 max-w-2xl">
-          Persvermeldingen, ervaringen van deelnemers en de laatste posts van
-          WAIsely op Instagram.
-        </p>
+        {press.intro ? (
+          <p className="prose-muted mt-4 max-w-2xl whitespace-pre-line">
+            {press.intro}
+          </p>
+        ) : null}
       </Reveal>
 
       {/* Reviews */}
-      <section className="mt-16">
-        <Reveal>
-          <h2 className="text-2xl font-medium text-foreground">
-            Ervaringen van deelnemers
-          </h2>
-        </Reveal>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {reviews.map((review, i) => (
-            <Reveal key={i} delay={i * 100}>
-              <div className="card-hover flex h-full flex-col rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-md)]">
-                <Icon
-                  name="quote"
-                  size={24}
-                  className="text-accent/40"
-                />
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground">
-                  &ldquo;{review.text}&rdquo;
-                </p>
-                <div className="mt-4 border-t border-border pt-4">
-                  <p className="text-sm font-medium text-foreground">
-                    {review.name}
+      {reviews.length > 0 ? (
+        <section className="mt-16">
+          <Reveal>
+            <h2 className="text-2xl font-medium text-foreground">
+              {press.reviewsTitle}
+            </h2>
+          </Reveal>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {reviews.map((review, i) => (
+              <Reveal key={review.id} delay={(i % 3) * 100}>
+                <div className="card-hover flex h-full flex-col rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-md)]">
+                  <Icon
+                    name="quote"
+                    size={24}
+                    className="text-accent/40"
+                  />
+                  <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                    &ldquo;{review.text}&rdquo;
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {review.role}
-                  </p>
+                  <div className="mt-4 border-t border-border pt-4">
+                    <p className="text-sm font-medium text-foreground">
+                      {review.name}
+                    </p>
+                    {review.role ? (
+                      <p className="text-xs text-muted-foreground">
+                        {review.role}
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Press mentions */}
       {pressItems.length > 0 ? (
         <section className="mt-16">
           <Reveal>
             <h2 className="text-2xl font-medium text-foreground">
-              In de pers
+              {press.pressTitle}
             </h2>
           </Reveal>
           <div className="mt-8 space-y-4">
@@ -136,47 +136,32 @@ export default async function PersPage() {
         </section>
       ) : null}
 
-      {/* Instagram placeholder */}
-      <section className="mt-16">
-        <Reveal>
-          <h2 className="text-2xl font-medium text-foreground">
-            Volg WAIsely op Instagram
-          </h2>
-          <p className="prose-muted mt-2">
-            Dagelijkse tips, lesideeën en AI-inspiratie voor leerkrachten.
-          </p>
-        </Reveal>
-        <Reveal delay={150}>
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <a
-                key={i}
-                href="https://www.instagram.com/waisely"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex aspect-square items-center justify-center rounded-[var(--radius)] bg-surface shadow-[var(--shadow-sm)] transition-all hover:shadow-[var(--shadow-md)]"
-              >
-                <div className="text-center">
-                  <Icon
-                    name="heart"
-                    size={24}
-                    className="mx-auto text-muted-foreground/40 transition-colors group-hover:text-accent"
-                  />
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Instagram post
-                  </p>
-                </div>
-              </a>
-            ))}
-          </div>
-          <div className="mt-6">
-            <ButtonExternal href="https://www.instagram.com/waisely">
-              <Icon name="heart" size={16} />
-              Volg op Instagram
-            </ButtonExternal>
-          </div>
-        </Reveal>
-      </section>
+      {/* Instagram */}
+      {instagramUrls.length > 0 || profileUrl ? (
+        <section className="mt-16">
+          <Reveal>
+            <h2 className="text-2xl font-medium text-foreground">
+              {press.instagramTitle}
+            </h2>
+            {press.instagramSubtitle ? (
+              <p className="prose-muted mt-2">{press.instagramSubtitle}</p>
+            ) : null}
+          </Reveal>
+          {instagramUrls.length > 0 ? (
+            <div className="mt-8">
+              <InstagramEmbeds urls={instagramUrls} />
+            </div>
+          ) : null}
+          {profileUrl ? (
+            <div className="mt-8">
+              <ButtonExternal href={profileUrl}>
+                <Icon name="instagram" size={16} />
+                {press.instagramButtonLabel || "Volg op Instagram"}
+              </ButtonExternal>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
     </div>
   );
 }

@@ -67,6 +67,52 @@ export interface SiteContent {
     instagramUrl: string;
     socialEmail: string;
   };
+  bookTraining: {
+    title: string;
+    description: string;
+  };
+  /** Alles wat op de /pers-pagina staat (teksten, reviews, Instagram-posts). */
+  press: PressContent;
+}
+
+/** Eén review/ervaring van een deelnemer (getoond op /pers). */
+export interface Review {
+  id: string;
+  name: string;
+  /** Functie/school, b.v. "Leerkracht Engels, 3de graad". */
+  role: string;
+  text: string;
+  /** false = verborgen op de site (blijft bewaard in het admin-paneel). */
+  visible: boolean;
+}
+
+/**
+ * Een Instagram-post die via de officiële Instagram-embed getoond wordt.
+ * Alleen de (genormaliseerde) post-URL is nodig — geen API-key.
+ */
+export interface InstagramPost {
+  id: string;
+  /** Genormaliseerde permalink, b.v. https://www.instagram.com/p/ABC123/ */
+  url: string;
+  /** Optionele interne notitie (alleen zichtbaar in admin). */
+  note?: string;
+  visible: boolean;
+}
+
+/** Bewerkbare inhoud van de /pers-pagina. */
+export interface PressContent {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  reviewsTitle: string;
+  reviews: Review[];
+  pressTitle: string;
+  instagramTitle: string;
+  instagramSubtitle: string;
+  instagramButtonLabel: string;
+  /** Profiel-URL voor de "Volg op Instagram"-knop. Leeg = footer-URL. */
+  instagramProfileUrl: string;
+  instagramPosts: InstagramPost[];
 }
 
 /** Een dienst (workshop/webinar/advies) zoals getoond op de publieke site. */

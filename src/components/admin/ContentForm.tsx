@@ -28,7 +28,7 @@ import type { SiteContent } from "@/lib/types";
 /** Beschikbare bewerkbare onderdelen; uitbreiden = nieuw veldblok toevoegen. */
 type ContentKey = keyof Pick<
   SiteContent,
-  "hero" | "intro" | "about" | "why" | "contact" | "footer"
+  "hero" | "intro" | "about" | "why" | "contact" | "footer" | "bookTraining"
 >;
 
 export default function ContentForm({
@@ -526,6 +526,28 @@ export default function ContentForm({
               onChange={(e) => patch("footer", "socialEmail", e.target.value)}
               placeholder="sabrina@waisely.biz"
               help="De e-mail achter het mail-icoon in de footer."
+            />
+          </div>
+        </fieldset>
+      ) : null}
+
+      {/* ------------------------ BOOK TRAINING ----------------------- */}
+      {saveKeys.includes("bookTraining") ? (
+        <fieldset className="rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)]">
+          <legend className="px-2 text-sm font-bold uppercase tracking-wider text-accent">
+            Boek-een-training pagina
+          </legend>
+          <div className="space-y-4">
+            <FieldInput
+              label="Titel"
+              value={content.bookTraining.title}
+              onChange={(e) => patch("bookTraining", "title", e.target.value)}
+            />
+            <FieldTextarea
+              label="Beschrijving"
+              rows={4}
+              value={content.bookTraining.description}
+              onChange={(e) => patch("bookTraining", "description", e.target.value)}
             />
           </div>
         </fieldset>
