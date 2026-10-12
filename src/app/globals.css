@@ -288,12 +288,13 @@ textarea:focus-visible,
 }
 
 .nav-pill a {
-  padding: 0.375rem 0.875rem;
+  padding: 0.375rem 0.9rem;
   border-radius: 9999px;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--muted-foreground);
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav-pill a:hover {

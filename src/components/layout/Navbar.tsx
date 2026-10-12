@@ -94,7 +94,7 @@ export default function Navbar({ user }: { user: User | null }) {
           : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-14 max-w-[1000px] items-center justify-between gap-4 px-4 sm:px-6">
+      <nav className="mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
         {/* Sticky navbar logo — clickable, smoothly transitions on scroll */}
         <Link
           href="/"
@@ -124,7 +124,7 @@ export default function Navbar({ user }: { user: User | null }) {
                 href={link.href}
                 className={
                   isActive(link)
-                    ? "rounded-full bg-background px-3.5 py-1 text-sm font-medium text-foreground shadow-[var(--shadow-sm)]"
+                    ? "rounded-full bg-background !text-foreground shadow-[var(--shadow-sm)]"
                     : ""
                 }
               >

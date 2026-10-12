@@ -51,43 +51,6 @@ export default async function PersPage() {
         ) : null}
       </Reveal>
 
-      {/* Reviews */}
-      {reviews.length > 0 ? (
-        <section className="mt-16">
-          <Reveal>
-            <h2 className="text-2xl font-medium text-foreground">
-              {press.reviewsTitle}
-            </h2>
-          </Reveal>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {reviews.map((review, i) => (
-              <Reveal key={review.id} delay={(i % 3) * 100}>
-                <div className="card-hover flex h-full flex-col rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-md)]">
-                  <Icon
-                    name="quote"
-                    size={24}
-                    className="text-accent/40"
-                  />
-                  <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-foreground">
-                    &ldquo;{review.text}&rdquo;
-                  </p>
-                  <div className="mt-4 border-t border-border pt-4">
-                    <p className="text-sm font-medium text-foreground">
-                      {review.name}
-                    </p>
-                    {review.role ? (
-                      <p className="text-xs text-muted-foreground">
-                        {review.role}
-                      </p>
-                    ) : null}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       {/* Press mentions */}
       {pressItems.length > 0 ? (
         <section className="mt-16">
@@ -160,6 +123,43 @@ export default async function PersPage() {
               </ButtonExternal>
             </div>
           ) : null}
+        </section>
+      ) : null}
+
+      {/* Reviews */}
+      {reviews.length > 0 ? (
+        <section className="mt-16">
+          <Reveal>
+            <h2 className="text-2xl font-medium text-foreground">
+              {press.reviewsTitle}
+            </h2>
+          </Reveal>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {reviews.map((review, i) => (
+              <Reveal key={review.id} delay={(i % 3) * 100}>
+                <div className="card-hover flex h-full flex-col rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-md)]">
+                  <Icon
+                    name="quote"
+                    size={24}
+                    className="text-accent/40"
+                  />
+                  <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                  <div className="mt-4 border-t border-border pt-4">
+                    <p className="text-sm font-medium text-foreground">
+                      {review.name}
+                    </p>
+                    {review.role ? (
+                      <p className="text-xs text-muted-foreground">
+                        {review.role}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </section>
       ) : null}
     </div>

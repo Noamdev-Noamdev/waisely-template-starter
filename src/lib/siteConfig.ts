@@ -15,7 +15,7 @@ export const NAV_LINKS = [
   { href: "/#waarom", label: "Waarom WAIsely?" },
   { href: "/over", label: "Wie is WAIsely?" },
   { href: "/boek-een-training", label: "Boek een training" },
-  { href: "/pers", label: "Nieuws en Pers" },
+  { href: "/pers", label: "Pers en Sociale Media" },
   { href: "/contact", label: "Contact" },
 ];
 
