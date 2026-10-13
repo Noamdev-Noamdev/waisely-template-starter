@@ -7,14 +7,16 @@
 import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import { NAV_LINKS, SITE_NAME, SITE_TAGLINE } from "@/lib/siteConfig";
+import { seedSiteContent } from "@/lib/seed";
 import type { SiteContent } from "@/lib/types";
 
-export default function Footer({ content }: { content: SiteContent }) {
+export default function Footer({ content }: { content?: SiteContent }) {
   const year = new Date().getFullYear();
+  const c = content ?? seedSiteContent;
 
   const navLinks =
-    content.navigation?.links && content.navigation.links.length > 0
-      ? content.navigation.links
+    c.navigation?.links && c.navigation.links.length > 0
+      ? c.navigation.links
       : NAV_LINKS;
 
   return (
@@ -29,12 +31,12 @@ export default function Footer({ content }: { content: SiteContent }) {
             {SITE_NAME}
           </span>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            {content.footer.tagline}
+            {c.footer.tagline}
           </p>
           {/* Social links */}
           <div className="mt-5 flex items-center gap-3">
             <a
-              href={content.footer.instagramUrl || "https://www.instagram.com/waisely"}
+              href={c.footer.instagramUrl || "https://www.instagram.com/waisely"}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-muted text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
@@ -43,7 +45,7 @@ export default function Footer({ content }: { content: SiteContent }) {
               <Icon name="heart" size={16} />
             </a>
             <a
-              href={`mailto:${content.footer.socialEmail || content.contact.email}`}
+              href={`mailto:${c.footer.socialEmail || c.contact.email}`}
               className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-muted text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               aria-label="E-mail"
             >
@@ -86,19 +88,19 @@ export default function Footer({ content }: { content: SiteContent }) {
             <li className="flex items-start gap-2">
               <Icon name="mail" size={16} className="mt-0.5 shrink-0 text-accent" />
               <a
-                href={`mailto:${content.contact.email}`}
+                href={`mailto:${c.contact.email}`}
                 className="transition-colors hover:text-foreground"
               >
-                {content.contact.email}
+                {c.contact.email}
               </a>
             </li>
             <li className="flex items-start gap-2">
               <Icon name="phone" size={16} className="mt-0.5 shrink-0 text-accent" />
-              <span>{content.contact.phone}</span>
+              <span>{c.contact.phone}</span>
             </li>
             <li className="flex items-start gap-2">
               <Icon name="map-pin" size={16} className="mt-0.5 shrink-0 text-accent" />
-              <span>{content.contact.address}</span>
+              <span>{c.contact.address}</span>
             </li>
           </ul>
         </div>
@@ -108,7 +110,7 @@ export default function Footer({ content }: { content: SiteContent }) {
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-[1000px] flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:px-6">
           <p>
-            © {year} {SITE_NAME}. {content.footer.copyrightText || "Alle rechten voorbehouden."}
+            © {year} {SITE_NAME}. {c.footer.copyrightText || "Alle rechten voorbehouden."}
           </p>
           <p className="text-muted-foreground/60">
             {SITE_TAGLINE}

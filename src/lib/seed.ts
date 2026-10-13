@@ -14,7 +14,6 @@ import type {
   SiteContent,
   User,
 } from "./types";
-import { save } from "./db";
 
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@waisely.biz";
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "waisely-admin";
@@ -323,8 +322,8 @@ export const seedKnowledge: KnowledgeItem[] = [
   },
 ];
 
-export async function seedUsers(): Promise<User[]> {
-  const users: User[] = [
+export function getSeedUsers(): User[] {
+  return [
     {
       id: "usr_admin",
       email: ADMIN_EMAIL,
@@ -343,12 +342,10 @@ export async function seedUsers(): Promise<User[]> {
       createdAt: new Date().toISOString(),
     },
   ];
-  await save("users", users);
-  return users;
 }
 
-export async function seedBookings(): Promise<void> {
-  const bookings: Booking[] = [
+export function getSeedBookings(): Booking[] {
+  return [
     {
       id: "bkg_1",
       userId: "usr_demo",
@@ -374,7 +371,6 @@ export async function seedBookings(): Promise<void> {
       createdAt: new Date().toISOString(),
     },
   ];
-  await save("bookings", bookings);
 }
 
 export const seedIntakeFields: IntakeField[] = [
@@ -410,14 +406,3 @@ export const seedIntakeFields: IntakeField[] = [
   // 6. Afsluitend
   { id: "if_remarks", section: "6. Afsluitend", label: "Overige opmerkingen of wensen", type: "textarea", required: false, order: 25 },
 ];
-
-export async function seedAll(): Promise<void> {
-  await seedUsers();
-  await save("siteContent", seedSiteContent);
-  await save("services", seedServices);
-  await save("news", seedNews);
-  await save("knowledge", seedKnowledge);
-  await seedBookings();
-  await save("intakeFields", seedIntakeFields);
-  await save("intakeSubmissions", []);
-}

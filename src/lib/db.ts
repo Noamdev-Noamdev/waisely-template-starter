@@ -18,7 +18,15 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import { seedAll, seedSiteContent } from "./seed";
+import {
+  getSeedUsers,
+  getSeedBookings,
+  seedSiteContent,
+  seedServices,
+  seedNews,
+  seedKnowledge,
+  seedIntakeFields,
+} from "./seed";
 import type { Database, SiteContent } from "./types";
 
 /** Map met JSON-bestanden (binnen de repo, zodat alles lokaal blijft). */
@@ -43,7 +51,7 @@ const FILES = {
  */
 const defaults = {
   users: [] as Database["users"],
-  siteContent: null as unknown as Database["siteContent"],
+  siteContent: seedSiteContent,
   services: [] as Database["services"],
   news: [] as Database["news"],
   bookings: [] as Database["bookings"],
@@ -61,6 +69,17 @@ const defaults = {
  * bestand (verse kloon/lege store), dan wordt exact één keer per proces
  * geseed — alle gelijktijdige lezers wachten op dezelfde seed-promise.
  * ------------------------------------------------------------------------- */
+
+async function seedAll(): Promise<void> {
+  await save("users", getSeedUsers());
+  await save("siteContent", seedSiteContent);
+  await save("services", seedServices);
+  await save("news", seedNews);
+  await save("knowledge", seedKnowledge);
+  await save("bookings", getSeedBookings());
+  await save("intakeFields", seedIntakeFields);
+  await save("intakeSubmissions", []);
+}
 
 /** Seed-promise (per proces); deelt gelijktijdige eerste requests netjes. */
 let seedingPromise: Promise<void> | null = null;
@@ -122,7 +141,8 @@ export async function get<K extends keyof Database>(key: K): Promise<Database[K]
  * worden — zonder migratiescript en zonder bestaande teksten te overschrijven.
  */
 function withDefaults<K extends keyof Database>(key: K, value: Database[K]): Database[K] {
-  if (key !== "siteContent" || !value) return value;
+  if (key !== "siteContent") return value;
+  if (!value) return seedSiteContent as unknown as Database[K];
   const stored = value as Database["siteContent"];
   const merged = { ...seedSiteContent } as Record<string, unknown>;
   for (const section of Object.keys(seedSiteContent) as (keyof SiteContent)[]) {

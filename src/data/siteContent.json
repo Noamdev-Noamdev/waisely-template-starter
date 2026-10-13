@@ -46,8 +46,7 @@
   },
   "intro": {
     "title": "AI hoeft niet overweldigend te zijn",
-<<<<<<< HEAD
-    "body": "Veel leerkrachten voelen de druk om iets met AI te doen, maar weten niet waar te beginnen. WAIsely brengt daar verandering in. Geen technisch jargon, geen hype — wel concrete handvatten die je morgen al in je les kunt gebruiken. Elke training is afgestemd op jouw vak, je leerlingen en je eigen tempo.",
+    "body": "Veel leerkrachten voelen de druk om iets met AI te doen, maar weten niet waar te beginnen. WAIsely brengt daar verandering in. Geen technisch jargon, geen hype — wel concrete handvaten die je morgen al in je les kunt gebruiken. Elke training is afgestemd op jouw vak, je leerlingen en je eigen tempo.",
     "badgeText": "Alle trainingen zijn praktisch en direct inzetbaar in de klas."
   },
   "servicesSection": {
@@ -62,9 +61,6 @@
     "title": "Recent nieuws en persvermeldingen",
     "readMoreLabel": "Lees verder",
     "externalLabel": "Lees het artikel"
-=======
-    "body": "Veel leerkrachten voelen de druk om iets met AI te doen, maar weten niet waar te beginnen. WAIsely brengt daar verandering in. Geen technisch jargon, geen hype — wel concrete handvaten die je morgen al in je les kunt gebruiken. Elke training is afgestemd op jouw vak, je leerlingen en je eigen tempo."
->>>>>>> a979d757a3cbc3b7d91cd9de08b1e61428eed7c5
   },
   "about": {
     "eyebrow": "Over",
@@ -119,17 +115,12 @@
     "title": "Neem contact op",
     "body": "Benieuwd wat WAIsely voor jouw school kan betekenen? Stuur een bericht of plan een vrijblijvend kennismakingsgesprek. Ik denk graag mee over een aanpak op maat.",
     "email": "info@waisely.biz",
-<<<<<<< HEAD
-    "phone": "+32 486 12 34 56",
+    "phone": "",
     "address": "Antwerpen, België",
     "formTitle": "Stuur een bericht",
     "formSubtitle": "Ik reageer doorgaans binnen 2 werkdagen.",
     "formSubmitLabel": "Verstuur bericht",
     "formSuccessMessage": "Bedankt! Je bericht is verstuurd."
-=======
-    "phone": "",
-    "address": "Antwerpen, België"
->>>>>>> a979d757a3cbc3b7d91cd9de08b1e61428eed7c5
   },
   "footer": {
     "tagline": "Verantwoord AI-gebruik in het onderwijs. Rust in de chaos.",
@@ -140,8 +131,7 @@
   "bookTraining": {
     "eyebrow": "Boek een training",
     "title": "Workshop of webinar aanvragen",
-<<<<<<< HEAD
-    "description": "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op uw school of instelling. Kies daarna de modules die het beste bij uw situatie passen.",
+    "description": "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op jouw school of instelling. Kies daarna de modules die het beste bij jouw situatie passen.",
     "contactPrompt": "Liever eerst even bellen?",
     "contactLinkText": "Neem contact op",
     "step1Title": "Intake-formulier",
@@ -162,9 +152,6 @@
     "bookingAccountDescription": "Aanvragen doen vereist een account.",
     "bookingSuccessTitle": "Aanvraag verstuurd!",
     "bookingSuccessMessage": "Bedankt! Je aanvraag staat nu in je dashboard. Je ontvangt binnen 2 werkdagen een reactie."
-=======
-    "description": "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op jouw school of instelling. Kies daarna de modules die het beste bij jouw situatie passen."
->>>>>>> a979d757a3cbc3b7d91cd9de08b1e61428eed7c5
   },
   "press": {
     "eyebrow": "",

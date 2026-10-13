@@ -54,7 +54,7 @@ export default async function RootLayout({
       className={`${fraunces.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <Navbar user={user} links={siteContent.navigation?.links} />
+        <Navbar user={user} links={siteContent?.navigation?.links} />
         <main className="page-enter flex-1">{children}</main>
         <Footer content={siteContent} />
       </body>
