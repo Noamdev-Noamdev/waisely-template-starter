@@ -65,11 +65,13 @@ export interface BookTrainingContent {
   contactPrompt: string;
   contactLinkText: string;
   step1Title: string;
+  /** Link naar Google Forms intake-vragenlijst */
+  googleFormsUrl?: string;
   step2Title: string;
   step2Description: string;
   moduleSelectorCta: string;
-  intakeSuccessTitle: string;
-  intakeSuccessMessage: string;
+  intakeSuccessTitle?: string;
+  intakeSuccessMessage?: string;
   bookingEyebrow: string;
   bookingTitle: string;
   bookingDescription: string;
@@ -138,6 +140,12 @@ export interface SiteContent {
     copyrightText?: string;
     linkedinUrl?: string;
     companyNumber?: string;
+    /** Impressum: naam van de onderneming / handelsnaam. */
+    companyName?: string;
+    /** Impressum: adres van de (vestigings)plaats. */
+    legalAddress?: string;
+    /** Impressum: btw-nummer of vermelding "niet btw-plichtig / vrijgesteld". */
+    vatNumber?: string;
   };
   bookTraining: BookTrainingContent;
   /** Alles wat op de /pers-pagina staat (teksten, reviews, Instagram-posts). */
@@ -146,6 +154,29 @@ export interface SiteContent {
   terms?: LegalPageContent;
   /** Privacyverklaring pagina */
   privacy?: LegalPageContent;
+  /** Cookieverklaring pagina + teksten van de cookiebanner */
+  cookiePolicy?: CookiePolicyContent;
+}
+
+/** Eén rij in de cookietabel op /cookieverklaring. */
+export interface CookieRow {
+  id: string;
+  name: string;
+  purpose: string;
+  duration: string;
+  provider: string;
+  /** Soort cookie, b.v. "Strikt noodzakelijk" of "Social media (na toestemming)". */
+  category: string;
+}
+
+/** Cookieverklaring + bewerkbare teksten van de cookiebanner. */
+export interface CookiePolicyContent extends LegalPageContent {
+  cookies: CookieRow[];
+  bannerTitle: string;
+  bannerBody: string;
+  /** Label en uitleg van de categorie "social media / externe inhoud". */
+  socialLabel: string;
+  socialDescription: string;
 }
 
 /** Eén paragraaf/sectie op een juridische pagina (algemene voorwaarden / privacy). */
@@ -308,6 +339,24 @@ export interface IntakeSubmission {
   answers: Record<string, string | string[]>;
 }
 
+/**
+ * Bewijs van een cookiekeuze (zie /api/consent). Bevat bewust géén IP-adres
+ * of andere identificerende gegevens: enkel een willekeurige id die ook in de
+ * consent-cookie van de bezoeker staat, zodat een keuze aantoonbaar is.
+ */
+export interface ConsentRecord {
+  /** Willekeurige id, identiek aan de id in de cookie "waisely_consent". */
+  consentId: string;
+  /** Versie van de cookieverklaring/banner waarop de keuze betrekking heeft. */
+  version: number;
+  /** Keuze per (niet strikt noodzakelijke) categorie. */
+  categories: Record<string, boolean>;
+  /** Hoe de keuze gemaakt werd. */
+  method: "accept_all" | "reject_all" | "custom";
+  /** ISO-tijdstip (server) van registratie. */
+  recordedAt: string;
+}
+
 /** Volledige databankvorm — één JSON-bestand per entiteit in src/data. */
 export interface Database {
   users: User[];
@@ -318,4 +367,5 @@ export interface Database {
   knowledge: KnowledgeItem[];
   intakeFields: IntakeField[];
   intakeSubmissions: IntakeSubmission[];
+  consentLogs: ConsentRecord[];
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "consentId": "cst_g90dqlnxmv6ox4k9",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": false
+    },
+    "method": "reject_all",
+    "recordedAt": "2026-10-13T13:01:56.117Z"
+  },
+  {
+    "consentId": "cst_g90dqlnxmv6ox4k9",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": true
+    },
+    "method": "accept_all",
+    "recordedAt": "2026-10-13T13:01:58.435Z"
+  },
+  {
+    "consentId": "cst_g90dqlnxmv6ox4k9",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": true
+    },
+    "method": "custom",
+    "recordedAt": "2026-10-13T13:02:01.850Z"
+  }
+]

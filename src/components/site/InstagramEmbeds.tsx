@@ -1,26 +1,27 @@
 /**
  * ---------------------------------------------------------------------------
- * InstagramEmbeds.tsx — Officiële Instagram-embeds (client component)
+ * InstagramEmbeds.tsx — Geconditioneerde Instagram-embeds (client component)
  * ---------------------------------------------------------------------------
- * Toont Instagram-posts via de officiële embed-methode van Instagram:
- *   1. Per post een <blockquote class="instagram-media"> met de permalink.
- *   2. Het script https://www.instagram.com/embed.js vervangt die blockquotes
- *      door een iframe met foto/video, caption en likes.
- * Geen API-key of Meta-app nodig; de admin plakt enkel de post-link.
- *
- * Waarom dangerouslySetInnerHTML? embed.js vervangt de blockquote in de DOM
- * door een iframe. Zou React die blockquote zelf beheren, dan botst dat bij
- * een re-render ("removeChild"-fouten). Door de blockquote als innerHTML in
- * een wrapper te zetten, raakt React de inhoud daarna niet meer aan.
- * De URL's zijn server-side genormaliseerd (enkel [A-Za-z0-9_-]), maar we
- * escapen ze voor de zekerheid toch.
+ * Voldoet aan de Belgische GBA / AVG-richtlijnen:
+ *  - Laadt het externe script (https://www.instagram.com/embed.js) pas NA
+ *    actieve toestemming voor social media cookies.
+ *  - Toont zolang er geen toestemming is een rustige placeholder-kaart
+ *    in de Quiet Warm Minimal stijl, inclusief directe link naar de post
+ *    en een knop om de toestemming te activeren.
  * ---------------------------------------------------------------------------
  */
 
 "use client";
 
 import Script from "next/script";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import Icon from "@/components/ui/Icon";
+import {
+  getStoredConsent,
+  saveConsent,
+  openCookieSettings,
+  subscribeConsent,
+} from "@/lib/consent";
 
 declare global {
   interface Window {
@@ -44,15 +45,80 @@ function embedHtml(url: string): string {
 }
 
 export default function InstagramEmbeds({ urls }: { urls: string[] }) {
-  // Bij (her)mount of gewijzigde lijst: nieuwe blockquotes laten verwerken.
-  // Is het script nog niet geladen, dan doet onReady dit straks.
+  const cookieString = useSyncExternalStore(
+    subscribeConsent,
+    () => document.cookie,
+    () => ""
+  );
+
+  const isClient = cookieString !== "";
+  const consent = isClient ? getStoredConsent() : null;
+  const hasSocialConsent = consent?.social === true;
+
   const key = urls.join("|");
   useEffect(() => {
-    window.instgrm?.Embeds.process();
-  }, [key]);
+    if (hasSocialConsent) {
+      window.instgrm?.Embeds.process();
+    }
+  }, [key, hasSocialConsent]);
 
   if (urls.length === 0) return null;
 
+  // Placeholder wanneer nog geen social media cookies aanvaard zijn
+  if (!isClient || !hasSocialConsent) {
+    return (
+      <div className="grid items-start gap-6 md:grid-cols-2">
+        {urls.map((url) => (
+          <div
+            key={url}
+            className="flex min-h-[300px] flex-col items-center justify-center rounded-[var(--radius)] border border-border/80 bg-surface p-8 text-center shadow-[var(--shadow-sm)]"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-muted text-accent">
+              <Icon name="quote" size={20} />
+            </div>
+            <h4
+              className="mt-4 text-base font-medium text-foreground"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
+              Instagram-bericht
+            </h4>
+            <p className="mt-2 max-w-sm text-xs leading-relaxed text-muted-foreground">
+              Om ingebedde Instagram-posts interactief te bekijken, hebben we je
+              toestemming nodig voor externe social media cookies. Je kunt de
+              post ook direct bekijken op Instagram.
+            </p>
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-[var(--radius)] border border-border bg-surface px-4 py-2 text-xs font-semibold uppercase tracking-wider text-foreground transition-colors hover:bg-surface-muted"
+              >
+                <span>Bekijk op Instagram</span>
+                <span aria-hidden>↗</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => saveConsent(true, "custom")}
+                className="inline-flex items-center gap-1.5 rounded-[var(--radius)] bg-accent px-4 py-2 text-xs font-semibold uppercase tracking-wider text-accent-foreground shadow-[var(--shadow-accent)] transition-all hover:bg-accent-strong"
+              >
+                Cookies toestaan
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={openCookieSettings}
+              className="mt-3 text-[11px] text-muted-foreground underline hover:text-foreground"
+            >
+              Cookie-instellingen aanpassen
+            </button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Actieve weergave na toestemming
   return (
     <>
       <div className="grid items-start gap-6 md:grid-cols-2">

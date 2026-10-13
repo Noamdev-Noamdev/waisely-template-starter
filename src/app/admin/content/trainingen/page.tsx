@@ -23,8 +23,8 @@ export default async function AdminTrainingenPage() {
           Training boeken &amp; Intake
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Beheer alle teksten op de &quot;Boek een training&quot; pagina (/boek-een-training)
-          en de directe workshopaanvraag pagina (/boeken), inclusief stappen en succesberichten.
+          Beheer de Google Forms intake-link en alle teksten op de &quot;Boek een training&quot; pagina (/boek-een-training)
+          en de workshopaanvraag pagina (/boeken).
         </p>
       </div>
 

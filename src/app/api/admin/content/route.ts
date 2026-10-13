@@ -97,6 +97,30 @@ export async function PUT(request: Request) {
             sections: body.privacy.sections ?? current.privacy?.sections ?? [],
           }
         : current.privacy,
+      cookiePolicy: body.cookiePolicy
+        ? {
+            eyebrow: body.cookiePolicy.eyebrow ?? current.cookiePolicy?.eyebrow ?? "Cookies",
+            title: body.cookiePolicy.title ?? current.cookiePolicy?.title ?? "Cookieverklaring",
+            subtitle: body.cookiePolicy.subtitle ?? current.cookiePolicy?.subtitle ?? "",
+            lastUpdated: body.cookiePolicy.lastUpdated ?? current.cookiePolicy?.lastUpdated ?? "",
+            bannerTitle:
+              body.cookiePolicy.bannerTitle ??
+              current.cookiePolicy?.bannerTitle ??
+              "Wij respecteren je privacy",
+            bannerBody:
+              body.cookiePolicy.bannerBody ?? current.cookiePolicy?.bannerBody ?? "",
+            socialLabel:
+              body.cookiePolicy.socialLabel ??
+              current.cookiePolicy?.socialLabel ??
+              "Social media en externe inhoud",
+            socialDescription:
+              body.cookiePolicy.socialDescription ??
+              current.cookiePolicy?.socialDescription ??
+              "",
+            sections: body.cookiePolicy.sections ?? current.cookiePolicy?.sections ?? [],
+            cookies: body.cookiePolicy.cookies ?? current.cookiePolicy?.cookies ?? [],
+          }
+        : current.cookiePolicy,
     };
 
     await save("siteContent", merged);

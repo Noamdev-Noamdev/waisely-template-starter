@@ -14,6 +14,7 @@
 
 import Link from "next/link";
 import Icon from "@/components/ui/Icon";
+import CookieSettingsButton from "@/components/ui/CookieSettingsButton";
 import { SITE_NAME } from "@/lib/siteConfig";
 import { seedSiteContent } from "@/lib/seed";
 import type { SiteContent } from "@/lib/types";
@@ -24,7 +25,7 @@ export default function Footer({ content }: { content?: SiteContent }) {
 
   const email = c.footer.socialEmail || c.contact.email || "info@waisely.biz";
   const linkedinUrl = c.footer.linkedinUrl || "https://www.linkedin.com/company/waisely";
-  const companyNumber = c.footer.companyNumber || "BE 0xxx.xxx.xxx";
+  const companyNumber = c.footer.companyNumber || "BE1041228484";
 
   return (
     <footer className="mt-auto border-t border-border/60 bg-surface">
@@ -36,7 +37,7 @@ export default function Footer({ content }: { content?: SiteContent }) {
               className="text-base font-semibold text-foreground"
               style={{ fontFamily: "var(--font-heading)" }}
             >
-              {SITE_NAME}
+              {c.footer.companyName || SITE_NAME}
             </span>
             {companyNumber ? (
               <p className="text-xs text-muted-foreground">
@@ -76,15 +77,15 @@ export default function Footer({ content }: { content?: SiteContent }) {
         {/* Bottom bar with legal links and copyright */}
         <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-border/40 pt-6 text-xs text-muted-foreground sm:flex-row">
           <p>
-            © {year} {SITE_NAME}. {c.footer.copyrightText || "Alle rechten voorbehouden."}
+            © {year} {c.footer.companyName || SITE_NAME}. {c.footer.copyrightText || "Alle rechten voorbehouden."}
           </p>
 
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 sm:justify-end">
             <Link
-              href="/algemene-voorwaarden"
+              href="/impressum"
               className="transition-colors hover:text-foreground hover:underline"
             >
-              Algemene voorwaarden
+              Impressum
             </Link>
             <span className="text-border" aria-hidden>
               •
@@ -94,6 +95,32 @@ export default function Footer({ content }: { content?: SiteContent }) {
               className="transition-colors hover:text-foreground hover:underline"
             >
               Privacyverklaring
+            </Link>
+            <span className="text-border" aria-hidden>
+              •
+            </span>
+            <Link
+              href="/cookieverklaring"
+              className="transition-colors hover:text-foreground hover:underline"
+            >
+              Cookieverklaring
+            </Link>
+            <span className="text-border" aria-hidden>
+              •
+            </span>
+            <CookieSettingsButton
+              showIcon={false}
+              label="Cookie-instellingen"
+              className="cursor-pointer text-xs text-muted-foreground transition-colors hover:text-foreground hover:underline"
+            />
+            <span className="text-border" aria-hidden>
+              •
+            </span>
+            <Link
+              href="/algemene-voorwaarden"
+              className="transition-colors hover:text-foreground hover:underline"
+            >
+              Algemene voorwaarden
             </Link>
           </div>
         </div>

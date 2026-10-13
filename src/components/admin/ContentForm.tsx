@@ -24,7 +24,7 @@ import {
   FieldLabel,
 } from "@/components/ui/Field";
 import Icon from "@/components/ui/Icon";
-import type { SiteContent } from "@/lib/types";
+import type { SiteContent, CookieRow } from "@/lib/types";
 
 /** Beschikbare bewerkbare onderdelen; uitbreiden = nieuw veldblok toevoegen. */
 type ContentKey = keyof Pick<
@@ -41,6 +41,7 @@ type ContentKey = keyof Pick<
   | "navigation"
   | "terms"
   | "privacy"
+  | "cookiePolicy"
 >;
 
 export default function ContentForm({
@@ -366,6 +367,82 @@ export default function ContentForm({
       (_, i) => i !== index
     );
     patchPrivacyField("sections", sections);
+  }
+
+  /* -------------------- Cookieverklaring & banner helpers -------------------- */
+  const cookieContent = content.cookiePolicy ?? {
+    eyebrow: "Cookies",
+    title: "Cookieverklaring",
+    subtitle:
+      "Transparante informatie over welke cookies WAIsely gebruikt en hoe je jouw voorkeuren beheert.",
+    lastUpdated: "[13 oktober 2026]",
+    bannerTitle: "Wij respecteren je privacy",
+    bannerBody:
+      "WAIsely gebruikt functionele en strikt noodzakelijke cookies voor het functioneren en beveiligen van de website. Voor het laden van externe, interactieve media (zoals ingebedde Instagram-posts) vragen we vooraf je toestemming.",
+    socialLabel: "Social media en externe inhoud",
+    socialDescription:
+      "Maakt het mogelijk om interactieve Instagram-berichten direct op de website weer te geven. Hierdoor kan Instagram/Meta cookies en volgtechnologieën plaatsen.",
+    sections: [],
+    cookies: [],
+  };
+
+  function patchCookieField(field: string, val: unknown) {
+    setContent((prev) => ({
+      ...prev,
+      cookiePolicy: {
+        ...(prev.cookiePolicy ?? cookieContent),
+        [field]: val,
+      },
+    }));
+  }
+
+  function patchCookieSection(index: number, part: "title" | "body", val: string) {
+    const sections = [...(content.cookiePolicy?.sections ?? cookieContent.sections)];
+    sections[index] = { ...sections[index], [part]: val };
+    patchCookieField("sections", sections);
+  }
+
+  function addCookieSection() {
+    const sections = [...(content.cookiePolicy?.sections ?? cookieContent.sections)];
+    sections.push({
+      id: `ck_sec_${Date.now()}`,
+      title: `${sections.length + 1}. Nieuw onderdeel`,
+      body: "Toelichting...",
+    });
+    patchCookieField("sections", sections);
+  }
+
+  function removeCookieSection(index: number) {
+    const sections = [...(content.cookiePolicy?.sections ?? cookieContent.sections)].filter(
+      (_, i) => i !== index
+    );
+    patchCookieField("sections", sections);
+  }
+
+  function patchCookieRow(index: number, field: keyof CookieRow, val: string) {
+    const rows = [...(content.cookiePolicy?.cookies ?? cookieContent.cookies)];
+    rows[index] = { ...rows[index], [field]: val };
+    patchCookieField("cookies", rows);
+  }
+
+  function addCookieRow() {
+    const rows = [...(content.cookiePolicy?.cookies ?? cookieContent.cookies)];
+    rows.push({
+      id: `ck_row_${Date.now()}`,
+      name: "cookie_naam",
+      category: "Strikt noodzakelijk",
+      purpose: "Doel van deze cookie",
+      duration: "bv. 12 maanden",
+      provider: "WAIsely (eigen website)",
+    });
+    patchCookieField("cookies", rows);
+  }
+
+  function removeCookieRow(index: number) {
+    const rows = [...(content.cookiePolicy?.cookies ?? cookieContent.cookies)].filter(
+      (_, i) => i !== index
+    );
+    patchCookieField("cookies", rows);
   }
 
   const servicesSec = content.servicesSection ?? {
@@ -1095,7 +1172,28 @@ export default function ContentForm({
               value={content.footer.companyNumber ?? ""}
               onChange={(e) => patch("footer", "companyNumber", e.target.value)}
               placeholder="BE 0xxx.xxx.xxx"
-              help="Het officiële btw-/ondernemingsnummer dat in de footer getoond wordt."
+              help="Het officiële btw-/ondernemingsnummer dat in de footer en op /impressum getoond wordt."
+            />
+            <FieldInput
+              label="Ondernemingsnaam / Handelsnaam (Impressum)"
+              value={content.footer.companyName ?? "WAIsely"}
+              onChange={(e) => patch("footer", "companyName", e.target.value)}
+              placeholder="WAIsely"
+              help="Naam van de onderneming die getoond wordt in de footer en op /impressum."
+            />
+            <FieldInput
+              label="Vestigingsadres (Impressum)"
+              value={content.footer.legalAddress ?? ""}
+              onChange={(e) => patch("footer", "legalAddress", e.target.value)}
+              placeholder="[straat en nummer, postcode en gemeente]"
+              help="Wettelijk vestigingsadres getoond op de /impressum pagina."
+            />
+            <FieldInput
+              label="Btw-nummer / Btw-statuut (Impressum)"
+              value={content.footer.vatNumber ?? ""}
+              onChange={(e) => patch("footer", "vatNumber", e.target.value)}
+              placeholder="[BE 0000.000.000, of: niet btw-plichtig / vrijgesteld]"
+              help="Btw-nummer of vermelding van btw-vrijstelling conform artikel 44 W.Btw op /impressum."
             />
           </div>
         </fieldset>
@@ -1205,37 +1303,39 @@ export default function ContentForm({
               </div>
             </div>
 
-            {/* Intake Formulier Succes-scherm */}
+            {/* Google Forms Intake link */}
             <div className="pt-4 border-t border-border">
-              <h3 className="text-base font-semibold text-foreground mb-3">
-                2. Intake-formulier Succesbericht
+              <h3 className="text-base font-semibold text-foreground mb-1">
+                2. Google Forms Intake-formulier
               </h3>
+              <p className="text-xs text-muted-foreground mb-4">
+                Het intake-formulier wordt geladen vanuit Google Forms. Plak hier de deelbare link van het Google Formulier.
+              </p>
               <div className="space-y-4">
                 <FieldInput
-                  label="Succes-titel"
+                  label="Google Forms URL"
                   value={
-                    content.bookTraining.intakeSuccessTitle ??
-                    "Bedankt voor je intake!"
+                    content.bookTraining.googleFormsUrl ??
+                    "https://docs.google.com/forms/d/e/1FAIpQLSexX1M69K8oX1HkrpEFjYukhIkWcOmFdf1UBz7Sdi2Vlr1F_g/viewform?usp=sharing&ouid=117354812120361052316"
                   }
+                  placeholder="https://docs.google.com/forms/d/..."
                   onChange={(e) =>
-                    patch("bookTraining", "intakeSuccessTitle", e.target.value)
+                    patch("bookTraining", "googleFormsUrl", e.target.value)
                   }
                 />
-                <FieldTextarea
-                  label="Succes-bericht"
-                  rows={2}
-                  value={
-                    content.bookTraining.intakeSuccessMessage ??
-                    "Je formulier is succesvol verstuurd..."
-                  }
-                  onChange={(e) =>
-                    patch(
-                      "bookTraining",
-                      "intakeSuccessMessage",
-                      e.target.value
-                    )
-                  }
-                />
+                {content.bookTraining.googleFormsUrl ? (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>Test link:</span>
+                    <a
+                      href={content.bookTraining.googleFormsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-accent underline-offset-2 hover:underline inline-flex items-center gap-1"
+                    >
+                      Open in Google Forms <Icon name="external" size={12} />
+                    </a>
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -1546,6 +1646,206 @@ export default function ContentForm({
                     />
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      ) : null}
+
+      {/* ------------------------ COOKIEVERKLARING & BANNER ------------------------ */}
+      {saveKeys.includes("cookiePolicy") ? (
+        <fieldset className="rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)]">
+          <legend className="px-2 text-sm font-bold uppercase tracking-wider text-accent">
+            Cookieverklaring &amp; Cookiebanner
+          </legend>
+          <div className="space-y-6">
+            {/* Banner teksten */}
+            <div>
+              <h3 className="text-base font-semibold text-foreground mb-3">
+                1. Cookiebanner (zwevende melding)
+              </h3>
+              <div className="space-y-4">
+                <FieldInput
+                  label="Bannertitel"
+                  value={cookieContent.bannerTitle}
+                  onChange={(e) => patchCookieField("bannerTitle", e.target.value)}
+                  placeholder="Wij respecteren je privacy"
+                />
+                <FieldTextarea
+                  label="Bannertekst"
+                  rows={2}
+                  value={cookieContent.bannerBody}
+                  onChange={(e) => patchCookieField("bannerBody", e.target.value)}
+                  placeholder="Korte uitleg over cookies..."
+                />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FieldInput
+                    label="Label categorie externe inhoud / social media"
+                    value={cookieContent.socialLabel}
+                    onChange={(e) => patchCookieField("socialLabel", e.target.value)}
+                    placeholder="Social media en externe inhoud"
+                  />
+                  <FieldInput
+                    label="Toelichting categorie externe inhoud"
+                    value={cookieContent.socialDescription}
+                    onChange={(e) => patchCookieField("socialDescription", e.target.value)}
+                    placeholder="Maakt het mogelijk om interactieve Instagram-berichten..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Pagina /cookieverklaring */}
+            <div className="border-t border-border pt-6">
+              <h3 className="text-base font-semibold text-foreground mb-3">
+                2. Pagina &quot;Cookieverklaring&quot; (/cookieverklaring)
+              </h3>
+              <div className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FieldInput
+                    label="Paginatitel"
+                    value={cookieContent.title}
+                    onChange={(e) => patchCookieField("title", e.target.value)}
+                    placeholder="Cookieverklaring"
+                  />
+                  <FieldInput
+                    label="Laatst bijgewerkt"
+                    value={cookieContent.lastUpdated ?? ""}
+                    onChange={(e) => patchCookieField("lastUpdated", e.target.value)}
+                    placeholder="bv. 13 oktober 2026"
+                  />
+                </div>
+                <FieldInput
+                  label="Ondertitel / Introductie"
+                  value={cookieContent.subtitle ?? ""}
+                  onChange={(e) => patchCookieField("subtitle", e.target.value)}
+                  placeholder="Transparante informatie over welke cookies WAIsely gebruikt..."
+                />
+              </div>
+
+              {/* Cookietabel beheer */}
+              <div className="mt-6 border-t border-border pt-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <FieldLabel>
+                    Cookietabel ({cookieContent.cookies.length} cookies geregistreerd)
+                  </FieldLabel>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="px-3.5 py-1.5 text-xs"
+                    onClick={addCookieRow}
+                  >
+                    <Icon name="plus" size={14} />
+                    Cookie toevoegen
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  {cookieContent.cookies.map((row, idx) => (
+                    <div
+                      key={row.id || idx}
+                      className="rounded-[var(--radius)] border border-border bg-surface-muted p-4 space-y-3"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="grid flex-1 gap-3 sm:grid-cols-2">
+                          <FieldInput
+                            label="Cookienaam"
+                            value={row.name}
+                            onChange={(e) => patchCookieRow(idx, "name", e.target.value)}
+                            placeholder="bv. waisely_session"
+                          />
+                          <FieldInput
+                            label="Categorie"
+                            value={row.category}
+                            onChange={(e) => patchCookieRow(idx, "category", e.target.value)}
+                            placeholder="bv. Strikt noodzakelijk"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeCookieRow(idx)}
+                          className="mt-6 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius)] border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                          title="Cookie verwijderen"
+                        >
+                          <Icon name="trash" size={15} />
+                        </button>
+                      </div>
+                      <FieldInput
+                        label="Doel van de verwerking"
+                        value={row.purpose}
+                        onChange={(e) => patchCookieRow(idx, "purpose", e.target.value)}
+                        placeholder="Waarvoor dient deze cookie?"
+                      />
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <FieldInput
+                          label="Bewaartermijn"
+                          value={row.duration}
+                          onChange={(e) => patchCookieRow(idx, "duration", e.target.value)}
+                          placeholder="bv. 7 dagen, 12 maanden"
+                        />
+                        <FieldInput
+                          label="Aanbieder"
+                          value={row.provider}
+                          onChange={(e) => patchCookieRow(idx, "provider", e.target.value)}
+                          placeholder="bv. WAIsely (eigen website)"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Secties beheer */}
+              <div className="mt-6 border-t border-border pt-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <FieldLabel>
+                    Toelichtingssecties ({cookieContent.sections.length})
+                  </FieldLabel>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="px-3.5 py-1.5 text-xs"
+                    onClick={addCookieSection}
+                  >
+                    <Icon name="plus" size={14} />
+                    Sectie toevoegen
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  {cookieContent.sections.map((section, idx) => (
+                    <div
+                      key={section.id || idx}
+                      className="rounded-[var(--radius)] border border-border bg-surface-muted p-4 space-y-3"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex-1">
+                          <FieldInput
+                            label={`Sectie ${idx + 1} — Titel`}
+                            value={section.title}
+                            onChange={(e) => patchCookieSection(idx, "title", e.target.value)}
+                            placeholder="bv. Wat zijn cookies?"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeCookieSection(idx)}
+                          className="mt-6 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius)] border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                          title="Sectie verwijderen"
+                        >
+                          <Icon name="trash" size={15} />
+                        </button>
+                      </div>
+                      <FieldTextarea
+                        label="Inhoud van deze sectie"
+                        rows={3}
+                        value={section.body}
+                        onChange={(e) => patchCookieSection(idx, "body", e.target.value)}
+                        placeholder="Tekst van deze sectie..."
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

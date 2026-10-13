@@ -42,6 +42,7 @@ const FILES = {
   knowledge: "knowledge.json",
   intakeFields: "intakeFields.json",
   intakeSubmissions: "intakeSubmissions.json",
+  consentLogs: "consentLogs.json",
 } as const;
 
 /**
@@ -58,6 +59,7 @@ const defaults = {
   knowledge: [] as Database["knowledge"],
   intakeFields: [] as Database["intakeFields"],
   intakeSubmissions: [] as Database["intakeSubmissions"],
+  consentLogs: [] as Database["consentLogs"],
 };
 
 /* ---------------------------------------------------------------------------
@@ -79,6 +81,7 @@ async function seedAll(): Promise<void> {
   await save("bookings", getSeedBookings());
   await save("intakeFields", seedIntakeFields);
   await save("intakeSubmissions", []);
+  await save("consentLogs", []);
 }
 
 /** Seed-promise (per proces); deelt gelijktijdige eerste requests netjes. */

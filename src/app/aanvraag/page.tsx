@@ -10,7 +10,7 @@
 import Reveal from "@/components/ui/Reveal";
 import Link from "next/link";
 import { get } from "@/lib/db";
-import IntakeForm from "@/components/site/IntakeForm";
+import GoogleFormsEmbed from "@/components/site/GoogleFormsEmbed";
 
 export const metadata = {
   title: "Workshop aanvragen",
@@ -19,11 +19,7 @@ export const metadata = {
 };
 
 export default async function AanvraagPage() {
-  const [fields, siteContent] = await Promise.all([
-    get("intakeFields"),
-    get("siteContent"),
-  ]);
-
+  const siteContent = await get("siteContent");
   const bt = siteContent.bookTraining;
 
   return (
@@ -49,11 +45,7 @@ export default async function AanvraagPage() {
 
       <Reveal delay={150}>
         <div className="mt-10 rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-lg)] sm:p-8">
-          <IntakeForm
-            fields={fields}
-            successTitle={bt.intakeSuccessTitle}
-            successMessage={bt.intakeSuccessMessage}
-          />
+          <GoogleFormsEmbed formUrl={bt.googleFormsUrl} />
         </div>
       </Reveal>
     </div>

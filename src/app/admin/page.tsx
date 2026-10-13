@@ -60,7 +60,7 @@ export default async function AdminIndexPage() {
       icon: "calendar",
       title: "Training boeken",
       count: null,
-      hint: "Intake & boekingsflow teksten",
+      hint: "Google Forms link & boekingsflow",
     },
     {
       href: "/admin/content/waarom",

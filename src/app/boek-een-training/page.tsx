@@ -12,7 +12,7 @@
 import Reveal from "@/components/ui/Reveal";
 import Link from "next/link";
 import { get } from "@/lib/db";
-import IntakeForm from "@/components/site/IntakeForm";
+import GoogleFormsEmbed from "@/components/site/GoogleFormsEmbed";
 import ModuleSelector from "@/components/site/ModuleSelector";
 
 export const metadata = {
@@ -22,8 +22,7 @@ export const metadata = {
 };
 
 export default async function BoekEenTrainingPage() {
-  const [fields, modules, siteContent] = await Promise.all([
-    get("intakeFields"),
+  const [modules, siteContent] = await Promise.all([
     get("services"),
     get("siteContent"),
   ]);
@@ -67,11 +66,7 @@ export default async function BoekEenTrainingPage() {
             </h2>
           </div>
           <div className="rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-lg)] sm:p-8">
-            <IntakeForm
-              fields={fields}
-              successTitle={bt.intakeSuccessTitle}
-              successMessage={bt.intakeSuccessMessage}
-            />
+            <GoogleFormsEmbed formUrl={bt.googleFormsUrl} />
           </div>
         </div>
       </Reveal>

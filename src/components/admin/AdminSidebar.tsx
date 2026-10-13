@@ -59,7 +59,7 @@ const SECTIONS = [
   },
   {
     href: "/admin/content/voorwaarden",
-    label: "Voorwaarden & Privacy",
+    label: "Juridisch & Privacy",
     icon: "shield",
   },
   {
@@ -81,16 +81,6 @@ const SECTIONS = [
     href: "/admin/nieuws",
     label: "Nieuws & pers",
     icon: "news",
-  },
-  {
-    href: "/admin/intake/velden",
-    label: "Intake-velden",
-    icon: "layers",
-  },
-  {
-    href: "/admin/intake/inzendingen",
-    label: "Inzendingen",
-    icon: "book",
   },
   {
     href: "/admin/gebruikers",
