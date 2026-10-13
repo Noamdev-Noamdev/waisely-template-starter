@@ -1,13 +1,5 @@
 [
   {
-    "id": "news_1",
-    "title": "WAIsely lanceert modulair workshopaanbod voor scholen",
-    "excerpt": "Kies zelf welke modules je combineert in een workshop van 2 uur — volledig afgestemd op de noden van jouw team.",
-    "body": "Vanaf dit schooljaar biedt WAIsely een volledig modulair systeem aan. Scholen kiezen zelf uit acht thematische modules en combineren die tot een workshop op maat. Elke sessie duurt twee uur en bevat concrete lesvoorbeelden die direct inzetbaar zijn. Zo krijgt elk team precies de training die het nodig heeft.",
-    "date": "2026-09-01T10:00:00.000Z",
-    "type": "article"
-  },
-  {
     "id": "news_2",
     "title": "\"Leerkrachten hebben nood aan rust, niet aan meer tools\"",
     "excerpt": "Sabrina Carota in Het Laatste Nieuws over de AI-druk op leerkrachten.",
@@ -17,11 +9,12 @@
     "externalUrl": "https://www.hln.be/onderwijs/leerkrachten-wouter-52-veronique-48-en-sabrina-51-schrappen-huiswerk-en-blokkeren-apps-nu-leerlingen-massaal-ai-gebruiken-er-is-geen-kader-dus-we-moeten-het-zelf-doen~ad5fa986/"
   },
   {
-    "id": "news_3",
-    "title": "Nieuwe module: AI-detectie & academische integriteit",
-    "excerpt": "Hoe herken je AI-gegenereerd werk? En belangrijker: hoe ontwerp je opdrachten die authentiek leren stimuleren?",
-    "body": "De nieuwste module van WAIsely richt zich op een van de meest gestelde vragen door leerkrachten: hoe ga je om met AI-gegenereerd werk? In plaats van een strijd tegen de technologie, focust deze module op het ontwerpen van opdrachten die authentiek leren centraal stellen.",
-    "date": "2026-08-20T09:00:00.000Z",
-    "type": "article"
+    "id": "news_mv52v5g9d7rs8q",
+    "title": "WAIsely te gast in Virtual Podcast met Tim verheyden",
+    "excerpt": "Wil je mij beter leren kennen en te weten komen waar ik voor sta? Beluister dan zeker mijn passage in Virtual Podcast!\n",
+    "body": "\"Wat doet AI met huiswerk, gelijke kansen en het lesgeven zelf? In deze aflevering van Virtual praat Tim Verheyden met Sabrina Carota, leerkracht Engels aan het Atheneum in Ekeren en oprichtster van Wisely, een bedrijf dat leerkrachten opleidt in AI. \n\nWe bespreken de AI-doemdenken van deze week (Jack Clark, Dario Amodei) en of dat marketing is of een terecht signaal, de cijfers van imec over AI-gebruik bij jongeren en cognitieve offloading, en de aankomende Meta-film The Social Reckoning. \n\nSabrina legt uit waarom ze klassiek huiswerk volledig heeft afgeschaft sinds leerlingen met perfecte ChatGPT-teksten kwamen aanzetten, hoe AI net ongelijkheid dreigt te vergroten tussen leerlingen met en zonder toegang, waarom prompten een basisvaardigheid zou moeten worden, en hoe ze zelf met Claude werkt om planlast te verminderen en meer tijd over te houden voor haar leerlingen. \n\nEen gesprek over onderwijs, AI-beleid, kennisrijk onderwijs en waarom schrijven meer is dan mooie zinnen op papier zetten.\"",
+    "date": "2026-09-17T00:00:00.000Z",
+    "type": "press",
+    "externalUrl": "https://podcastluisteren.nl/ep/Virtual-Virtual-65-Sabrina-Carota-AI-in-de-klas-kansen-ongelijkheid-en-het-einde-van-huiswerk"
   }
 ]
