@@ -44,8 +44,8 @@ export default async function AdminGebruikersPage() {
           Gebruikers
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Alle accounts op de site. Rollen bepalen toegang: "user" krijgt het
-          dashboard, "admin" krijgt daarnaast het beheerpaneel.
+          Alle accounts op de site. Rollen bepalen toegang: &quot;user&quot; krijgt het
+          dashboard, &quot;admin&quot; krijgt daarnaast het beheerpaneel.
         </p>
       </div>
 

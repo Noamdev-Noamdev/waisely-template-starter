@@ -26,12 +26,16 @@ export default function BookingForm({
   userName,
   userOrganization,
   serviceTitles,
+  successTitle,
+  successMessage,
 }: {
   isLoggedIn: boolean;
   userName: string;
   userOrganization: string;
   /** Diensnamen uit de store; gebruikt als suggesties voor het onderwerp. */
   serviceTitles: string[];
+  successTitle?: string;
+  successMessage?: string;
 }) {
   const params = useSearchParams();
   const preselected = params.get("dienst") ?? "";
@@ -117,11 +121,11 @@ export default function BookingForm({
           <Icon name="check" size={24} />
         </span>
         <h2 className="mt-4 text-lg font-semibold text-foreground">
-          Aanvraag verstuurd!
+          {successTitle || "Aanvraag verstuurd!"}
         </h2>
-        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          Bedankt! Je aanvraag staat nu in je dashboard. Je ontvangt binnen 2
-          werkdagen een reactie.
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground whitespace-pre-line">
+          {successMessage ||
+            "Bedankt! Je aanvraag staat nu in je dashboard. Je ontvangt binnen 2 werkdagen een reactie."}
         </p>
         <div className="mt-5">
           <Link

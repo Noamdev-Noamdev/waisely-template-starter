@@ -31,7 +31,7 @@ export default async function AdminTekstenPage() {
 
       <ContentForm
         initial={content}
-        saveKeys={["hero", "intro", "bookTraining"]}
+        saveKeys={["hero", "intro"]}
         submitLabel="Teksten opslaan"
       />
     </div>

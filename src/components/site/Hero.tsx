@@ -57,13 +57,16 @@ export default function Hero({ content }: { content: SiteContent }) {
         {/* Stats strip */}
         <Reveal delay={400}>
           <div className="mt-16 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
-            {[
-              { value: "20+", label: "Jaar onderwijservaring" },
-              { value: "8", label: "Modulaire thema's" },
-              { value: "Op maat", label: "Elke workshop uniek" },
-            ].map((stat) => (
+            {(content.hero.stats && content.hero.stats.length > 0
+              ? content.hero.stats
+              : [
+                  { value: "20+", label: "Jaar onderwijservaring" },
+                  { value: "8", label: "Modulaire thema's" },
+                  { value: "Op maat", label: "Elke workshop uniek" },
+                ]
+            ).map((stat, i) => (
               <div
-                key={stat.label}
+                key={i}
                 className="card-hover rounded-[var(--radius)] bg-surface p-5 shadow-[var(--shadow-md)]"
               >
                 <p className="text-2xl font-medium text-foreground">{stat.value}</p>

@@ -28,9 +28,19 @@ const SECTIONS = [
     icon: "pen",
   },
   {
+    href: "/admin/content/navigatie",
+    label: "Navigatie",
+    icon: "layers",
+  },
+  {
     href: "/admin/content/diensten",
     label: "Diensten",
     icon: "grid",
+  },
+  {
+    href: "/admin/content/trainingen",
+    label: "Training boeken",
+    icon: "calendar",
   },
   {
     href: "/admin/content/waarom",
@@ -44,7 +54,7 @@ const SECTIONS = [
   },
   {
     href: "/admin/content/contact",
-    label: "Contactgegevens",
+    label: "Contact & footer",
     icon: "mail",
   },
   {

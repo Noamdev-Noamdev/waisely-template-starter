@@ -50,7 +50,7 @@ export default function Contact({ content }: { content: SiteContent }) {
           <Reveal>
             <div>
               <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Contact
+                {contact.eyebrow || "Contact"}
               </p>
               <h2 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
                 {contact.title}
@@ -107,10 +107,10 @@ export default function Contact({ content }: { content: SiteContent }) {
               className="rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-lg)] sm:p-8"
             >
               <h3 className="text-lg font-medium text-foreground">
-                Stuur een bericht
+                {contact.formTitle || "Stuur een bericht"}
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Ik reageer doorgaans binnen 2 werkdagen.
+                {contact.formSubtitle || "Ik reageer doorgaans binnen 2 werkdagen."}
               </p>
 
               <div className="mt-6 space-y-4">
@@ -141,12 +141,15 @@ export default function Contact({ content }: { content: SiteContent }) {
 
               <div className="mt-6 flex items-center gap-3">
                 <Button type="submit" disabled={status === "sending"}>
-                  {status === "sending" ? "Versturen…" : "Verstuur bericht"}
+                  {status === "sending"
+                    ? "Versturen…"
+                    : contact.formSubmitLabel || "Verstuur bericht"}
                   {status !== "sending" && <Icon name="arrow-right" size={15} />}
                 </Button>
                 {status === "sent" ? (
                   <p className="text-sm font-medium text-emerald-600">
-                    Bedankt! Je bericht is verstuurd.
+                    {contact.formSuccessMessage ||
+                      "Bedankt! Je bericht is verstuurd."}
                   </p>
                 ) : null}
                 {status === "error" ? (

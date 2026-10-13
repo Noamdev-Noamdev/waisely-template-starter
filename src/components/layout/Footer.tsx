@@ -12,6 +12,11 @@ import type { SiteContent } from "@/lib/types";
 export default function Footer({ content }: { content: SiteContent }) {
   const year = new Date().getFullYear();
 
+  const navLinks =
+    content.navigation?.links && content.navigation.links.length > 0
+      ? content.navigation.links
+      : NAV_LINKS;
+
   return (
     <footer className="mt-auto bg-surface">
       <div className="mx-auto grid max-w-[1000px] gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
@@ -56,7 +61,7 @@ export default function Footer({ content }: { content: SiteContent }) {
             Navigatie
           </h3>
           <ul className="mt-4 space-y-2.5">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -103,7 +108,7 @@ export default function Footer({ content }: { content: SiteContent }) {
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-[1000px] flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:px-6">
           <p>
-            © {year} {SITE_NAME}. Alle rechten voorbehouden.
+            © {year} {SITE_NAME}. {content.footer.copyrightText || "Alle rechten voorbehouden."}
           </p>
           <p className="text-muted-foreground/60">
             {SITE_TAGLINE}

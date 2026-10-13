@@ -18,7 +18,13 @@ import type { Service } from "@/lib/types";
 
 const MAX_MODULES = 3;
 
-export default function ModuleSelector({ modules }: { modules: Service[] }) {
+export default function ModuleSelector({
+  modules,
+  ctaLabel,
+}: {
+  modules: Service[];
+  ctaLabel?: string;
+}) {
   const [selected, setSelected] = useState<string[]>([]);
 
   function toggle(id: string) {
@@ -147,7 +153,7 @@ export default function ModuleSelector({ modules }: { modules: Service[] }) {
             <ButtonLink
               href={`/boeken?dienst=${encodeURIComponent(queryParam)}`}
             >
-              Workshop aanvragen
+              {ctaLabel || "Workshop aanvragen"}
               <Icon name="arrow-right" size={16} />
             </ButtonLink>
           </div>

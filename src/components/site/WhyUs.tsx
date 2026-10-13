@@ -22,7 +22,7 @@ export default function WhyUs({ content }: { content: SiteContent }) {
       <div className="mx-auto max-w-[1000px] px-4 sm:px-6">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Waarom WAIsely
+            {why.eyebrow || "Waarom WAIsely"}
           </p>
           <h2 className="mt-2 max-w-2xl text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
             {why.title}

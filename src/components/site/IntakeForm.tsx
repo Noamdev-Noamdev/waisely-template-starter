@@ -15,7 +15,15 @@ import Icon from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import type { IntakeField } from "@/lib/types";
 
-export default function IntakeForm({ fields }: { fields: IntakeField[] }) {
+export default function IntakeForm({
+  fields,
+  successTitle,
+  successMessage,
+}: {
+  fields: IntakeField[];
+  successTitle?: string;
+  successMessage?: string;
+}) {
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
@@ -74,11 +82,11 @@ export default function IntakeForm({ fields }: { fields: IntakeField[] }) {
           className="text-xl font-medium text-foreground"
           style={{ fontFamily: "var(--font-heading)" }}
         >
-          Bedankt voor je intake!
+          {successTitle || "Bedankt voor je intake!"}
         </h2>
-        <p className="max-w-md text-sm text-muted-foreground">
-          Je formulier is succesvol verstuurd. Sabrina neemt zo snel mogelijk
-          contact met je op om de workshop op maat af te stemmen.
+        <p className="max-w-md text-sm text-muted-foreground whitespace-pre-line">
+          {successMessage ||
+            "Je formulier is succesvol verstuurd. Sabrina neemt zo snel mogelijk contact met je op om de workshop op maat af te stemmen."}
         </p>
       </div>
     );

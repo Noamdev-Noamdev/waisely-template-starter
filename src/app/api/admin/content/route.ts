@@ -58,6 +58,26 @@ export async function PUT(request: Request) {
       contact: { ...current.contact, ...body.contact },
       footer: { ...current.footer, ...body.footer },
       bookTraining: { ...current.bookTraining, ...body.bookTraining },
+      servicesSection: body.servicesSection
+        ? { ...(current.servicesSection ?? {
+            eyebrow: "Modules",
+            title: "Stel je workshop samen",
+            subtitle: "",
+            primaryCtaLabel: "Boek een training",
+            secondaryCtaLabel: "Of neem vrijblijvend contact op",
+          }), ...body.servicesSection }
+        : current.servicesSection,
+      newsSection: body.newsSection
+        ? { ...(current.newsSection ?? {
+            eyebrow: "Nieuws & pers",
+            title: "Recent nieuws en persvermeldingen",
+            readMoreLabel: "Lees verder",
+            externalLabel: "Lees het artikel",
+          }), ...body.newsSection }
+        : current.newsSection,
+      navigation: body.navigation
+        ? { links: body.navigation.links ?? current.navigation?.links ?? [] }
+        : current.navigation,
       press,
     };
 

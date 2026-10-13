@@ -29,8 +29,61 @@ export interface User {
   createdAt: string;
 }
 
+export interface NavigationLink {
+  href: string;
+  label: string;
+}
+
+export interface NavigationContent {
+  links: NavigationLink[];
+}
+
+export interface HeroStat {
+  value: string;
+  label: string;
+}
+
+export interface ServicesSectionContent {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  primaryCtaLabel: string;
+  secondaryCtaLabel: string;
+}
+
+export interface NewsSectionContent {
+  eyebrow: string;
+  title: string;
+  readMoreLabel: string;
+  externalLabel: string;
+}
+
+export interface BookTrainingContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+  contactPrompt: string;
+  contactLinkText: string;
+  step1Title: string;
+  step2Title: string;
+  step2Description: string;
+  moduleSelectorCta: string;
+  intakeSuccessTitle: string;
+  intakeSuccessMessage: string;
+  bookingEyebrow: string;
+  bookingTitle: string;
+  bookingDescription: string;
+  bookingSteps: string[];
+  bookingAccountTitle: string;
+  bookingAccountDescription: string;
+  bookingSuccessTitle: string;
+  bookingSuccessMessage: string;
+}
+
 /** Alle bewerkbare teksten/blokken op de publieke site (admin-CMS). */
 export interface SiteContent {
+  /** Navigatiebalk-links */
+  navigation?: NavigationContent;
   /** Key = unieke id van het contentblok, b.v. "hero.title". */
   hero: {
     eyebrow: string;
@@ -38,39 +91,52 @@ export interface SiteContent {
     subtitle: string;
     primaryCtaLabel: string;
     secondaryCtaLabel: string;
+    stats?: HeroStat[];
   };
   intro: {
     title: string;
     body: string;
+    badgeText?: string;
   };
+  servicesSection?: ServicesSectionContent;
+  newsSection?: NewsSectionContent;
   about: {
+    eyebrow?: string;
     title: string;
     body: string;
     imageUrl?: string;
     name?: string;
     role?: string;
     highlights: { title: string; body: string }[];
+    visionTitle?: string;
+    visionBody?: string;
+    primaryCtaLabel?: string;
+    secondaryCtaLabel?: string;
   };
   why: {
+    eyebrow?: string;
     title: string;
     items: { title: string; body: string }[];
   };
   contact: {
+    eyebrow?: string;
     title: string;
     body: string;
     email: string;
     phone: string;
     address: string;
+    formTitle?: string;
+    formSubtitle?: string;
+    formSubmitLabel?: string;
+    formSuccessMessage?: string;
   };
   footer: {
     tagline: string;
     instagramUrl: string;
     socialEmail: string;
+    copyrightText?: string;
   };
-  bookTraining: {
-    title: string;
-    description: string;
-  };
+  bookTraining: BookTrainingContent;
   /** Alles wat op de /pers-pagina staat (teksten, reviews, Instagram-posts). */
   press: PressContent;
 }

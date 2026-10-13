@@ -28,7 +28,8 @@ export default function Intro({ content }: { content: SiteContent }) {
                 <Icon name="target" size={20} />
               </span>
               <p className="max-w-56 text-sm leading-relaxed text-muted-foreground">
-                Alle trainingen zijn praktisch en direct inzetbaar in de klas.
+                {content.intro.badgeText ||
+                  "Alle trainingen zijn praktisch en direct inzetbaar in de klas."}
               </p>
             </div>
           </Reveal>

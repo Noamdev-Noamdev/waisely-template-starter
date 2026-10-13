@@ -28,23 +28,25 @@ export default async function BoekEenTrainingPage() {
     get("siteContent"),
   ]);
 
+  const bt = siteContent.bookTraining;
+
   return (
     <div className="mx-auto max-w-[1000px] px-4 py-14 sm:px-6 md:py-20">
       {/* Page header */}
       <Reveal>
         <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Boek een training
+          {bt.eyebrow || "Boek een training"}
         </p>
         <h1 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl">
-          {siteContent.bookTraining.title}
+          {bt.title}
         </h1>
         <p className="prose-muted mt-4 max-w-2xl">
-          {siteContent.bookTraining.description} Liever eerst even bellen?{" "}
+          {bt.description} {bt.contactPrompt || "Liever eerst even bellen?"}{" "}
           <Link
             href="/contact"
             className="font-medium text-foreground underline-offset-2 hover:underline"
           >
-            Neem contact op
+            {bt.contactLinkText || "Neem contact op"}
           </Link>
           .
         </p>
@@ -61,11 +63,15 @@ export default async function BoekEenTrainingPage() {
               className="text-xl font-medium text-foreground"
               style={{ fontFamily: "var(--font-heading)" }}
             >
-              Intake-formulier
+              {bt.step1Title || "Intake-formulier"}
             </h2>
           </div>
           <div className="rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-lg)] sm:p-8">
-            <IntakeForm fields={fields} />
+            <IntakeForm
+              fields={fields}
+              successTitle={bt.intakeSuccessTitle}
+              successMessage={bt.intakeSuccessMessage}
+            />
           </div>
         </div>
       </Reveal>
@@ -81,15 +87,17 @@ export default async function BoekEenTrainingPage() {
               className="text-xl font-medium text-foreground"
               style={{ fontFamily: "var(--font-heading)" }}
             >
-              Kies uw modules
+              {bt.step2Title || "Kies uw modules"}
             </h2>
           </div>
-          <p className="prose-muted mb-8 max-w-2xl">
-            Kies tot drie modules die je combineert in een workshop van 2 uur.
-            Elke module bevat concrete lesvoorbeelden en werkvormen die je
-            meteen kunt inzetten.
+          <p className="prose-muted mb-8 max-w-2xl whitespace-pre-line">
+            {bt.step2Description ||
+              "Kies tot drie modules die je combineert in een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden en werkvormen die je meteen kunt inzetten."}
           </p>
-          <ModuleSelector modules={modules} />
+          <ModuleSelector
+            modules={modules}
+            ctaLabel={bt.moduleSelectorCta || "Workshop aanvragen"}
+          />
         </div>
       </Reveal>
 

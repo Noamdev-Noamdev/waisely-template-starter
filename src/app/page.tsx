@@ -32,10 +32,10 @@ export default async function HomePage() {
 
       <Hero content={siteContent} />
       <Intro content={siteContent} />
-      <Services services={services} />
+      <Services services={services} content={siteContent} />
       <WhyUs content={siteContent} />
       <About content={siteContent} />
-      <News items={news} />
+      <News items={news} content={siteContent} />
       <Contact content={siteContent} />
     </>
   );

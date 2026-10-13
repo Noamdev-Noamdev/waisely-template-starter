@@ -19,10 +19,21 @@ export const metadata = {
 };
 
 export default async function BookingPage() {
-  const [user, services] = await Promise.all([
+  const [user, services, siteContent] = await Promise.all([
     getCurrentUser(),
     get("services"),
+    get("siteContent"),
   ]);
+
+  const bt = siteContent.bookTraining;
+  const steps =
+    bt.bookingSteps && bt.bookingSteps.length > 0
+      ? bt.bookingSteps
+      : [
+          "Vul het formulier in met je wensen",
+          "Ontvang binnen 2 werkdagen een voorstel",
+          "We plannen samen een datum",
+        ];
 
   return (
     <div className="relative overflow-hidden">
@@ -33,24 +44,19 @@ export default async function BookingPage() {
           <Reveal>
             <div>
               <p className="pulse-dot inline-flex items-center rounded-full bg-surface px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Op maat
+                {bt.bookingEyebrow || "Op maat"}
               </p>
               <h1 className="mt-5 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-                Workshop aanvragen
+                {bt.bookingTitle || "Workshop aanvragen"}
               </h1>
-              <p className="prose-muted mt-4 max-w-md">
-                Beschrijf kort wat je nodig hebt en je ontvangt binnen 2
-                werkdagen een voorstel op maat, inclusief een passende
-                modulecombinatie.
+              <p className="prose-muted mt-4 max-w-md whitespace-pre-line">
+                {bt.bookingDescription ||
+                  "Beschrijf kort wat je nodig hebt en je ontvangt binnen 2 werkdagen een voorstel op maat, inclusief een passende modulecombinatie."}
               </p>
 
               {/* Steps */}
               <ol className="mt-8 space-y-4">
-                {[
-                  "Vul het formulier in met je wensen",
-                  "Ontvang binnen 2 werkdagen een voorstel",
-                  "We plannen samen een datum",
-                ].map((step, i) => (
+                {steps.map((step, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">
                       {i + 1}
@@ -64,10 +70,11 @@ export default async function BookingPage() {
               {!user ? (
                 <div className="mt-8 rounded-[var(--radius)] bg-surface p-4 text-sm text-muted-foreground shadow-[var(--shadow-sm)]">
                   <p className="font-semibold text-foreground">
-                    Account vereist
+                    {bt.bookingAccountTitle || "Account vereist"}
                   </p>
                   <p className="mt-1">
-                    Aanvragen doen vereist een account.{" "}
+                    {bt.bookingAccountDescription ||
+                      "Aanvragen doen vereist een account."}{" "}
                     <Link
                       href="/login"
                       className="font-semibold text-accent underline-offset-2 hover:underline"
@@ -96,6 +103,8 @@ export default async function BookingPage() {
                 userName={user?.name ?? ""}
                 userOrganization={user?.organization ?? ""}
                 serviceTitles={services.map((s) => s.title)}
+                successTitle={bt.bookingSuccessTitle}
+                successMessage={bt.bookingSuccessMessage}
               />
             </div>
           </Reveal>

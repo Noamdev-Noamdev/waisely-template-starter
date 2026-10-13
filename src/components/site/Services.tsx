@@ -11,23 +11,36 @@ import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
-import type { Service } from "@/lib/types";
+import type { Service, SiteContent } from "@/lib/types";
 
-export default function Services({ services }: { services: Service[] }) {
+export default function Services({
+  services,
+  content,
+}: {
+  services: Service[];
+  content?: SiteContent;
+}) {
+  const section = content?.servicesSection ?? {
+    eyebrow: "Modules",
+    title: "Stel je workshop samen",
+    subtitle:
+      "Kies maximaal drie modules die je combineert tot een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden die je meteen kunt inzetten.",
+    primaryCtaLabel: "Boek een training",
+    secondaryCtaLabel: "Of neem vrijblijvend contact op",
+  };
+
   return (
     <section id="diensten" className="scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-[1000px] px-4 sm:px-6">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Modules
+            {section.eyebrow}
           </p>
           <h2 className="mt-2 max-w-2xl text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-            Stel je workshop samen
+            {section.title}
           </h2>
           <p className="prose-muted mt-4 max-w-2xl">
-            Kies maximaal drie modules die je combineert tot een workshop van 2
-            uur. Elke module bevat concrete lesvoorbeelden die je meteen kunt
-            inzetten.
+            {section.subtitle}
           </p>
         </Reveal>
 
@@ -69,14 +82,14 @@ export default function Services({ services }: { services: Service[] }) {
         <Reveal delay={200}>
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <ButtonLink href="/boek-een-training">
-              Boek een training
+              {section.primaryCtaLabel}
               <Icon name="arrow-right" size={16} />
             </ButtonLink>
             <Link
               href="/contact"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              Of neem vrijblijvend contact op
+              {section.secondaryCtaLabel}
             </Link>
           </div>
         </Reveal>

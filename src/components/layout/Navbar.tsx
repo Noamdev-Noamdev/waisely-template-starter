@@ -15,9 +15,15 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/Icon";
 import { NAV_LINKS, SITE_NAME } from "@/lib/siteConfig";
-import type { User } from "@/lib/types";
+import type { NavigationLink, User } from "@/lib/types";
 
-export default function Navbar({ user }: { user: User | null }) {
+export default function Navbar({
+  user,
+  links,
+}: {
+  user: User | null;
+  links?: NavigationLink[];
+}) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHash, setActiveHash] = useState<string | null>(null);
@@ -29,6 +35,8 @@ export default function Navbar({ user }: { user: User | null }) {
   }
   const ticking = useRef(false);
 
+  const navLinks = links && links.length > 0 ? links : NAV_LINKS;
+
   /**
    * Scroll-based active detection: on the homepage, determine which
    * hash-section is currently in view and highlight only that one.
@@ -39,7 +47,7 @@ export default function Navbar({ user }: { user: User | null }) {
       return;
     }
 
-    const hashLinks = NAV_LINKS.filter((l) => l.href.startsWith("/#"));
+    const hashLinks = navLinks.filter((l) => l.href.startsWith("/#"));
     let current: string | null = null;
 
     for (const link of hashLinks) {
@@ -55,7 +63,7 @@ export default function Navbar({ user }: { user: User | null }) {
     }
 
     setActiveHash(current);
-  }, [pathname]);
+  }, [pathname, navLinks]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -118,7 +126,7 @@ export default function Navbar({ user }: { user: User | null }) {
         {/* Desktop pill navigation */}
         <div className="hidden items-center md:flex">
           <div className="nav-pill">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -218,7 +226,7 @@ export default function Navbar({ user }: { user: User | null }) {
             </Link>
           </div>
           <div className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

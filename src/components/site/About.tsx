@@ -35,7 +35,7 @@ export default function About({ content }: { content: SiteContent }) {
           <Reveal>
             <div>
               <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Over
+                {about.eyebrow || "Over"}
               </p>
               <h2 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
                 {about.title}

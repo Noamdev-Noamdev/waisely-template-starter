@@ -9,20 +9,33 @@ import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
 import Badge from "@/components/ui/Badge";
 import { formatDate } from "@/lib/format";
-import type { NewsItem } from "@/lib/types";
+import type { NewsItem, SiteContent } from "@/lib/types";
 
-export default function News({ items }: { items: NewsItem[] }) {
+export default function News({
+  items,
+  content,
+}: {
+  items: NewsItem[];
+  content?: SiteContent;
+}) {
   if (items.length === 0) return null;
+
+  const section = content?.newsSection ?? {
+    eyebrow: "Nieuws & pers",
+    title: "Recent nieuws en persvermeldingen",
+    readMoreLabel: "Lees verder",
+    externalLabel: "Lees het artikel",
+  };
 
   return (
     <section id="nieuws" className="scroll-mt-24 bg-surface py-20 md:py-28">
       <div className="mx-auto max-w-[1000px] px-4 sm:px-6">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Nieuws & pers
+            {section.eyebrow}
           </p>
           <h2 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-            Recent nieuws en persvermeldingen
+            {section.title}
           </h2>
         </Reveal>
 
@@ -56,7 +69,7 @@ export default function News({ items }: { items: NewsItem[] }) {
                     rel="noopener noreferrer"
                     className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
                   >
-                    Lees het artikel
+                    {section.externalLabel}
                     <Icon name="external" size={15} />
                   </a>
                 ) : (
@@ -64,7 +77,7 @@ export default function News({ items }: { items: NewsItem[] }) {
                     href={`/nieuws/${item.id}`}
                     className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
                   >
-                    Lees verder
+                    {section.readMoreLabel}
                     <Icon name="arrow-right" size={15} />
                   </Link>
                 )}

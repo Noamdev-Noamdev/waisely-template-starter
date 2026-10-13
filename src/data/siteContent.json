@@ -1,16 +1,69 @@
 {
+  "navigation": {
+    "links": [
+      {
+        "href": "/#waarom",
+        "label": "Waarom WAIsely?"
+      },
+      {
+        "href": "/over",
+        "label": "Wie is WAIsely?"
+      },
+      {
+        "href": "/boek-een-training",
+        "label": "Boek een training"
+      },
+      {
+        "href": "/pers",
+        "label": "Pers en Sociale Media"
+      },
+      {
+        "href": "/contact",
+        "label": "Contact"
+      }
+    ]
+  },
   "hero": {
     "eyebrow": "AI in het onderwijs — met rust en richting",
     "title": "Rust in de chaos",
     "subtitle": "WAIsely begeleidt leerkrachten en scholen bij verantwoord, praktisch AI-gebruik. Via workshops op maat leer je hoe AI je lessen versterkt — zonder de controle te verliezen.",
     "primaryCtaLabel": "Bekijk de modules",
-    "secondaryCtaLabel": "Meer over WAIsely"
+    "secondaryCtaLabel": "Meer over WAIsely",
+    "stats": [
+      {
+        "value": "20+",
+        "label": "Jaar onderwijservaring"
+      },
+      {
+        "value": "8",
+        "label": "Modulaire thema's"
+      },
+      {
+        "value": "Op maat",
+        "label": "Elke workshop uniek"
+      }
+    ]
   },
   "intro": {
     "title": "AI hoeft niet overweldigend te zijn",
-    "body": "Veel leerkrachten voelen de druk om iets met AI te doen, maar weten niet waar te beginnen. WAIsely brengt daar verandering in. Geen technisch jargon, geen hype — wel concrete handvatten die je morgen al in je les kunt gebruiken. Elke training is afgestemd op jouw vak, je leerlingen en je eigen tempo."
+    "body": "Veel leerkrachten voelen de druk om iets met AI te doen, maar weten niet waar te beginnen. WAIsely brengt daar verandering in. Geen technisch jargon, geen hype — wel concrete handvatten die je morgen al in je les kunt gebruiken. Elke training is afgestemd op jouw vak, je leerlingen en je eigen tempo.",
+    "badgeText": "Alle trainingen zijn praktisch en direct inzetbaar in de klas."
+  },
+  "servicesSection": {
+    "eyebrow": "Modules",
+    "title": "Stel je workshop samen",
+    "subtitle": "Kies maximaal drie modules die je combineert tot een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden die je meteen kunt inzetten.",
+    "primaryCtaLabel": "Boek een training",
+    "secondaryCtaLabel": "Of neem vrijblijvend contact op"
+  },
+  "newsSection": {
+    "eyebrow": "Nieuws & pers",
+    "title": "Recent nieuws en persvermeldingen",
+    "readMoreLabel": "Lees verder",
+    "externalLabel": "Lees het artikel"
   },
   "about": {
+    "eyebrow": "Over",
     "title": "Over WAIsely",
     "body": "WAIsely, dat ben ik, Sabrina Carota. Ik ben een gepassioneerde leerkracht Engels, taalwetenschap en taaltechnologie met meer dan twintig jaar ervaring op de teller.\n\nToch kon al die ervaring mij niet behoeden voor de schok die ik, net als zoveel andere leerkrachten, ervoer bij de intrede van ChatGPT in 2022. De revolutie die het teweegbracht, veroorzaakte geen kleine deining in het onderwijslandschap, maar een ware tsunami.\n\nNet als jullie kreeg ik plots perfect uitgevoerde (schrijf)opdrachten van mijn leerlingen en kon ik thuis geen oefeningen meer laten afwerken zonder dat er AI aan te pas kwam. Huiswerk werd een maat voor niets, want de leerlingen leerden er niets uit. Ik worstelde niet zozeer met de vraag hoe ik kon bewijzen dat ze AI gebruikt hadden, als wel met de vraag hoe ik ervoor kon zorgen dat ze toch iets bijleerden. Plots moest ik dus mijn lespraktijk en al mijn taken herdenken: schrijfportfolio's, boekverslagen, sollicitatiebrieven, eindejaarsspeeches …\n\nIn 2024 volgde ik daarom een opleiding taaltechnologie aan de Universiteit Antwerpen. Nadien bleef ik volop lezen, studeren en experimenteren. In wezen zijn mijn lessen niet veranderd: ze blijven gestoeld op vakkennis en passie voor de Engelse taal en cultuur. Daar heeft de komst van AI niets aan veranderd, aan de manier waarop ik mijn werktijd invul wel. Het verantwoorde gebruik van GenAI maakte mijn lessen interessanter en verminderde mijn planlast drastisch. Zo houd ik meer tijd over voor wat echt telt: weer in verbinding kunnen treden met mijn leerlingen.\n\nOmdat ik deze kennis met andere leerkrachten wil delen, richtte ik in augustus WAIsely op, een bedrijf waarmee ik workshops en webinars aanbied aan scholen en onderwijsprofessionals. Iedereen kan bij mij terecht: wie al wat ervaring heeft met GenAI, maar ook wie nog zoekende is. Je wordt niet overladen met technische knowhow. Aan de hand van heel wat tips en tricks, en vooral duidelijke praktijkvoorbeelden, leer je hoe je GenAI op een praktische en efficiënte manier kunt inzetten.",
     "imageUrl": "/uploads/upload-1791727142793-u0qrua.jpeg",
@@ -29,9 +82,14 @@
         "title": "Praktijk boven theorie",
         "body": "Elke workshop vertrekt vanuit echte lesvoorbeelden, niet vanuit abstracte concepten."
       }
-    ]
+    ],
+    "visionTitle": "Mijn visie",
+    "visionBody": "AI is geen bedreiging voor onderwijs — het is een kans. Maar alleen als we het doordacht en verantwoord inzetten. Ik geloof dat elke leerkracht de ruimte en begeleiding verdient om op eigen tempo te ontdekken wat AI voor hen kan betekenen. Niet vanuit druk, maar vanuit nieuwsgierigheid. Niet vanuit angst, maar vanuit vertrouwen.",
+    "primaryCtaLabel": "Boek een training",
+    "secondaryCtaLabel": "Neem contact op"
   },
   "why": {
+    "eyebrow": "Waarom WAIsely",
     "title": "Waarom kiezen voor WAIsely?",
     "items": [
       {
@@ -53,20 +111,47 @@
     ]
   },
   "contact": {
+    "eyebrow": "Contact",
     "title": "Neem contact op",
     "body": "Benieuwd wat WAIsely voor jouw school kan betekenen? Stuur een bericht of plan een vrijblijvend kennismakingsgesprek. Ik denk graag mee over een aanpak op maat.",
     "email": "info@waisely.biz",
     "phone": "+32 486 12 34 56",
-    "address": "Antwerpen, België"
+    "address": "Antwerpen, België",
+    "formTitle": "Stuur een bericht",
+    "formSubtitle": "Ik reageer doorgaans binnen 2 werkdagen.",
+    "formSubmitLabel": "Verstuur bericht",
+    "formSuccessMessage": "Bedankt! Je bericht is verstuurd."
   },
   "footer": {
     "tagline": "Verantwoord AI-gebruik in het onderwijs. Rust in de chaos.",
     "instagramUrl": "https://www.instagram.com/waise.ly",
-    "socialEmail": "info@waisely.biz"
+    "socialEmail": "info@waisely.biz",
+    "copyrightText": "Alle rechten voorbehouden."
   },
   "bookTraining": {
+    "eyebrow": "Boek een training",
     "title": "Workshop of webinar aanvragen",
-    "description": "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op uw school of instelling. Kies daarna de modules die het beste bij uw situatie passen."
+    "description": "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op uw school of instelling. Kies daarna de modules die het beste bij uw situatie passen.",
+    "contactPrompt": "Liever eerst even bellen?",
+    "contactLinkText": "Neem contact op",
+    "step1Title": "Intake-formulier",
+    "step2Title": "Kies uw modules",
+    "step2Description": "Kies tot drie modules die je combineert in een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden en werkvormen die je meteen kunt inzetten.",
+    "moduleSelectorCta": "Workshop aanvragen",
+    "intakeSuccessTitle": "Bedankt voor je intake!",
+    "intakeSuccessMessage": "Je formulier is succesvol verstuurd. Sabrina neemt zo snel mogelijk contact met je op om de workshop op maat af te stemmen.",
+    "bookingEyebrow": "Op maat",
+    "bookingTitle": "Workshop aanvragen",
+    "bookingDescription": "Beschrijf kort wat je nodig hebt en je ontvangt binnen 2 werkdagen een voorstel op maat, inclusief een passende modulecombinatie.",
+    "bookingSteps": [
+      "Vul het formulier in met je wensen",
+      "Ontvang binnen 2 werkdagen een voorstel",
+      "We plannen samen een datum"
+    ],
+    "bookingAccountTitle": "Account vereist",
+    "bookingAccountDescription": "Aanvragen doen vereist een account.",
+    "bookingSuccessTitle": "Aanvraag verstuurd!",
+    "bookingSuccessMessage": "Bedankt! Je aanvraag staat nu in je dashboard. Je ontvangt binnen 2 werkdagen een reactie."
   },
   "press": {
     "eyebrow": "Pers en sociale media",

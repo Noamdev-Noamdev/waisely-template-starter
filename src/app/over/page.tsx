@@ -74,7 +74,7 @@ export default async function OverPage() {
         <Reveal delay={150}>
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Over
+              {content.about.eyebrow || "Over"}
             </p>
             <h1 className="mt-2 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
               {content.about.title}
@@ -106,25 +106,21 @@ export default async function OverPage() {
             {/* Vision section */}
             <div className="mt-12 rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-md)]">
               <h2 className="text-xl font-medium text-foreground">
-                Mijn visie
+                {content.about.visionTitle || "Mijn visie"}
               </h2>
-              <p className="prose-muted mt-3">
-                AI is geen bedreiging voor onderwijs — het is een kans. Maar
-                alleen als we het doordacht en verantwoord inzetten. Ik geloof
-                dat elke leerkracht de ruimte en begeleiding verdient om op
-                eigen tempo te ontdekken wat AI voor hen kan betekenen. Niet
-                vanuit druk, maar vanuit nieuwsgierigheid. Niet vanuit angst,
-                maar vanuit vertrouwen.
+              <p className="prose-muted mt-3 whitespace-pre-line">
+                {content.about.visionBody ||
+                  "AI is geen bedreiging voor onderwijs — het is een kans. Maar alleen als we het doordacht en verantwoord inzetten. Ik geloof dat elke leerkracht de ruimte en begeleiding verdient om op eigen tempo te ontdekken wat AI voor hen kan betekenen. Niet vanuit druk, maar vanuit nieuwsgierigheid. Niet vanuit angst, maar vanuit vertrouwen."}
               </p>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href="/boek-een-training">
-                Boek een training
+                {content.about.primaryCtaLabel || "Boek een training"}
                 <Icon name="arrow-right" size={16} />
               </ButtonLink>
               <ButtonLink href="/contact" variant="secondary">
-                Neem contact op
+                {content.about.secondaryCtaLabel || "Neem contact op"}
               </ButtonLink>
             </div>
           </div>
