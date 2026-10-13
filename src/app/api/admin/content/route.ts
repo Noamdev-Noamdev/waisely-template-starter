@@ -79,6 +79,24 @@ export async function PUT(request: Request) {
         ? { links: body.navigation.links ?? current.navigation?.links ?? [] }
         : current.navigation,
       press,
+      terms: body.terms
+        ? {
+            eyebrow: body.terms.eyebrow ?? current.terms?.eyebrow ?? "Juridisch",
+            title: body.terms.title ?? current.terms?.title ?? "Algemene Voorwaarden",
+            subtitle: body.terms.subtitle ?? current.terms?.subtitle ?? "",
+            lastUpdated: body.terms.lastUpdated ?? current.terms?.lastUpdated ?? "",
+            sections: body.terms.sections ?? current.terms?.sections ?? [],
+          }
+        : current.terms,
+      privacy: body.privacy
+        ? {
+            eyebrow: body.privacy.eyebrow ?? current.privacy?.eyebrow ?? "Privacy",
+            title: body.privacy.title ?? current.privacy?.title ?? "Privacyverklaring",
+            subtitle: body.privacy.subtitle ?? current.privacy?.subtitle ?? "",
+            lastUpdated: body.privacy.lastUpdated ?? current.privacy?.lastUpdated ?? "",
+            sections: body.privacy.sections ?? current.privacy?.sections ?? [],
+          }
+        : current.privacy,
     };
 
     await save("siteContent", merged);

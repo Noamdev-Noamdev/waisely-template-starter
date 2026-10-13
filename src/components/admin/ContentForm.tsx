@@ -39,6 +39,8 @@ type ContentKey = keyof Pick<
   | "servicesSection"
   | "newsSection"
   | "navigation"
+  | "terms"
+  | "privacy"
 >;
 
 export default function ContentForm({
@@ -56,14 +58,17 @@ export default function ContentForm({
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
     "idle"
   );
-  const [uploading, setUploading] = useState(false);
+  const [uploadingSection, setUploadingSection] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleImageUploadSection(
+    section: "about" | "hero",
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploading(true);
+    setUploadingSection(section);
     setUploadError(null);
 
     try {
@@ -80,11 +85,11 @@ export default function ContentForm({
         throw new Error(data.error || "Uploaden mislukt");
       }
 
-      patch("about", "imageUrl", data.url);
+      patch(section, "imageUrl", data.url);
     } catch (err: unknown) {
       setUploadError(err instanceof Error ? err.message : "Uploaden mislukt");
     } finally {
-      setUploading(false);
+      setUploadingSection(null);
     }
   }
 
@@ -279,6 +284,90 @@ export default function ContentForm({
     }
   }
 
+  /* -------------------- Algemene Voorwaarden helpers -------------------- */
+  const termsContent = content.terms ?? {
+    eyebrow: "Juridisch",
+    title: "Algemene Voorwaarden",
+    subtitle: "Duidelijke afspraken voor workshops, webinars en begeleiding door WAIsely.",
+    lastUpdated: "Oktober 2026",
+    sections: [],
+  };
+
+  function patchTermsField(field: string, val: unknown) {
+    setContent((prev) => ({
+      ...prev,
+      terms: {
+        ...(prev.terms ?? termsContent),
+        [field]: val,
+      },
+    }));
+  }
+
+  function patchTermsSection(index: number, part: "title" | "body", val: string) {
+    const sections = [...(content.terms?.sections ?? termsContent.sections)];
+    sections[index] = { ...sections[index], [part]: val };
+    patchTermsField("sections", sections);
+  }
+
+  function addTermsSection() {
+    const sections = [...(content.terms?.sections ?? termsContent.sections)];
+    sections.push({
+      id: `sec_${Date.now()}`,
+      title: `${sections.length + 1}. Nieuw artikel`,
+      body: "Beschrijving of voorwaarden van dit artikel...",
+    });
+    patchTermsField("sections", sections);
+  }
+
+  function removeTermsSection(index: number) {
+    const sections = [...(content.terms?.sections ?? termsContent.sections)].filter(
+      (_, i) => i !== index
+    );
+    patchTermsField("sections", sections);
+  }
+
+  /* -------------------- Privacyverklaring helpers -------------------- */
+  const privacyContent = content.privacy ?? {
+    eyebrow: "Privacy",
+    title: "Privacyverklaring",
+    subtitle: "Hoe WAIsely zorgvuldig omgaat met persoonsgegevens conform de AVG / GDPR.",
+    lastUpdated: "Oktober 2026",
+    sections: [],
+  };
+
+  function patchPrivacyField(field: string, val: unknown) {
+    setContent((prev) => ({
+      ...prev,
+      privacy: {
+        ...(prev.privacy ?? privacyContent),
+        [field]: val,
+      },
+    }));
+  }
+
+  function patchPrivacySection(index: number, part: "title" | "body", val: string) {
+    const sections = [...(content.privacy?.sections ?? privacyContent.sections)];
+    sections[index] = { ...sections[index], [part]: val };
+    patchPrivacyField("sections", sections);
+  }
+
+  function addPrivacySection() {
+    const sections = [...(content.privacy?.sections ?? privacyContent.sections)];
+    sections.push({
+      id: `sec_p${Date.now()}`,
+      title: `${sections.length + 1}. Nieuwe sectie`,
+      body: "Tekst van deze privacy-sectie...",
+    });
+    patchPrivacyField("sections", sections);
+  }
+
+  function removePrivacySection(index: number) {
+    const sections = [...(content.privacy?.sections ?? privacyContent.sections)].filter(
+      (_, i) => i !== index
+    );
+    patchPrivacyField("sections", sections);
+  }
+
   const servicesSec = content.servicesSection ?? {
     eyebrow: "Modules",
     title: "Stel je workshop samen",
@@ -428,6 +517,68 @@ export default function ContentForm({
                 <Icon name="plus" size={15} />
                 Statistiekkaart toevoegen
               </Button>
+            </div>
+
+            {/* Hero foto bovenaan */}
+            <div className="mt-4 pt-4 border-t border-border">
+              <FieldLabel>Hero Foto (bovenaan de startpagina)</FieldLabel>
+              <p className="mb-3 text-xs text-muted-foreground">
+                Upload een foto van jezelf voor de startpagina (wordt getoond naast de titel bovenaan) of voer een URL in.
+              </p>
+
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <div className="relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius)] border border-border bg-surface shadow-[var(--shadow-sm)]">
+                  {content.hero.imageUrl ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={content.hero.imageUrl}
+                        alt="Hero preview"
+                        className="h-full w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => patch("hero", "imageUrl", "")}
+                        className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white shadow transition-colors hover:bg-red-700"
+                        title="Afbeelding verwijderen"
+                      >
+                        <Icon name="trash" size={13} />
+                      </button>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-muted-foreground">
+                      <Icon name="image" size={28} />
+                      <span className="mt-1 text-[10px]">Geen foto</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 space-y-3">
+                  <div>
+                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--radius)] border border-border bg-surface px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-muted">
+                      <Icon name="upload" size={16} />
+                      {uploadingSection === "hero" ? "Uploaden…" : "Kies foto van computer"}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                        className="hidden"
+                        disabled={uploadingSection === "hero"}
+                        onChange={(e) => handleImageUploadSection("hero", e)}
+                      />
+                    </label>
+                    {uploadError && uploadingSection === "hero" ? (
+                      <p className="mt-1.5 text-xs text-red-600">{uploadError}</p>
+                    ) : null}
+                  </div>
+
+                  <FieldInput
+                    label="Of geef een afbeeldings-URL op"
+                    value={content.hero.imageUrl ?? ""}
+                    onChange={(e) => patch("hero", "imageUrl", e.target.value)}
+                    placeholder="https://... of /uploads/..."
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </fieldset>
@@ -623,16 +774,16 @@ export default function ContentForm({
                   <div>
                     <label className="inline-flex cursor-pointer items-center gap-2 rounded-[var(--radius)] border border-border bg-surface px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-muted">
                       <Icon name="upload" size={16} />
-                      {uploading ? "Uploaden…" : "Kies afbeelding van computer"}
+                      {uploadingSection === "about" ? "Uploaden…" : "Kies afbeelding van computer"}
                       <input
                         type="file"
                         accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
                         className="hidden"
-                        disabled={uploading}
-                        onChange={handleImageUpload}
+                        disabled={uploadingSection === "about"}
+                        onChange={(e) => handleImageUploadSection("about", e)}
                       />
                     </label>
-                    {uploadError ? (
+                    {uploadError && uploadingSection === "about" ? (
                       <p className="mt-1.5 text-xs text-red-600">{uploadError}</p>
                     ) : null}
                   </div>
@@ -929,8 +1080,22 @@ export default function ContentForm({
               type="email"
               value={content.footer.socialEmail}
               onChange={(e) => patch("footer", "socialEmail", e.target.value)}
-              placeholder="sabrina@waisely.biz"
-              help="De e-mail achter het mail-icoon in de footer."
+              placeholder="info@waisely.biz"
+              help="Het getoonde e-mailadres in de footer."
+            />
+            <FieldInput
+              label="LinkedIn-URL"
+              value={content.footer.linkedinUrl ?? ""}
+              onChange={(e) => patch("footer", "linkedinUrl", e.target.value)}
+              placeholder="https://www.linkedin.com/company/waisely"
+              help="De link achter het LinkedIn-icoon in de footer."
+            />
+            <FieldInput
+              label="Ondernemingsnummer (KBO)"
+              value={content.footer.companyNumber ?? ""}
+              onChange={(e) => patch("footer", "companyNumber", e.target.value)}
+              placeholder="BE 0xxx.xxx.xxx"
+              help="Het officiële btw-/ondernemingsnummer dat in de footer getoond wordt."
             />
           </div>
         </fieldset>
@@ -1207,6 +1372,180 @@ export default function ContentForm({
                     }
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      ) : null}
+
+      {/* --------------------------- ALGEMENE VOORWAARDEN --------------------------- */}
+      {saveKeys.includes("terms") ? (
+        <fieldset className="rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)]">
+          <legend className="px-2 text-sm font-bold uppercase tracking-wider text-accent">
+            Algemene Voorwaarden
+          </legend>
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <FieldInput
+                label="Paginatitel"
+                value={termsContent.title}
+                onChange={(e) => patchTermsField("title", e.target.value)}
+                placeholder="Algemene Voorwaarden"
+              />
+              <FieldInput
+                label="Laatst bijgewerkt"
+                value={termsContent.lastUpdated ?? ""}
+                onChange={(e) => patchTermsField("lastUpdated", e.target.value)}
+                placeholder="bv. Oktober 2026"
+              />
+            </div>
+            <FieldInput
+              label="Ondertitel / Introductie"
+              value={termsContent.subtitle ?? ""}
+              onChange={(e) => patchTermsField("subtitle", e.target.value)}
+              placeholder="Duidelijke afspraken voor workshops en webinars..."
+            />
+
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="mb-3 flex items-center justify-between">
+                <FieldLabel>
+                  Artikelen / Secties ({termsContent.sections.length})
+                </FieldLabel>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="px-3.5 py-1.5 text-xs"
+                  onClick={addTermsSection}
+                >
+                  <Icon name="plus" size={14} />
+                  Artikel toevoegen
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {termsContent.sections.map((section, idx) => (
+                  <div
+                    key={section.id || idx}
+                    className="rounded-[var(--radius)] border border-border bg-surface-muted p-4 space-y-3"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex-1">
+                        <FieldInput
+                          label={`Artikel ${idx + 1} — Titel`}
+                          value={section.title}
+                          onChange={(e) =>
+                            patchTermsSection(idx, "title", e.target.value)
+                          }
+                          placeholder="bv. 1. Toepasselijkheid"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeTermsSection(idx)}
+                        className="mt-6 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius)] border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                        title="Artikel verwijderen"
+                      >
+                        <Icon name="trash" size={15} />
+                      </button>
+                    </div>
+                    <FieldTextarea
+                      label="Inhoud van het artikel"
+                      rows={3}
+                      value={section.body}
+                      onChange={(e) =>
+                        patchTermsSection(idx, "body", e.target.value)
+                      }
+                      placeholder="Tekst van dit artikel..."
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      ) : null}
+
+      {/* --------------------------- PRIVACYVERKLARING --------------------------- */}
+      {saveKeys.includes("privacy") ? (
+        <fieldset className="rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)]">
+          <legend className="px-2 text-sm font-bold uppercase tracking-wider text-accent">
+            Privacyverklaring
+          </legend>
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <FieldInput
+                label="Paginatitel"
+                value={privacyContent.title}
+                onChange={(e) => patchPrivacyField("title", e.target.value)}
+                placeholder="Privacyverklaring"
+              />
+              <FieldInput
+                label="Laatst bijgewerkt"
+                value={privacyContent.lastUpdated ?? ""}
+                onChange={(e) => patchPrivacyField("lastUpdated", e.target.value)}
+                placeholder="bv. Oktober 2026"
+              />
+            </div>
+            <FieldInput
+              label="Ondertitel / Introductie"
+              value={privacyContent.subtitle ?? ""}
+              onChange={(e) => patchPrivacyField("subtitle", e.target.value)}
+              placeholder="Hoe WAIsely zorgvuldig omgaat met persoonsgegevens..."
+            />
+
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="mb-3 flex items-center justify-between">
+                <FieldLabel>
+                  Privacy-onderdelen / Secties ({privacyContent.sections.length})
+                </FieldLabel>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="px-3.5 py-1.5 text-xs"
+                  onClick={addPrivacySection}
+                >
+                  <Icon name="plus" size={14} />
+                  Sectie toevoegen
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {privacyContent.sections.map((section, idx) => (
+                  <div
+                    key={section.id || idx}
+                    className="rounded-[var(--radius)] border border-border bg-surface-muted p-4 space-y-3"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex-1">
+                        <FieldInput
+                          label={`Onderdeel ${idx + 1} — Titel`}
+                          value={section.title}
+                          onChange={(e) =>
+                            patchPrivacySection(idx, "title", e.target.value)
+                          }
+                          placeholder="bv. 1. Welke gegevens verzamelen we?"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removePrivacySection(idx)}
+                        className="mt-6 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius)] border border-red-200 text-red-600 transition-colors hover:bg-red-50"
+                        title="Onderdeel verwijderen"
+                      >
+                        <Icon name="trash" size={15} />
+                      </button>
+                    </div>
+                    <FieldTextarea
+                      label="Inhoud van dit onderdeel"
+                      rows={3}
+                      value={section.body}
+                      onChange={(e) =>
+                        patchPrivacySection(idx, "body", e.target.value)
+                      }
+                      placeholder="Tekst van deze sectie..."
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>

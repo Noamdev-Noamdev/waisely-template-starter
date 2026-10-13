@@ -74,28 +74,37 @@ export default function Contact({ content }: { content: SiteContent }) {
                     </a>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-surface text-accent">
-                    <Icon name="phone" size={18} />
-                  </span>
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Telefoon
-                    </p>
-                    <p className="font-medium text-foreground">{contact.phone}</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-surface text-accent">
-                    <Icon name="map-pin" size={18} />
-                  </span>
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      Locatie
-                    </p>
-                    <p className="font-medium text-foreground">{contact.address}</p>
-                  </div>
-                </li>
+                {contact.phone && contact.phone.trim() ? (
+                  <li className="flex items-start gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-surface text-accent">
+                      <Icon name="phone" size={18} />
+                    </span>
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Telefoon
+                      </p>
+                      <a
+                        href={`tel:${contact.phone}`}
+                        className="font-medium text-foreground transition-colors hover:text-accent"
+                      >
+                        {contact.phone}
+                      </a>
+                    </div>
+                  </li>
+                ) : null}
+                {contact.address && contact.address.trim() ? (
+                  <li className="flex items-start gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-surface text-accent">
+                      <Icon name="map-pin" size={18} />
+                    </span>
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        Locatie
+                      </p>
+                      <p className="font-medium text-foreground">{contact.address}</p>
+                    </div>
+                  </li>
+                ) : null}
               </ul>
             </div>
           </Reveal>

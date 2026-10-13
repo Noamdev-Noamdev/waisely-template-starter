@@ -92,6 +92,7 @@ export interface SiteContent {
     primaryCtaLabel: string;
     secondaryCtaLabel: string;
     stats?: HeroStat[];
+    imageUrl?: string;
   };
   intro: {
     title: string;
@@ -135,10 +136,32 @@ export interface SiteContent {
     instagramUrl: string;
     socialEmail: string;
     copyrightText?: string;
+    linkedinUrl?: string;
+    companyNumber?: string;
   };
   bookTraining: BookTrainingContent;
   /** Alles wat op de /pers-pagina staat (teksten, reviews, Instagram-posts). */
   press: PressContent;
+  /** Algemene voorwaarden pagina */
+  terms?: LegalPageContent;
+  /** Privacyverklaring pagina */
+  privacy?: LegalPageContent;
+}
+
+/** Eén paragraaf/sectie op een juridische pagina (algemene voorwaarden / privacy). */
+export interface LegalSection {
+  id: string;
+  title: string;
+  body: string;
+}
+
+/** Inhoud van een juridische pagina. */
+export interface LegalPageContent {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  lastUpdated?: string;
+  sections: LegalSection[];
 }
 
 /** Eén review/ervaring van een deelnemer (getoond op /pers). */

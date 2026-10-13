@@ -79,9 +79,18 @@ export default async function AdminIndexPage() {
     {
       href: "/admin/content/contact",
       icon: "mail",
-      title: "Contactgegevens",
+      title: "Contact & footer",
       count: null,
-      hint: "E-mail, telefoon, adres",
+      hint: "E-mail, LinkedIn, ondernemingsnummer",
+    },
+    {
+      href: "/admin/content/voorwaarden",
+      icon: "shield",
+      title: "Voorwaarden & Privacy",
+      count:
+        (content.terms?.sections.length ?? 0) +
+        (content.privacy?.sections.length ?? 0),
+      hint: "Algemene voorwaarden & privacyverklaring",
     },
     {
       href: "/admin/content/pers",

@@ -39,9 +39,10 @@ export const seedSiteContent: SiteContent = {
     secondaryCtaLabel: "Meer over WAIsely",
     stats: [
       { value: "20+", label: "Jaar onderwijservaring" },
-      { value: "8", label: "Modulaire thema's" },
+      { value: "7", label: "Modulaire thema's" },
       { value: "Op maat", label: "Elke workshop uniek" },
     ],
+    imageUrl: "",
   },
   intro: {
     title: "AI hoeft niet overweldigend te zijn",
@@ -52,7 +53,7 @@ export const seedSiteContent: SiteContent = {
     eyebrow: "Modules",
     title: "Stel je workshop samen",
     subtitle:
-      "Kies maximaal drie modules die je combineert tot een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden die je meteen kunt inzetten.",
+      "Kies maximaal drie modules die je combineert tot een workshop van 2 tot 3 uur, afhankelijk van hoeveel tijd je wilt overhouden voor oefening.",
     primaryCtaLabel: "Boek een training",
     secondaryCtaLabel: "Of neem vrijblijvend contact op",
   },
@@ -116,7 +117,7 @@ export const seedSiteContent: SiteContent = {
     title: "Neem contact op",
     body: "Benieuwd wat WAIsely voor jouw school kan betekenen? Stuur een bericht of plan een vrijblijvend kennismakingsgesprek. Ik denk graag mee over een aanpak op maat.",
     email: "info@waisely.biz",
-    phone: "+32 486 12 34 56",
+    phone: "",
     address: "Antwerpen, België",
     formTitle: "Stuur een bericht",
     formSubtitle: "Ik reageer doorgaans binnen 2 werkdagen.",
@@ -128,18 +129,20 @@ export const seedSiteContent: SiteContent = {
     instagramUrl: "https://www.instagram.com/waisely",
     socialEmail: "sabrina@waisely.biz",
     copyrightText: "Alle rechten voorbehouden.",
+    linkedinUrl: "https://www.linkedin.com/company/waisely",
+    companyNumber: "BE 0xxx.xxx.xxx",
   },
   bookTraining: {
     eyebrow: "Boek een training",
     title: "Workshop of webinar aanvragen",
     description:
       "Bedankt voor je interesse in een WAIsely-vorming. Vul eerst het intake-formulier in zodat we de inhoud zo goed mogelijk kunnen afstemmen op uw school of instelling. Kies daarna de modules die het beste bij uw situatie passen.",
-    contactPrompt: "Liever eerst even bellen?",
+    contactPrompt: "Liever eerst even persoonlijk afstemmen?",
     contactLinkText: "Neem contact op",
     step1Title: "Intake-formulier",
     step2Title: "Kies uw modules",
     step2Description:
-      "Kies tot drie modules die je combineert in een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden en werkvormen die je meteen kunt inzetten.",
+      "Kies tot drie modules die je combineert tot een workshop van 2 tot 3 uur, afhankelijk van hoeveel tijd je wilt overhouden voor oefening.",
     moduleSelectorCta: "Workshop aanvragen",
     intakeSuccessTitle: "Bedankt voor je intake!",
     intakeSuccessMessage:
@@ -195,6 +198,84 @@ export const seedSiteContent: SiteContent = {
     instagramButtonLabel: "Volg op Instagram",
     instagramProfileUrl: "",
     instagramPosts: [],
+  },
+  terms: {
+    eyebrow: "Juridisch",
+    title: "Algemene Voorwaarden",
+    subtitle:
+      "Duidelijke afspraken voor workshops, webinars en begeleiding door WAIsely.",
+    lastUpdated: "Oktober 2026",
+    sections: [
+      {
+        id: "sec_1",
+        title: "1. Toepasselijkheid",
+        body: "Deze algemene voorwaarden zijn van toepassing op alle aanbiedingen, offertes, workshops, webinars en overeenkomsten van WAIsely, gevestigd te Antwerpen, tenzij schriftelijk uitdrukkelijk anders is overeengekomen.",
+      },
+      {
+        id: "sec_2",
+        title: "2. Aanbod en totstandkoming van de overeenkomst",
+        body: "Elk aanbod en elke offerte van WAIsely is vrijblijvend en geldig gedurende 30 dagen, tenzij anders aangegeven. De overeenkomst komt tot stand zodra de opdrachtgever de offerte schriftelijk of elektronisch bevestigt, of wanneer WAIsely met de uitvoering van de opdracht is begonnen.",
+      },
+      {
+        id: "sec_3",
+        title: "3. Tarieven en betaling",
+        body: "Alle prijzen worden vermeld in euro en zijn exclusief btw (tenzij anders vermeld). Facturen dienen te worden voldaan binnen 30 dagen na factuurdatum. Bij niet-tijdige betaling kan van rechtswege en zonder ingebrekestelling een verwijlintrest worden aangerekend.",
+      },
+      {
+        id: "sec_4",
+        title: "4. Annulering en verplaatsing",
+        body: "Annulering van een geplande workshop of webinar dient steeds schriftelijk te gebeuren. Bij annulering tot 14 dagen voor de geplande datum worden geen kosten in rekening gebracht. Bij annulering tussen 14 en 7 dagen voor aanvang wordt 50% van het overeengekomen bedrag aangerekend. Bij annulering binnen 7 dagen voor aanvang is het volledige bedrag verschuldigd.",
+      },
+      {
+        id: "sec_5",
+        title: "5. Intellectueel eigendom",
+        body: "Alle ontwikkelde presentaties, hand-outs, lesmaterialen, prompts en andere cursusmaterialen blijven het exclusieve intellectuele eigendom van WAIsely. Materialen mogen uitsluitend worden gebruikt voor eigen interne educatieve doeleinden en mogen niet zonder voorafgaande schriftelijke toestemming worden verspreid of vermenigvuldigd.",
+      },
+      {
+        id: "sec_6",
+        title: "6. Aansprakelijkheid",
+        body: "WAIsely spant zich in om de diensten met de nodige zorgvuldigheid en deskundigheid uit te voeren. De aansprakelijkheid van WAIsely is te allen tijde beperkt tot het factuurbedrag van de desbetreffende opdracht. WAIsely is niet aansprakelijk voor indirecte schade of gevolgschade.",
+      },
+    ],
+  },
+  privacy: {
+    eyebrow: "Privacy",
+    title: "Privacyverklaring",
+    subtitle:
+      "Hoe WAIsely zorgvuldig omgaat met persoonsgegevens conform de AVG / GDPR.",
+    lastUpdated: "Oktober 2026",
+    sections: [
+      {
+        id: "sec_p1",
+        title: "1. Wie zijn we?",
+        body: "WAIsely is verantwoordelijk voor de verwerking van persoonsgegevens zoals weergegeven in deze privacyverklaring. Voor vragen over privacy en gegevensbescherming kun je contact opnemen via info@waisely.biz.",
+      },
+      {
+        id: "sec_p2",
+        title: "2. Welke gegevens verzamelen we?",
+        body: "Wij verwerken persoonsgegevens die je zelf aan ons verstrekt wanneer je het contactformulier, intakeformulier of boekingsformulier invult. Dit betreft onder meer: naam, school/organisatie, functie, e-mailadres, telefoonnummer (indien verstrekt) en jouw specifieke leervragen of opleidingswensen.",
+      },
+      {
+        id: "sec_p3",
+        title: "3. Waarvoor gebruiken we deze gegevens?",
+        body: "Jouw gegevens worden uitsluitend gebruikt om contact met je op te nemen over je aanvraag, om workshops en webinars op maat van jouw school voor te bereiden, en voor de administratieve en facturatie-afhandeling.",
+      },
+      {
+        id: "sec_p4",
+        title: "4. Bewaartermijn",
+        body: "WAIsely bewaart persoonsgegevens niet langer dan strikt noodzakelijk is om de doelen te realiseren waarvoor je gegevens worden verzameld, dan wel op grond van wettelijke bewaarplichten (zoals de fiscale bewaartermijn van 7 jaar voor facturen).",
+      },
+      {
+        id: "sec_p5",
+        title: "5. Delen met derden",
+        body: "WAIsely verkoopt jouw gegevens nooit aan derden en verstrekt deze uitsluitend indien dit nodig is voor de uitvoering van onze overeenkomst met jou of om te voldoen aan een wettelijke verplichting.",
+      },
+      {
+        id: "sec_p6",
+        title: "6. Jouw rechten",
+        body: "Je hebt het recht om je persoonsgegevens in te zien, te corrigeren of te laten verwijderen. Daarnaast heb je het recht om je toestemming voor de gegevensverwerking in te trekken of bezwaar te maken tegen de verwerking van jouw persoonsgegevens door WAIsely. Neem hiervoor contact op via info@waisely.biz.",
+      },
+    ],
   },
 };
 

@@ -34,7 +34,7 @@ const SECTIONS = [
   },
   {
     href: "/admin/content/diensten",
-    label: "Diensten",
+    label: "Diensten & Modules",
     icon: "grid",
   },
   {
@@ -56,6 +56,11 @@ const SECTIONS = [
     href: "/admin/content/contact",
     label: "Contact & footer",
     icon: "mail",
+  },
+  {
+    href: "/admin/content/voorwaarden",
+    label: "Voorwaarden & Privacy",
+    icon: "shield",
   },
   {
     href: "/admin/content/pers",

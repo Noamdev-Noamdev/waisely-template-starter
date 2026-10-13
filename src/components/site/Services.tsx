@@ -47,7 +47,6 @@ export default function Services({
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services
             .sort((a, b) => a.order - b.order)
-            .slice(0, 6)
             .map((service, i) => (
               <Reveal key={service.id} delay={i * 100}>
                 <article className="card-hover group flex h-full flex-col rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-md)]">

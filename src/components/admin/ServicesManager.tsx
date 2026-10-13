@@ -125,8 +125,60 @@ export default function ServicesManager({
     );
   }
 
+  /** Volgorde één plaats omhoog of omlaag verplaatsen. */
+  async function handleMove(service: Service, direction: "up" | "down") {
+    const sorted = [...services].sort((a, b) => a.order - b.order);
+    const index = sorted.findIndex((s) => s.id === service.id);
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= sorted.length) return;
+
+    const other = sorted[targetIndex];
+    const newOrderService = other.order;
+    const newOrderOther = service.order;
+
+    setBusy(true);
+    setError(null);
+    try {
+      await Promise.all([
+        fetch("/api/admin/services", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...service, order: newOrderService }),
+        }),
+        fetch("/api/admin/services", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...other, order: newOrderOther }),
+        }),
+      ]);
+      setServices((prev) =>
+        prev.map((s) =>
+          s.id === service.id
+            ? { ...s, order: newOrderService }
+            : s.id === other.id
+            ? { ...s, order: newOrderOther }
+            : s
+        )
+      );
+      router.refresh();
+    } catch {
+      setError("Volgorde wijzigen mislukt.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between pb-2">
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          {services.length} actieve modules
+        </span>
+        <Button variant="secondary" onClick={handleAdd} disabled={busy}>
+          <Icon name="plus" size={15} />
+          Module toevoegen
+        </Button>
+      </div>
       {error ? (
         <p className="rounded-[var(--radius)] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
@@ -230,7 +282,25 @@ export default function ServicesManager({
                       </p>
                     </div>
                   </div>
-                  <div className="flex shrink-0 gap-2">
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleMove(service, "up")}
+                      disabled={busy}
+                      title="Verplaats omhoog"
+                      className="flex h-8 w-8 items-center justify-center rounded-[var(--radius)] border border-border text-muted-foreground transition-colors hover:bg-surface-muted hover:text-foreground disabled:opacity-40"
+                    >
+                      <Icon name="chevron-up" size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleMove(service, "down")}
+                      disabled={busy}
+                      title="Verplaats omlaag"
+                      className="flex h-8 w-8 items-center justify-center rounded-[var(--radius)] border border-border text-muted-foreground transition-colors hover:bg-surface-muted hover:text-foreground disabled:opacity-40"
+                    >
+                      <Icon name="chevron-down" size={14} />
+                    </button>
                     <Button
                       variant="secondary"
                       onClick={() => setEditingId(service.id)}
