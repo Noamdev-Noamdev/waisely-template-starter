@@ -21,7 +21,7 @@ export const metadata = {
 export default async function RegisterPage() {
   const user = await getCurrentUser();
   if (user) {
-    redirect(user.role === "admin" ? "/admin" : "/dashboard");
+    redirect(user.role === "admin" || user.role === "superadmin" ? "/admin" : "/dashboard");
   }
 
   return (

@@ -492,7 +492,7 @@ export function getSeedUsers(): User[] {
       email: ADMIN_EMAIL,
       passwordHash: bcrypt.hashSync(ADMIN_PASSWORD, 10),
       name: "Sabrina Carota",
-      role: "admin",
+      role: "superadmin",
       createdAt: new Date().toISOString(),
     },
     {

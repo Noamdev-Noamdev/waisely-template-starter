@@ -2,8 +2,9 @@
  * ---------------------------------------------------------------------------
  * AdminSidebar.tsx — Navigatie in het admin-paneel
  * ---------------------------------------------------------------------------
- * Toont de beheer-secties met active-state op de huidige route. Mobiel
- * klapt de sidebar horizontaal boven de content.
+ * Toont de beheer-secties met active-state op de huidige route.
+ * De sectie "Gebruikers" is uitsluitend zichtbaar voor de superadmin (eigenaar).
+ * Bevat tevens "Mijn account" voor het wijzigen van het eigen wachtwoord.
  * ---------------------------------------------------------------------------
  */
 
@@ -13,84 +14,92 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Icon from "@/components/ui/Icon";
 import Badge from "@/components/ui/Badge";
+import type { Role } from "@/lib/types";
 
-/** Alle beheersecties; voeg hier nieuwe secties toe (bv. instellingen). */
+/** Algemene beheersecties voor alle admins en superadmins. */
 const SECTIONS = [
   {
     href: "/admin",
     label: "Overzicht",
-    icon: "dashboard",
+    icon: "dashboard" as const,
     exact: true,
   },
   {
     href: "/admin/content/teksten",
     label: "Site-teksten",
-    icon: "pen",
+    icon: "pen" as const,
   },
   {
     href: "/admin/content/navigatie",
     label: "Navigatie",
-    icon: "layers",
+    icon: "layers" as const,
   },
   {
     href: "/admin/content/diensten",
     label: "Diensten & Modules",
-    icon: "grid",
+    icon: "grid" as const,
   },
   {
     href: "/admin/content/trainingen",
     label: "Training boeken",
-    icon: "calendar",
+    icon: "calendar" as const,
   },
   {
     href: "/admin/content/waarom",
     label: "Waarom-punten",
-    icon: "check",
+    icon: "check" as const,
   },
   {
     href: "/admin/content/over",
     label: "Over WAIsely",
-    icon: "user",
+    icon: "user" as const,
   },
   {
     href: "/admin/content/contact",
     label: "Contact & footer",
-    icon: "mail",
+    icon: "mail" as const,
   },
   {
     href: "/admin/content/voorwaarden",
     label: "Juridisch & Privacy",
-    icon: "shield",
+    icon: "shield" as const,
   },
   {
     href: "/admin/content/pers",
     label: "Pers-pagina",
-    icon: "quote",
+    icon: "quote" as const,
   },
   {
     href: "/admin/aanvragen",
     label: "Aanvragen",
-    icon: "calendar",
+    icon: "calendar" as const,
   },
   {
     href: "/admin/kennisbank",
     label: "Kennisbank",
-    icon: "book",
+    icon: "book" as const,
   },
   {
     href: "/admin/nieuws",
     label: "Nieuws & pers",
-    icon: "news",
+    icon: "news" as const,
   },
   {
-    href: "/admin/gebruikers",
-    label: "Gebruikers",
-    icon: "users",
+    href: "/admin/account",
+    label: "Mijn account",
+    icon: "settings" as const,
   },
 ];
 
-export default function AdminSidebar({ userName }: { userName: string }) {
+export default function AdminSidebar({
+  userName,
+  userRole,
+}: {
+  userName: string;
+  userRole?: Role;
+}) {
   const pathname = usePathname();
+  const isSuper = userRole === "superadmin";
 
   return (
     <aside className="w-full lg:w-64 lg:shrink-0">
@@ -103,8 +112,8 @@ export default function AdminSidebar({ userName }: { userName: string }) {
           <p className="truncate text-sm font-semibold text-foreground">
             {userName}
           </p>
-          <Badge tone="warning" className="mt-0.5">
-            Admin
+          <Badge tone={isSuper ? "neutral" : "warning"} className="mt-0.5">
+            {isSuper ? "Superadmin" : "Admin"}
           </Badge>
         </div>
         {/* Terug naar site knop op mobiel/tablet */}
@@ -138,6 +147,31 @@ export default function AdminSidebar({ userName }: { userName: string }) {
             </Link>
           );
         })}
+
+        {/* Duidelijk afgebakende sectie Gebruikers: uitsluitend zichtbaar voor superadmin */}
+        {isSuper ? (
+          <div className="w-full pt-3 mt-1 border-t border-border/70">
+            <p className="hidden lg:block px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+              Eigenaar / Beheer
+            </p>
+            <Link
+              href="/admin/gebruikers"
+              className={`inline-flex shrink-0 items-center justify-between w-full rounded-[var(--radius)] px-3 py-2 text-xs sm:text-sm font-medium transition-colors ${
+                pathname.startsWith("/admin/gebruikers")
+                  ? "bg-accent text-accent-foreground shadow-[var(--shadow-accent)]"
+                  : "text-muted-foreground hover:bg-surface-muted hover:text-foreground"
+              }`}
+            >
+              <span className="inline-flex items-center gap-2">
+                <Icon name="users" size={15} />
+                Gebruikers & Rollen
+              </span>
+              <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+                Superadmin
+              </span>
+            </Link>
+          </div>
+        ) : null}
       </nav>
 
       {/* Terug naar site (desktop) */}

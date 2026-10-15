@@ -28,7 +28,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {user?.role === "admin" ? <AdminBanner /> : null}
+      {user?.role === "admin" || user?.role === "superadmin" ? <AdminBanner /> : null}
 
       <Hero content={siteContent} />
       <Intro content={siteContent} />

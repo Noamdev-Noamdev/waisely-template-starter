@@ -146,7 +146,7 @@ export default function Navbar({
         <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
-              {user.role === "admin" ? (
+              {user.role === "admin" || user.role === "superadmin" ? (
                 <Link
                   href="/admin"
                   className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
@@ -238,7 +238,7 @@ export default function Navbar({
             <div className="mt-3 flex flex-col gap-2 border-t border-border pt-4">
               {user ? (
                 <>
-                  {user.role === "admin" ? (
+                  {user.role === "admin" || user.role === "superadmin" ? (
                     <Link
                       href="/admin"
                       className="inline-flex items-center gap-2 rounded-[var(--radius)] bg-surface-muted px-3 py-2 text-sm font-semibold text-foreground"

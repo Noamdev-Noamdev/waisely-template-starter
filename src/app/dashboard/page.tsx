@@ -19,6 +19,7 @@ import Icon from "@/components/ui/Icon";
 import { ButtonLink } from "@/components/ui/Button";
 import KnowledgeList from "@/components/dashboard/KnowledgeList";
 import BookingsList from "@/components/dashboard/BookingsList";
+import PasswordChangeForm from "@/components/auth/PasswordChangeForm";
 
 export const metadata = {
   title: "Dashboard",
@@ -161,6 +162,53 @@ export default async function DashboardPage() {
           </span>
         </div>
         <KnowledgeList items={knowledge} />
+      </section>
+
+      {/* Account & Beveiliging */}
+      <section className="mt-12 border-t border-border/70 pt-10">
+        <div className="mb-4">
+          <h2 className="text-xl font-bold text-foreground">
+            Account & Beveiliging
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Beheer hier je inloggegevens en wijzig je wachtwoord.
+          </p>
+        </div>
+
+        <div className="rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)] max-w-xl">
+          <div className="mb-6 pb-5 border-b border-border/60">
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+              <div>
+                <dt className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                  Naam
+                </dt>
+                <dd className="mt-1 font-medium text-foreground">{user.name}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                  E-mailadres
+                </dt>
+                <dd className="mt-1 font-medium text-foreground">{user.email}</dd>
+              </div>
+              {user.organization ? (
+                <div className="sm:col-span-2">
+                  <dt className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                    Organisatie / School
+                  </dt>
+                  <dd className="mt-1 font-medium text-foreground">{user.organization}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </div>
+
+          <h3 className="text-sm font-semibold text-foreground mb-1">
+            Wachtwoord wijzigen
+          </h3>
+          <p className="text-xs text-muted-foreground mb-4">
+            Na het wijzigen van je wachtwoord worden alle andere actieve sessies direct beëindigd.
+          </p>
+          <PasswordChangeForm />
+        </div>
       </section>
     </div>
   );

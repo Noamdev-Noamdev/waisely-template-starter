@@ -10,7 +10,7 @@
 
 import { NextResponse } from "next/server";
 import { get, save, uid } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 import { seedSiteContent } from "@/lib/seed";
 import { normalizeInstagramUrl } from "@/lib/instagram";
 import type {
@@ -21,8 +21,8 @@ import type {
 } from "@/lib/types";
 
 export async function GET() {
-  const user = await getCurrentUser();
-  if (user?.role !== "admin") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "Admin-toegang vereist." }, { status: 403 });
   }
   const content = await get("siteContent");
@@ -30,8 +30,8 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const user = await getCurrentUser();
-  if (user?.role !== "admin") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "Admin-toegang vereist." }, { status: 403 });
   }
 
@@ -194,8 +194,8 @@ function sanitizePress(
 
 /** POST herstelt de standaard (seed) content — handig bij demo's/reset. */
 export async function POST() {
-  const user = await getCurrentUser();
-  if (user?.role !== "admin") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "Admin-toegang vereist." }, { status: 403 });
   }
   await save("siteContent", seedSiteContent);

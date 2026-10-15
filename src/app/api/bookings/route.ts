@@ -10,7 +10,7 @@
 
 import { NextResponse } from "next/server";
 import { get, save, uid } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, requireAdmin } from "@/lib/auth";
 import type { Booking, BookingStatus } from "@/lib/types";
 
 const STATUSES: BookingStatus[] = ["new", "confirmed", "done", "cancelled"];
@@ -67,8 +67,8 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const user = await getCurrentUser();
-  if (user?.role !== "admin") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json(
       { error: "Alleen de admin kan aanvragen beheren." },
       { status: 403 }
@@ -97,8 +97,8 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const user = await getCurrentUser();
-  if (user?.role !== "admin") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json(
       { error: "Alleen de admin kan aanvragen verwijderen." },
       { status: 403 }

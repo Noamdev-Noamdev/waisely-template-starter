@@ -11,12 +11,11 @@
 
 import { NextResponse } from "next/server";
 import { get, save, uid } from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 import type { Service } from "@/lib/types";
 
 async function guard() {
-  const user = await getCurrentUser();
-  return user?.role === "admin" ? user : null;
+  return requireAdmin();
 }
 
 export async function GET() {

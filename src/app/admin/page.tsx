@@ -9,19 +9,23 @@
 
 import Link from "next/link";
 import { get } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
 import Icon from "@/components/ui/Icon";
 import Badge, { bookingStatusTone, bookingStatusLabel } from "@/components/ui/Badge";
 import { formatDate } from "@/lib/format";
 
 export default async function AdminIndexPage() {
-  const [bookings, services, knowledge, news, users, content] = await Promise.all([
+  const [bookings, services, knowledge, news, users, content, me] = await Promise.all([
     get("bookings"),
     get("services"),
     get("knowledge"),
     get("news"),
     get("users"),
     get("siteContent"),
+    getCurrentUser(),
   ]);
+
+  const isSuper = me?.role === "superadmin";
 
   const newBookings = bookings.filter((b) => b.status === "new");
 
@@ -114,12 +118,23 @@ export default async function AdminIndexPage() {
       hint: "Artikelen en persvermeldingen",
     },
     {
-      href: "/admin/gebruikers",
-      icon: "users",
-      title: "Gebruikers",
-      count: users.length,
-      hint: "Accounts en rollen",
+      href: "/admin/account",
+      icon: "settings",
+      title: "Mijn account",
+      count: null,
+      hint: "Wachtwoord & beveiliging",
     },
+    ...(isSuper
+      ? [
+          {
+            href: "/admin/gebruikers",
+            icon: "users" as const,
+            title: "Gebruikers & Rollen",
+            count: users.length,
+            hint: "Accounts, rollen en wachtwoorden",
+          },
+        ]
+      : []),
   ];
 
   return (

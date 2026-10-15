@@ -7,7 +7,7 @@
  */
 
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -22,8 +22,8 @@ const ALLOWED_TYPES = [
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
 
 export async function POST(request: Request) {
-  const user = await getCurrentUser();
-  if (user?.role !== "admin") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "Admin-toegang vereist." }, { status: 403 });
   }
 

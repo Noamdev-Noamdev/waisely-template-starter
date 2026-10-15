@@ -9,7 +9,7 @@
  */
 
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isAdmin } from "@/lib/auth";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export const metadata = {
@@ -23,13 +23,13 @@ export default async function AdminLayout({
 }) {
   const user = await getCurrentUser();
 
-  // Beveiliging op layout-niveau: elke /admin/*-pagina vereist de admin-rol.
+  // Beveiliging op layout-niveau: elke /admin/*-pagina vereist de admin- of superadmin-rol.
   if (!user) redirect("/login");
-  if (user.role !== "admin") redirect("/dashboard");
+  if (!isAdmin(user)) redirect("/dashboard");
 
   return (
     <div className="mx-auto flex flex-col lg:flex-row max-w-[1240px] gap-8 px-4 py-8 sm:px-6 md:py-12">
-      <AdminSidebar userName={user.name} />
+      <AdminSidebar userName={user.name} userRole={user.role} />
       {/* Content-gedeelte; kinderen zijn de losse beheerpagina's */}
       <div className="min-w-0 flex-1">{children}</div>
     </div>

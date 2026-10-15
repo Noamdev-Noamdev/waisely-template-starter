@@ -13,10 +13,10 @@
  * ---------------------------------------------------------------------------
  */
 
-/** Rollen binnen het accountsysteem. Voeg hier extra rollen toe indien gewenst. */
-export type Role = "user" | "admin";
+/** Rollen binnen het accountsysteem: reguliere gebruiker, admin en de superadmin (eigenaar). */
+export type Role = "user" | "admin" | "superadmin";
 
-/** Een account (leerkracht/school of admin). */
+/** Een account (leerkracht/school, admin of superadmin). */
 export interface User {
   id: string;
   email: string;
@@ -27,6 +27,8 @@ export interface User {
   /** Naam van school/organisatie (optioneel voor reguliere gebruikers). */
   organization?: string;
   createdAt: string;
+  /** Versie van sessie-tokens; wordt opgehoogd bij wachtwoordwijziging om andere actieve sessies in te trekken. */
+  tokenVersion?: number;
 }
 
 export interface NavigationLink {

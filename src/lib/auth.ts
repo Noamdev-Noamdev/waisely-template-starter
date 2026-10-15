@@ -54,6 +54,8 @@ interface SessionPayload {
   role: Role;
   /** Vervaltijd in ms sinds epoch. */
   exp: number;
+  /** Versienummer van sessies; wordt verhoogd bij wachtwoordwijziging om andere sessies in te trekken. */
+  tokenVersion?: number;
 }
 
 /* --------------------------- HMAC-helpers -------------------------------- */
@@ -153,6 +155,7 @@ export async function login(
     uid: user.id,
     role: user.role,
     exp: Date.now() + SESSION_TTL_SEC * 1000,
+    tokenVersion: user.tokenVersion ?? 1,
   };
   return { session: { token: createToken(payload), role: user.role } };
 }
@@ -199,7 +202,30 @@ export async function getCurrentUser(): Promise<User | null> {
   const payload = verifyToken(token);
   if (!payload) return null;
   const users = await get("users");
-  return users.find((u) => u.id === payload.uid) ?? null;
+  const user = users.find((u) => u.id === payload.uid);
+  if (!user) return null;
+
+  // Sessie-intrekking check: als het wachtwoord gewijzigd is, heeft de gebruiker
+  // een hogere tokenVersion gekregen. Oude tokens zijn ongeldig.
+  if (
+    user.tokenVersion !== undefined &&
+    payload.tokenVersion !== undefined &&
+    payload.tokenVersion !== user.tokenVersion
+  ) {
+    return null;
+  }
+
+  return user;
+}
+
+/** Controleert of een gebruiker beheerder is (admin of superadmin). */
+export function isAdmin(user: User | null | undefined): boolean {
+  return user?.role === "admin" || user?.role === "superadmin";
+}
+
+/** Controleert of een gebruiker de eigenaar/superadmin is. */
+export function isSuperadmin(user: User | null | undefined): boolean {
+  return user?.role === "superadmin";
 }
 
 /** Guard voor server-routes: ingelogd, anders null. */
@@ -207,8 +233,169 @@ export async function requireUser(): Promise<User | null> {
   return getCurrentUser();
 }
 
-/** Guard voor admin-routes: alleen geldig met rol "admin". */
+/** Guard voor admin-routes: geldig voor rol "admin" én "superadmin". */
 export async function requireAdmin(): Promise<User | null> {
   const user = await getCurrentUser();
-  return user?.role === "admin" ? user : null;
+  return isAdmin(user) ? user : null;
+}
+
+/** Guard voor superadmin-routes: uitsluitend geldig voor de rol "superadmin". */
+export async function requireSuperadmin(): Promise<User | null> {
+  const user = await getCurrentUser();
+  return isSuperadmin(user) ? user : null;
+}
+
+/* ------------------------ Wachtwoord wijzigen ----------------------------- */
+
+/**
+ * In-memory sliding window voor mislukte wachtwoordpogingen per gebruiker.
+ * Voorkomt brute-force pogingen op het huidige wachtwoord.
+ */
+interface FailedAttemptInfo {
+  count: number;
+  lockedUntil: number;
+}
+const failedPasswordAttempts = new Map<string, FailedAttemptInfo>();
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCKOUT_MS = 15 * 60 * 1000; // 15 minuten blokkade na 5 foute pogingen
+
+/**
+ * Wijzigt het wachtwoord van de ingelogde gebruiker.
+ * - Vereist het huidige wachtwoord ter verificatie.
+ * - Controleert dat het nieuwe wachtwoord minstens 8 tekens lang is en verschilt van het oude.
+ * - Verhoogt het versienummer van de tokens (tokenVersion) zodat alle andere actieve
+ *   sessies van deze gebruiker per direct ongeldig worden.
+ * - Retourneert een nieuw sessietoken voor de huidige client.
+ */
+export async function changePassword(
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+): Promise<{ success?: boolean; session?: SessionResult; error?: string }> {
+  const now = Date.now();
+  const attemptInfo = failedPasswordAttempts.get(userId);
+
+  if (attemptInfo && attemptInfo.lockedUntil > now) {
+    const remainingMinutes = Math.ceil((attemptInfo.lockedUntil - now) / 60000);
+    return {
+      error: `Te veel mislukte pogingen. Probeer het over ${remainingMinutes} ${remainingMinutes === 1 ? "minuut" : "minuten"} opnieuw.`,
+    };
+  }
+
+  // 1. Validatie van nieuw wachtwoord
+  if (!newPassword || typeof newPassword !== "string") {
+    return { error: "Voer een nieuw wachtwoord in." };
+  }
+  if (newPassword.length < 8) {
+    return { error: "Het nieuwe wachtwoord moet minstens 8 tekens bevatten." };
+  }
+  if (currentPassword === newPassword) {
+    return {
+      error: "Het nieuwe wachtwoord mag niet hetzelfde zijn als je huidige wachtwoord.",
+    };
+  }
+
+  // 2. Haal gebruiker op en verifieer huidig wachtwoord
+  const users = await get("users");
+  const user = users.find((u) => u.id === userId);
+  if (!user) {
+    return { error: "Gebruiker niet gevonden." };
+  }
+
+  const isCurrentValid = await bcrypt.compare(currentPassword, user.passwordHash);
+  if (!isCurrentValid) {
+    const newCount = (attemptInfo?.count ?? 0) + 1;
+    if (newCount >= MAX_FAILED_ATTEMPTS) {
+      failedPasswordAttempts.set(userId, {
+        count: newCount,
+        lockedUntil: now + LOCKOUT_MS,
+      });
+      return {
+        error:
+          "Het huidige wachtwoord is onjuist. Je account is uit veiligheid 15 minuten vergrendeld voor wachtwoordwijzigingen.",
+      };
+    } else {
+      failedPasswordAttempts.set(userId, {
+        count: newCount,
+        lockedUntil: 0,
+      });
+      const remaining = MAX_FAILED_ATTEMPTS - newCount;
+      return {
+        error: `Het huidige wachtwoord is onjuist. (Nog ${remaining} ${remaining === 1 ? "poging" : "pogingen"} over)`,
+      };
+    }
+  }
+
+  // Succesvolle verificatie: wis foutenteller
+  failedPasswordAttempts.delete(userId);
+
+  // 3. Hash nieuw wachtwoord en verhoog tokenVersion
+  const newHash = await bcrypt.hash(newPassword, 10);
+  const nextVersion = (user.tokenVersion ?? 1) + 1;
+
+  const updatedUsers = users.map((u) =>
+    u.id === userId
+      ? {
+          ...u,
+          passwordHash: newHash,
+          tokenVersion: nextVersion,
+        }
+      : u
+  );
+  await save("users", updatedUsers);
+
+  // 4. Maak een nieuw sessie-token aan met de nieuwe tokenVersion voor de huidige browser
+  const newPayload: SessionPayload = {
+    uid: user.id,
+    role: user.role,
+    exp: Date.now() + SESSION_TTL_SEC * 1000,
+    tokenVersion: nextVersion,
+  };
+
+  return {
+    success: true,
+    session: { token: createToken(newPayload), role: user.role },
+  };
+}
+
+/**
+ * Superadmin reset-functie: stelt een nieuw wachtwoord in voor een andere gebruiker.
+ * Verhoogt tevens tokenVersion zodat openstaande sessies van de doelgebruiker worden beëindigd.
+ */
+export async function adminResetPassword(
+  targetUserId: string,
+  newPassword: string
+): Promise<{ success?: boolean; error?: string }> {
+  if (!newPassword || typeof newPassword !== "string" || newPassword.length < 8) {
+    return { error: "Het nieuwe wachtwoord moet minstens 8 tekens bevatten." };
+  }
+
+  const users = await get("users");
+  const targetUser = users.find((u) => u.id === targetUserId);
+  if (!targetUser) {
+    return { error: "Gebruiker niet gevonden." };
+  }
+
+  if (targetUser.role === "superadmin") {
+    return { error: "Het wachtwoord van de superadmin kan hier niet overschreven worden." };
+  }
+
+  const newHash = await bcrypt.hash(newPassword, 10);
+  const nextVersion = (targetUser.tokenVersion ?? 1) + 1;
+
+  const updatedUsers = users.map((u) =>
+    u.id === targetUserId
+      ? {
+          ...u,
+          passwordHash: newHash,
+          tokenVersion: nextVersion,
+        }
+      : u
+  );
+  await save("users", updatedUsers);
+
+  // Wis eventuele blokkade op het doelaccount
+  failedPasswordAttempts.delete(targetUserId);
+
+  return { success: true };
 }

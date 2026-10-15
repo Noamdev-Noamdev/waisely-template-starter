@@ -45,7 +45,9 @@ export default function LoginForm() {
       // Succes: router.refresh() zodat server-componenten opnieuw renderen.
       router.refresh();
       // Kleine vertraging zodat de cookie door alle componenten is gelezen.
-      window.location.assign(json.role === "admin" ? "/admin" : "/dashboard");
+      window.location.assign(
+        json.role === "admin" || json.role === "superadmin" ? "/admin" : "/dashboard"
+      );
     } catch {
       setError("Er ging iets mis. Probeer het opnieuw.");
       setLoading(false);

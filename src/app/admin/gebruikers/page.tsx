@@ -1,24 +1,33 @@
 /**
  * ---------------------------------------------------------------------------
- * AdminGebruikersPage (/admin/gebruikers)
+ * AdminGebruikersPage (/admin/gebruikers) — Uitsluitend Superadmin
  * ---------------------------------------------------------------------------
- * Overzicht van alle accounts: naam, e-mail, organisatie, rol en aantal
- * aanvragen. De admin kan rollen wisselen of accounts verwijderen (met
- * bescherming tegen self-lockout).
+ * Exclusief beheerpaneel voor de eigenaar (superadmin):
+ *   - Overzicht van alle accounts (naam, e-mail, organisatie, rol, aantal aanvragen)
+ *   - Rollen wisselen tussen "user" en "admin"
+ *   - Tijdelijk nieuw wachtwoord instellen voor een gebruiker
+ *   - Accounts verwijderen (met uitzondering van de superadmin)
  * ---------------------------------------------------------------------------
  */
 
+import { redirect } from "next/navigation";
 import { get } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import UsersManager from "@/components/admin/UsersManager";
 
-export const metadata = { title: "Gebruikers" };
+export const metadata = { title: "Gebruikers & Rollen — Superadmin" };
 
 export default async function AdminGebruikersPage() {
-  const [users, bookings, me] = await Promise.all([
+  const me = await getCurrentUser();
+
+  // Server-side guard: gewone admins mogen deze pagina niet zien of gebruiken
+  if (!me || me.role !== "superadmin") {
+    redirect("/admin");
+  }
+
+  const [users, bookings] = await Promise.all([
     get("users"),
     get("bookings"),
-    getCurrentUser(),
   ]);
 
   // Aantal aanvragen per gebruiker tonen bij het overzicht.
@@ -40,16 +49,21 @@ export default async function AdminGebruikersPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
-          Gebruikers
-        </h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            Gebruikers & Rollen
+          </h1>
+          <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent">
+            Superadmin
+          </span>
+        </div>
         <p className="mt-1 text-sm text-muted-foreground">
-          Alle accounts op de site. Rollen bepalen toegang: &quot;user&quot; krijgt het
-          dashboard, &quot;admin&quot; krijgt daarnaast het beheerpaneel.
+          Beheerpaneel voor de eigenaar. Bekijk alle accounts, wissel rollen tussen
+          gebruiker en admin, stel zo nodig een nieuw wachtwoord in, of verwijder accounts.
         </p>
       </div>
 
-      <UsersManager users={safeUsers} currentAdminId={me?.id ?? ""} />
+      <UsersManager users={safeUsers} currentSuperadminId={me.id} />
     </div>
   );
 }

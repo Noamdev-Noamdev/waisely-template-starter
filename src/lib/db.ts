@@ -204,14 +204,42 @@ export async function get<K extends keyof Database>(key: K): Promise<Database[K]
  * onderdelen aan SiteContent toegevoegd worden — zonder bestaande teksten te overschrijven.
  */
 function withDefaults<K extends keyof Database>(key: K, value: Database[K]): Database[K] {
-  if (key !== "siteContent") return value;
-  if (!value) return seedSiteContent as unknown as Database[K];
-  const stored = value as Database["siteContent"];
-  const merged = { ...seedSiteContent } as Record<string, unknown>;
-  for (const section of Object.keys(seedSiteContent) as (keyof SiteContent)[]) {
-    merged[section] = { ...seedSiteContent[section], ...(stored[section] ?? {}) };
+  if (key === "siteContent") {
+    if (!value) return seedSiteContent as unknown as Database[K];
+    const stored = value as Database["siteContent"];
+    const merged = { ...seedSiteContent } as Record<string, unknown>;
+    for (const section of Object.keys(seedSiteContent) as (keyof SiteContent)[]) {
+      merged[section] = { ...seedSiteContent[section], ...(stored[section] ?? {}) };
+    }
+    return merged as unknown as Database[K];
   }
-  return merged as unknown as Database[K];
+
+  if (key === "users") {
+    // Zorg ervoor dat het eigenaarsaccount (info@waisely.biz) bij deploy automatisch
+    // de rol "superadmin" krijgt zonder enig gegevensverlies.
+    const users = (value as Database["users"]) ?? [];
+    let migrated = false;
+    const updatedUsers = users.map((u) => {
+      if (
+        u.email.toLowerCase().trim() === "info@waisely.biz" &&
+        u.role !== "superadmin"
+      ) {
+        migrated = true;
+        return { ...u, role: "superadmin" as const };
+      }
+      return u;
+    });
+
+    if (migrated) {
+      // Direct wegschrijven zodat Redis/store permanent de geüpdatete rol heeft
+      save("users", updatedUsers).catch((err) => {
+        console.error("[db.ts] Kon superadmin-migratie niet wegschrijven:", err);
+      });
+      return updatedUsers as unknown as Database[K];
+    }
+  }
+
+  return value;
 }
 
 /**
