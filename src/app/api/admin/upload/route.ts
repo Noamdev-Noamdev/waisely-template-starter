@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error: isReadOnly
-          ? "Directe runtime-uploads zijn niet ondersteund op Cloudflare Workers. Voeg de afbeelding toe aan public/uploads/ in je git-project en deploy opnieuw."
+          ? "Directe runtime-uploads naar het bestandssysteem zijn niet ondersteund op serverless platforms (zoals Vercel). Voeg afbeeldingen toe aan public/uploads/ in je Git-repository of gebruik een externe CDN/URL."
           : "Fout bij het uploaden van het bestand.",
       },
       { status: 500 }

@@ -1,23 +1,22 @@
 /**
  * ---------------------------------------------------------------------------
- * WAIsely Template — JSON "database" store (db.ts)
+ * WAIsely Template — Datalaag (db.ts)
  * ---------------------------------------------------------------------------
- * Eenvoudige, bestandsgebaseerde datalaag voor de template. Per entiteit
- * (users, siteContent, services, ...) is er één JSON-bestand in src/data.
+ * Biedt een uniforme key-value interface (get / save) voor alle collecties:
+ *   - In productie op Vercel: Upstash Redis (via Vercel Marketplace)
+ *   - Lokaal in development: lokale JSON-bestanden in src/data/ (of Upstash
+ *     indien de omgevingsvariabelen ingesteld zijn)
  *
- * Waarom deze aanpak?
- *  - De template moet out-of-the-box draaien zonder Supabase/Postgres-keys.
- *  - De API (get/save per collectie) is bewust gestructureerd als mini-ORM:
- *    bij migratie naar een echte database vervang je alleen dit bestand door
- *    b.v. Supabase-clients of Prisma-queries; routes/forms blijven ongewijzigd.
- *
- * BELANGRIJK voor productie: lees de README (sectie "Datalaag vervangen").
- * Atomic writes via tmp+rename voorkomen half-geschreven bestanden.
+ * Dit zorgt ervoor dat wijzigingen via het admin-dashboard, nieuwe accounts,
+ * boekingen en consent-logs blijvend bewaard worden over serverless restarts
+ * en nieuwe deployments heen, zonder ooit naar een read-only bestandssysteem
+ * te schrijven in productie.
  * ---------------------------------------------------------------------------
  */
 
 import { promises as fs } from "fs";
 import path from "path";
+import { Redis } from "@upstash/redis";
 import {
   getSeedUsers,
   getSeedBookings,
@@ -29,11 +28,11 @@ import {
 } from "./seed";
 import type { Database, SiteContent } from "./types";
 
-/** Map met JSON-bestanden (binnen de repo, zodat alles lokaal blijft). */
+/** Map met JSON-bestanden (binnen de repo, als standaardwaarden en lokale store). */
 const DATA_DIR = path.join(process.cwd(), "src", "data");
 
 /** Bestandsnamen per collectie — identiek aan de Database-interface. */
-const FILES = {
+const FILES: Record<keyof Database, string> = {
   users: "users.json",
   siteContent: "siteContent.json",
   services: "services.json",
@@ -45,12 +44,8 @@ const FILES = {
   consentLogs: "consentLogs.json",
 } as const;
 
-/**
- * Fallbackwaarden voor lege/ontbrekende bestanden (zodat de site altijd
- * start). siteContent krijgt een expliciete cast omdat het een object is;
- * de self-seeding in get() vult het bij eerste start met echte seed-content.
- */
-const defaults = {
+/** Fallbackwaarden voor lege/ontbrekende stores (zodat de site altijd start). */
+const defaults: Database = {
   users: [] as Database["users"],
   siteContent: seedSiteContent,
   services: [] as Database["services"],
@@ -62,14 +57,57 @@ const defaults = {
   consentLogs: [] as Database["consentLogs"],
 };
 
+/** Productie-check: op Vercel of in production mag nooit naar het bestandssysteem geschreven worden. */
+export function isProductionEnvironment(): boolean {
+  return (
+    process.env.NODE_ENV === "production" ||
+    Boolean(process.env.VERCEL) ||
+    Boolean(process.env.VERCEL_ENV)
+  );
+}
+
 /* ---------------------------------------------------------------------------
- * Self-seeding
- * ------------------------------------------------------------------------
- * Next.js rendert layouts en pagina's parallel. Een aparte "seed eerst"-stap
- * in de layout is dus NIET betrouwbaar: een pagina kan de store lezen vóór
- * dat de layout klaar is. Daarom zaait get() zichzelf: ontbreekt een
- * bestand (verse kloon/lege store), dan wordt exact één keer per proces
- * geseed — alle gelijktijdige lezers wachten op dezelfde seed-promise.
+ * Upstash Redis Client Singleton
+ * ---------------------------------------------------------------------------
+ * Ondersteunt zowel de standaard Upstash Marketplace variabelen
+ * (UPSTASH_REDIS_REST_URL/TOKEN) als Vercel KV aliases (KV_REST_API_URL/TOKEN).
+ * ------------------------------------------------------------------------- */
+
+let redisInstance: Redis | null = null;
+let lastUrl: string | undefined;
+let lastToken: string | undefined;
+
+export function getRedisClient(): Redis | null {
+  const url =
+    process.env.UPSTASH_REDIS_REST_URL ||
+    process.env.KV_REST_API_URL;
+  const token =
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    process.env.KV_REST_API_TOKEN;
+
+  if (!url || !token) {
+    redisInstance = null;
+    return null;
+  }
+
+  if (redisInstance && lastUrl === url && lastToken === token) {
+    return redisInstance;
+  }
+
+  try {
+    redisInstance = new Redis({ url, token });
+    lastUrl = url;
+    lastToken = token;
+    return redisInstance;
+  } catch (err) {
+    console.error("[db.ts] Kon Upstash Redis niet initialiseren:", err);
+    redisInstance = null;
+    return null;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Self-seeding & Lezen
  * ------------------------------------------------------------------------- */
 
 async function seedAll(): Promise<void> {
@@ -84,14 +122,11 @@ async function seedAll(): Promise<void> {
   await save("consentLogs", []);
 }
 
-/** Seed-promise (per proces); deelt gelijktijdige eerste requests netjes. */
 let seedingPromise: Promise<void> | null = null;
 
-/** Zorgt dat de volledige seed één keer geschreven is. */
 function ensureData(): Promise<void> {
   if (!seedingPromise) {
     seedingPromise = seedAll().catch((err) => {
-      // Bij fout opnieuw proberen bij de volgende eerste lees.
       seedingPromise = null;
       throw err;
     });
@@ -100,54 +135,44 @@ function ensureData(): Promise<void> {
 }
 
 /**
- * Haalt de Cloudflare KV binding op indien we draaien op Cloudflare Workers.
- * Geeft null terug in development / Node-omgevingen.
+ * Leest één collectie:
+ * 1. Kijkt eerst in Upstash Redis (indien geconfigureerd).
+ * 2. Valt terug op het lokale JSON-bestand in src/data/.
+ * 3. Als Redis actief is maar de sleutel ontbrak nog, zaait hij Redis direct
+ *    met de standaardinhoud, zodat toekomstige updates in Redis bewaard blijven.
  */
-async function getKV(): Promise<{
-  get: (key: string, type: "json") => Promise<unknown>;
-  put: (key: string, value: string) => Promise<void>;
-} | null> {
-  try {
-    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
-    const ctx = await getCloudflareContext({ async: true });
-    const kv = (ctx?.env as Record<string, unknown>)?.KV as
-      | {
-          get: (key: string, type: "json") => Promise<unknown>;
-          put: (key: string, value: string) => Promise<void>;
-        }
-      | undefined;
-    if (kv && typeof kv.get === "function" && typeof kv.put === "function") {
-      return kv;
-    }
-  } catch {
-    // Draait buiten Cloudflare Workers (bv. local dev / build)
-  }
-  return null;
-}
-
-/** Leest één bestand of KV-sleutel; geeft null bij ontbreken. */
 async function tryRead<K extends keyof Database>(key: K): Promise<Database[K] | null> {
-  // 1. Probeer Cloudflare KV als we in productie draaien
-  const kv = await getKV();
-  if (kv) {
+  const redis = getRedisClient();
+
+  // 1. Probeer Upstash Redis
+  if (redis) {
     try {
-      const data = await kv.get(`waisely:${key}`, "json");
+      const data = await redis.get<Database[K] | string>(`waisely:${key}`);
       if (data !== null && data !== undefined) {
+        if (typeof data === "string") {
+          try {
+            return JSON.parse(data) as Database[K];
+          } catch {
+            return data as unknown as Database[K];
+          }
+        }
         return data as Database[K];
       }
-    } catch {
-      // Val terug naar disk
+    } catch (err) {
+      console.error(`[db.ts] Fout bij ophalen van waisely:${key} uit Upstash Redis:`, err);
     }
   }
 
-  // 2. Val terug naar het lokale JSON-bestand
+  // 2. Val terug naar het lokale JSON-bestand in src/data/
   try {
     const raw = await fs.readFile(path.join(DATA_DIR, FILES[key]), "utf-8");
     const parsed = JSON.parse(raw) as Database[K];
 
-    // Als KV beschikbaar is maar nog leeg, zaai KV alvast met deze data
-    if (kv) {
-      kv.put(`waisely:${key}`, JSON.stringify(parsed)).catch(() => {});
+    // Als Redis actief is maar nog geen data had voor deze sleutel, initialiseer Redis
+    if (redis) {
+      redis.set(`waisely:${key}`, parsed).catch((err) => {
+        console.error(`[db.ts] Kon standaarddata voor ${key} niet in Redis zetten:`, err);
+      });
     }
 
     return parsed;
@@ -157,32 +182,26 @@ async function tryRead<K extends keyof Database>(key: K): Promise<Database[K] | 
 }
 
 /**
- * Leest één collectie, b.v. await get("services").
- *
- * Self-seeding: is het bestand afwezig én is de store nog vers (users.json
- * bestaat ook niet), dan wordt de seed geschreven en opnieuw gelezen. Bestaat
- * users.json wél, dan is het bestand opzettelijk afwezig/verwijderd en geven
- * we de fallback terug — zo overschrijven we nooit bestaande data met seed.
+ * Leest één collectie, b.v. await get("services") of await get("siteContent").
  */
 export async function get<K extends keyof Database>(key: K): Promise<Database[K]> {
   const direct = await tryRead(key);
   if (direct !== null) return withDefaults(key, direct);
 
-  // Bestand ontbreekt. Alleen seeden bij een volledig verse store.
+  // Bestand/sleutel ontbreekt (bv. verse installatie)
   const users = await tryRead("users");
-  if (users === null || users.length === 0) {
+  if (users === null || (Array.isArray(users) && users.length === 0)) {
     await ensureData();
     const retried = await tryRead(key);
     if (retried !== null) return withDefaults(key, retried);
   }
-  return defaults[key];
+  return withDefaults(key, defaults[key]);
 }
 
 /**
  * Vult ontbrekende siteContent-onderdelen aan met de seed-standaard.
- * Zo blijft een bestaande siteContent.json werken wanneer er later nieuwe
- * onderdelen (b.v. "press" of "bookTraining") aan SiteContent toegevoegd
- * worden — zonder migratiescript en zonder bestaande teksten te overschrijven.
+ * Zo blijft een bestaande siteContent in Redis werken wanneer er later nieuwe
+ * onderdelen aan SiteContent toegevoegd worden — zonder bestaande teksten te overschrijven.
  */
 function withDefaults<K extends keyof Database>(key: K, value: Database[K]): Database[K] {
   if (key !== "siteContent") return value;
@@ -197,44 +216,50 @@ function withDefaults<K extends keyof Database>(key: K, value: Database[K]): Dat
 
 /**
  * Overschrijft één collectie, b.v. await save("services", lijst).
- * Atomic write (tmp+rename) voorkomt half-geschreven bestanden.
+ * - Schrijft naar Upstash Redis indien geconfigureerd.
+ * - Schrijft in lokale ontwikkeling (en als Redis niet actief is) ook naar disk.
+ * - Schrijft in productie NOOIT naar het bestandssysteem.
  */
 export async function save<K extends keyof Database>(
   key: K,
   value: Database[K]
 ): Promise<void> {
-  // 1. Schrijf naar Cloudflare KV indien actief in productie
-  const kv = await getKV();
-  if (kv) {
+  const redis = getRedisClient();
+
+  // 1. Schrijf naar Upstash Redis indien actief
+  if (redis) {
     try {
-      await kv.put(`waisely:${key}`, JSON.stringify(value));
+      await redis.set(`waisely:${key}`, value);
     } catch (err) {
-      console.error(`[db.ts] Kon ${key} niet wegschrijven naar KV:`, err);
+      console.error(`[db.ts] Kon ${key} niet wegschrijven naar Upstash Redis:`, err);
+      throw new Error(`Kon ${key} niet opslaan in de database.`);
     }
   }
 
-  // 2. Schrijf naar het lokale bestand (in dev / build).
-  // In een serverless edge-omgeving (Cloudflare Workers) is het bestandssysteem
-  // alleen-lezen; eventuele fouten vangen we hier netjes op omdat KV de data al heeft.
-  try {
-    const fullPath = path.join(DATA_DIR, FILES[key]);
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    const tmp = `${fullPath}.${Date.now()}.${Math.random()
-      .toString(36)
-      .slice(2, 8)}.tmp`;
-    await fs.writeFile(tmp, JSON.stringify(value, null, 2), "utf-8");
-    await fs.rename(tmp, fullPath);
-  } catch (err) {
-    // Negeer read-only filesystem fouten als we op Cloudflare Workers draaien
-    if (!kv) {
+  // 2. Schrijf naar het lokale bestand (ALLEEN in development en wanneer Redis niet gebruikt wordt).
+  // Schrijf in productie NOOIT naar het bestandssysteem (Vercel serverless read-only).
+  const inProd = isProductionEnvironment();
+  if (!inProd && !redis) {
+    try {
+      const fullPath = path.join(DATA_DIR, FILES[key]);
+      await fs.mkdir(DATA_DIR, { recursive: true });
+      const tmp = `${fullPath}.${Date.now()}.${Math.random()
+        .toString(36)
+        .slice(2, 8)}.tmp`;
+      await fs.writeFile(tmp, JSON.stringify(value, null, 2), "utf-8");
+      await fs.rename(tmp, fullPath);
+    } catch (err) {
       console.warn(`[db.ts] Lokale bestandswrite mislukt voor ${key}:`, err);
     }
+  } else if (inProd && !redis) {
+    console.warn(
+      `[db.ts] Let op: ${key} kon niet persistent worden opgeslagen omdat Upstash Redis nog niet is geconfigureerd en het bestandssysteem in productie read-only is. Koppel Upstash Redis in Vercel om persistentie in te schakelen.`
+    );
   }
 }
 
 /**
- * Expliciete "zorg dat de store bestaat"-helper (idempotent). Pages/routes
- * die als eerste draaien kunnen dit aanroepen; get() zaait sowieso zelf.
+ * Expliciete "zorg dat de store bestaat"-helper (idempotent).
  */
 export async function ensureSeeded(): Promise<void> {
   const users = await get("users");
