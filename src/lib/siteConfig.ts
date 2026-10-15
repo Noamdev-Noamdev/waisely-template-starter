@@ -20,7 +20,7 @@ export const NAV_LINKS = [
 ];
 
 /** Full URL for metadata */
-export const SITE_URL = "https://waisely.be";
+export const SITE_URL = "https://waisely.biz";
 
 /** Fixed UI texts */
 export const UI_TEXT = {

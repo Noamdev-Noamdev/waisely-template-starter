@@ -71,9 +71,19 @@ export async function POST(request: Request) {
 
     const url = `/uploads/${filename}`;
     return NextResponse.json({ ok: true, url });
-  } catch {
+  } catch (err: unknown) {
+    const isReadOnly =
+      typeof err === "object" &&
+      err !== null &&
+      "code" in err &&
+      (err as { code: string }).code === "EROFS";
+
     return NextResponse.json(
-      { error: "Fout bij het uploaden van het bestand." },
+      {
+        error: isReadOnly
+          ? "Directe runtime-uploads zijn niet ondersteund op Cloudflare Workers. Voeg de afbeelding toe aan public/uploads/ in je git-project en deploy opnieuw."
+          : "Fout bij het uploaden van het bestand.",
+      },
       { status: 500 }
     );
   }

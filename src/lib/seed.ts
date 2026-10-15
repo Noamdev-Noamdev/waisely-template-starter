@@ -15,8 +15,8 @@ import type {
   User,
 } from "./types";
 
-export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@waisely.biz";
-export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "waisely-admin";
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "info@waisely.biz";
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "WAIsely2026!";
 export const DEMO_EMAIL = "demo@waisely.biz";
 export const DEMO_PASSWORD = "waisely-demo";
 

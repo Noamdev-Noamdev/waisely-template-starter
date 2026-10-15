@@ -28,7 +28,7 @@ export default async function AdminLayout({
   if (user.role !== "admin") redirect("/dashboard");
 
   return (
-    <div className="mx-auto flex max-w-[1000px] gap-8 px-4 py-10 sm:px-6 md:py-14">
+    <div className="mx-auto flex flex-col lg:flex-row max-w-[1240px] gap-8 px-4 py-8 sm:px-6 md:py-12">
       <AdminSidebar userName={user.name} />
       {/* Content-gedeelte; kinderen zijn de losse beheerpagina's */}
       <div className="min-w-0 flex-1">{children}</div>

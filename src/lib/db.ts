@@ -99,11 +99,58 @@ function ensureData(): Promise<void> {
   return seedingPromise;
 }
 
-/** Leest één bestand; geeft null bij fout zodat de caller het afhandelt. */
+/**
+ * Haalt de Cloudflare KV binding op indien we draaien op Cloudflare Workers.
+ * Geeft null terug in development / Node-omgevingen.
+ */
+async function getKV(): Promise<{
+  get: (key: string, type: "json") => Promise<unknown>;
+  put: (key: string, value: string) => Promise<void>;
+} | null> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const ctx = await getCloudflareContext({ async: true });
+    const kv = (ctx?.env as Record<string, unknown>)?.KV as
+      | {
+          get: (key: string, type: "json") => Promise<unknown>;
+          put: (key: string, value: string) => Promise<void>;
+        }
+      | undefined;
+    if (kv && typeof kv.get === "function" && typeof kv.put === "function") {
+      return kv;
+    }
+  } catch {
+    // Draait buiten Cloudflare Workers (bv. local dev / build)
+  }
+  return null;
+}
+
+/** Leest één bestand of KV-sleutel; geeft null bij ontbreken. */
 async function tryRead<K extends keyof Database>(key: K): Promise<Database[K] | null> {
+  // 1. Probeer Cloudflare KV als we in productie draaien
+  const kv = await getKV();
+  if (kv) {
+    try {
+      const data = await kv.get(`waisely:${key}`, "json");
+      if (data !== null && data !== undefined) {
+        return data as Database[K];
+      }
+    } catch {
+      // Val terug naar disk
+    }
+  }
+
+  // 2. Val terug naar het lokale JSON-bestand
   try {
     const raw = await fs.readFile(path.join(DATA_DIR, FILES[key]), "utf-8");
-    return JSON.parse(raw) as Database[K];
+    const parsed = JSON.parse(raw) as Database[K];
+
+    // Als KV beschikbaar is maar nog leeg, zaai KV alvast met deze data
+    if (kv) {
+      kv.put(`waisely:${key}`, JSON.stringify(parsed)).catch(() => {});
+    }
+
+    return parsed;
   } catch {
     return null;
   }
@@ -116,12 +163,6 @@ async function tryRead<K extends keyof Database>(key: K): Promise<Database[K] | 
  * bestaat ook niet), dan wordt de seed geschreven en opnieuw gelezen. Bestaat
  * users.json wél, dan is het bestand opzettelijk afwezig/verwijderd en geven
  * we de fallback terug — zo overschrijven we nooit bestaande data met seed.
- *
- * Nota over caching: we lezen bewust rechtstreeks van disk (geen in-memory
- * cache). Next.js-productie draait route-handlers en server-components in
- * aparte bundels — een module-level cache zou per bundel verschillen en
- * administratieve writes (API) niet zichtbaar maken aan de publieke pagina's.
- * JSON-lezen is goedkoop; bij migratie naar Supabase/Prisma vervalt dit punt.
  */
 export async function get<K extends keyof Database>(key: K): Promise<Database[K]> {
   const direct = await tryRead(key);
@@ -162,15 +203,33 @@ export async function save<K extends keyof Database>(
   key: K,
   value: Database[K]
 ): Promise<void> {
-  const fullPath = path.join(DATA_DIR, FILES[key]);
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  // Uniek per call (pid + tijd + random) om races tussen gelijktijdige
-  // requests te voorkomen.
-  const tmp = `${fullPath}.${process.pid}.${Date.now()}.${Math.random()
-    .toString(36)
-    .slice(2, 8)}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(value, null, 2), "utf-8");
-  await fs.rename(tmp, fullPath);
+  // 1. Schrijf naar Cloudflare KV indien actief in productie
+  const kv = await getKV();
+  if (kv) {
+    try {
+      await kv.put(`waisely:${key}`, JSON.stringify(value));
+    } catch (err) {
+      console.error(`[db.ts] Kon ${key} niet wegschrijven naar KV:`, err);
+    }
+  }
+
+  // 2. Schrijf naar het lokale bestand (in dev / build).
+  // In een serverless edge-omgeving (Cloudflare Workers) is het bestandssysteem
+  // alleen-lezen; eventuele fouten vangen we hier netjes op omdat KV de data al heeft.
+  try {
+    const fullPath = path.join(DATA_DIR, FILES[key]);
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    const tmp = `${fullPath}.${Date.now()}.${Math.random()
+      .toString(36)
+      .slice(2, 8)}.tmp`;
+    await fs.writeFile(tmp, JSON.stringify(value, null, 2), "utf-8");
+    await fs.rename(tmp, fullPath);
+  } catch (err) {
+    // Negeer read-only filesystem fouten als we op Cloudflare Workers draaien
+    if (!kv) {
+      console.warn(`[db.ts] Lokale bestandswrite mislukt voor ${key}:`, err);
+    }
+  }
 }
 
 /**

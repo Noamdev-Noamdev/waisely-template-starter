@@ -93,13 +93,13 @@ export default function AdminSidebar({ userName }: { userName: string }) {
   const pathname = usePathname();
 
   return (
-    <aside className="lg:w-60 lg:shrink-0">
+    <aside className="w-full lg:w-64 lg:shrink-0">
       {/* Profiel-blok */}
       <div className="flex items-center gap-3 rounded-[var(--radius)] border border-highlight/40 bg-highlight/10 p-3.5">
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-highlight/25 text-yellow-800">
           <Icon name="edit" size={16} />
         </span>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-foreground">
             {userName}
           </p>
@@ -107,10 +107,18 @@ export default function AdminSidebar({ userName }: { userName: string }) {
             Admin
           </Badge>
         </div>
+        {/* Terug naar site knop op mobiel/tablet */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1 rounded-[var(--radius)] border border-border bg-surface px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+        >
+          <Icon name="arrow-left" size={13} />
+          Site
+        </Link>
       </div>
 
       {/* Navigatie */}
-      <nav className="mt-4 flex gap-1 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+      <nav className="mt-4 flex flex-wrap gap-1.5 sm:gap-2 lg:flex-col lg:gap-1">
         {SECTIONS.map((section) => {
           const active = section.exact
             ? pathname === section.href
@@ -119,20 +127,20 @@ export default function AdminSidebar({ userName }: { userName: string }) {
             <Link
               key={section.href}
               href={section.href}
-              className={`inline-flex shrink-0 items-center gap-2.5 rounded-[var(--radius)] px-3.5 py-2.5 text-sm font-medium transition-colors ${
+              className={`inline-flex shrink-0 items-center gap-2 rounded-[var(--radius)] px-3 py-2 text-xs sm:text-sm font-medium transition-colors ${
                 active
                   ? "bg-accent text-accent-foreground shadow-[var(--shadow-accent)]"
                   : "text-muted-foreground hover:bg-surface-muted hover:text-foreground"
               }`}
             >
-              <Icon name={section.icon} size={16} />
+              <Icon name={section.icon} size={15} />
               {section.label}
             </Link>
           );
         })}
       </nav>
 
-      {/* Terug naar site */}
+      {/* Terug naar site (desktop) */}
       <Link
         href="/"
         className="mt-4 hidden items-center gap-2 rounded-[var(--radius)] px-3.5 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-muted hover:text-foreground lg:inline-flex"

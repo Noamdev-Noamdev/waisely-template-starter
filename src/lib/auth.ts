@@ -42,7 +42,8 @@ const SESSION_TTL_SEC = 7 * 24 * 60 * 60;
  * random string). De fallback is uitsluitend bedoeld voor de template/dev.
  */
 const SECRET =
-  process.env.SESSION_SECRET ?? "waisely-template-dev-secret-vervang-mij";
+  process.env.SESSION_SECRET ??
+  "d511f3e59cb0207808e7ef8eb0097ac37e064d85142f29c746e37d3649c22d9e";
 
 /** Payload die ondertekend in de cookie zit. */
 interface SessionPayload {

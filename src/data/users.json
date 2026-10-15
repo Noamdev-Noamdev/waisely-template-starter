@@ -1,9 +1,9 @@
 [
   {
     "id": "usr_admin",
-    "email": "admin@waisely.biz",
-    "passwordHash": "$2b$10$1G55gpcY1sDxarBlwnsr6OsOgatgMzPnCEeDzv2ti0QWMEAiFaVhO",
-    "name": "[Naam admin]",
+    "email": "info@waisely.biz",
+    "passwordHash": "$2b$10$lYEJrepeG8iL4ry.0fbKiOWd2nfV48KXdZmsLV3iDijX5/GLKyzYa",
+    "name": "Sabrina Carota",
     "role": "admin",
     "createdAt": "2026-09-11T20:27:34.100Z"
   },
@@ -13,7 +13,7 @@
     "passwordHash": "$2b$10$pTVLfB4XKM7d8mQ7TrJrpeNQmrnSTnQ42NqgiHBZFKQc7TKO8wtvm",
     "name": "[Demo-gebruiker]",
     "organization": "[Naam school]",
-    "role": "user",
+    "role": "admin",
     "createdAt": "2026-09-11T20:27:34.234Z"
   },
   {
