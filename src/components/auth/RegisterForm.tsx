@@ -64,7 +64,7 @@ export default function RegisterForm() {
         id="reg-name"
         name="name"
         autoComplete="name"
-        placeholder="[Jouw naam]"
+        placeholder="Je voor- en achternaam"
         required
       />
       <FieldInput
@@ -72,7 +72,7 @@ export default function RegisterForm() {
         id="reg-org"
         name="organization"
         autoComplete="organization"
-        placeholder="[Naam van je school]"
+        placeholder="Naam van je school of instelling"
       />
       <FieldInput
         label="E-mailadres"
@@ -80,7 +80,7 @@ export default function RegisterForm() {
         name="email"
         type="email"
         autoComplete="email"
-        placeholder="[jij@school.be]"
+        placeholder="naam@school.be"
         required
       />
       <FieldInput

@@ -11,7 +11,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import LoginForm from "@/components/auth/LoginForm";
 import { getCurrentUser } from "@/lib/auth";
-import { DEMO_EMAIL, DEMO_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD } from "@/lib/seed";
 import Icon from "@/components/ui/Icon";
 
 export const metadata = {
@@ -51,19 +50,6 @@ export default async function LoginPage() {
             >
               Maak er één aan
             </Link>
-          </p>
-        </div>
-
-        {/* Demo-inloggegevens voor de template (verwijder in productie). */}
-        <div className="mt-4 rounded-[var(--radius)] border border-dashed border-border bg-surface-muted p-4 text-xs leading-relaxed text-muted-foreground">
-          <p className="font-semibold text-foreground">Template-accounts:</p>
-          <p className="mt-1.5">
-            Admin: <code className="text-accent">{ADMIN_EMAIL}</code> /{" "}
-            <code className="text-accent">{ADMIN_PASSWORD}</code>
-          </p>
-          <p>
-            Gebruiker: <code className="text-accent">{DEMO_EMAIL}</code> /{" "}
-            <code className="text-accent">{DEMO_PASSWORD}</code>
           </p>
         </div>
       </div>

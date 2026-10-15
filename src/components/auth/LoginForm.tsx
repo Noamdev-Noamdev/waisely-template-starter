@@ -66,7 +66,7 @@ export default function LoginForm() {
         name="email"
         type="email"
         autoComplete="email"
-        placeholder="[jij@school.be]"
+        placeholder="naam@school.be"
         required
       />
       <FieldInput

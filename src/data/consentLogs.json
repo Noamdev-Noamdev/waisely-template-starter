@@ -28,5 +28,45 @@
     },
     "method": "custom",
     "recordedAt": "2026-10-13T13:02:01.850Z"
+  },
+  {
+    "consentId": "cst_0ctaq80umv9kbsbs",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": false
+    },
+    "method": "reject_all",
+    "recordedAt": "2026-10-15T13:16:41.089Z"
+  },
+  {
+    "consentId": "cst_0ctaq80umv9kbsbs",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": false
+    },
+    "method": "custom",
+    "recordedAt": "2026-10-15T13:20:59.127Z"
+  },
+  {
+    "consentId": "cst_5b1b48xmmv9kmdrp",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": true
+    },
+    "method": "custom",
+    "recordedAt": "2026-10-15T13:24:54.816Z"
+  },
+  {
+    "consentId": "cst_0ctaq80umv9kbsbs",
+    "version": 1,
+    "categories": {
+      "essential": true,
+      "social": true
+    },
+    "method": "custom",
+    "recordedAt": "2026-10-15T13:25:01.713Z"
   }
 ]
