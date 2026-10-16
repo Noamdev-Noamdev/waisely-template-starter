@@ -3,9 +3,8 @@
  * AdminAanvragenPage (/admin/aanvragen)
  * ---------------------------------------------------------------------------
  * Overzicht van alle aanvragen (workshops, webinars én contactformulier-
- * berichten). De admin kan de status wijzigen (bevestigen, afronden,
- * annuleren) of aanvragen verwijderen. Statuswijzigingen zijn direct
- * zichtbaar in het gebruikersdashboard.
+ * berichten). De admin ziet direct de naam én het e-mailadres van het account
+ * achter de aanvraag, kan de status wijzigen of aanvragen verwijderen.
  * ---------------------------------------------------------------------------
  */
 
@@ -20,19 +19,29 @@ export default async function AdminAanvragenPage() {
     get("users"),
   ]);
 
-  // Map userId → naam zodat de admin ziet wie er achter een aanvraag zit.
-  const nameById = new Map(users.map((u) => [u.id, u.name]));
+  // Map userId → user zodat de admin naam én e-mailadres ziet van wie de aanvraag deed.
+  const userById = new Map(users.map((u) => [u.id, u]));
 
   const enriched = bookings
     .slice()
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .map((b) => ({
-      ...b,
-      userName:
+    .map((b) => {
+      const account = userById.get(b.userId);
+      const userName =
         b.userId === "guest"
-          ? "(contactformulier)"
-          : (nameById.get(b.userId) ?? b.userId),
-    }));
+          ? b.userName || "(contactformulier)"
+          : b.userName || account?.name || b.userId;
+      const userEmail =
+        b.userId === "guest"
+          ? b.userEmail || (b.type === "contact" ? b.audience : "")
+          : b.userEmail || account?.email || "";
+
+      return {
+        ...b,
+        userName,
+        userEmail,
+      };
+    });
 
   return (
     <div>
@@ -46,9 +55,6 @@ export default async function AdminAanvragenPage() {
         </p>
       </div>
 
-      {/* statusHelpers worden NIET als props meegegeven: BookingsManager is
-          een client component en importeert de helpers zelf (server-only
-          functions mogen niet de client-grens passeren). */}
       <BookingsManager initialBookings={enriched} />
     </div>
   );

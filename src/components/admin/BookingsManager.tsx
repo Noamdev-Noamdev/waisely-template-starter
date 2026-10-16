@@ -19,8 +19,11 @@ import Badge, {
 import { formatDateTime } from "@/lib/format";
 import type { Booking, BookingStatus } from "@/lib/types";
 
-/** Uitgebreide rij met de naam van de aanvrager erbij. */
-export type EnrichedBooking = Booking & { userName: string };
+/** Uitgebreide rij met de naam en het e-mailadres van de aanvrager erbij. */
+export type EnrichedBooking = Booking & {
+  userName: string;
+  userEmail?: string;
+};
 
 const STATUS_OPTIONS: { value: BookingStatus; label: string }[] = [
   { value: "new", label: "Nieuw" },
@@ -137,9 +140,27 @@ export default function BookingsManager({
                   <p className="font-semibold text-foreground">
                     {b.topic}
                   </p>
-                  <p className="mt-0.5 truncate text-sm text-muted-foreground">
-                    {b.userName} · {b.audience}
-                    {b.participants ? ` · ${b.participants} deelnemers` : ""}
+                  <p className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-sm text-muted-foreground">
+                    <span className="font-medium text-foreground">{b.userName}</span>
+                    {b.userEmail ? (
+                      <span>
+                        (
+                        <a
+                          href={`mailto:${b.userEmail}`}
+                          className="text-accent underline-offset-2 hover:underline"
+                          title={`Mail naar ${b.userEmail}`}
+                        >
+                          {b.userEmail}
+                        </a>
+                        )
+                      </span>
+                    ) : null}
+                    {b.type !== "contact" && b.audience ? (
+                      <span>· {b.audience}</span>
+                    ) : null}
+                    {b.participants ? (
+                      <span>· {b.participants} deelnemers</span>
+                    ) : null}
                   </p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
                     Aangevraagd op {formatDateTime(b.createdAt)}

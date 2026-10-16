@@ -34,6 +34,8 @@ export async function POST(request: Request) {
     const booking: Booking = {
       id: uid("bkg_contact_"),
       userId: "guest",
+      userEmail: String(email),
+      userName: String(name),
       type: "contact",
       topic: `Contactformulier van ${name}`,
       audience: String(email),

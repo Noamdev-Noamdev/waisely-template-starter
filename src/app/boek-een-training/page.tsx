@@ -1,24 +1,21 @@
 /**
  * ---------------------------------------------------------------------------
- * BoekEenTrainingPage (/boek-een-training) — Combined intake + module flow
+ * BoekEenTrainingPage (/boek-een-training) — Module selection flow
  * ---------------------------------------------------------------------------
- * Replaces the separate "Modules" nav item. Combines:
- *   1. The native intake form (admin-editable fields)
- *   2. The interactive module selector (8 modules)
- * into a single page, so visitors can complete the full booking flow at once.
+ * Toont de interactieve moduleselector waarmee bezoekers tot drie modules
+ * kunnen combineren en direct doorstromen naar het aanvraagformulier (/boeken).
  * ---------------------------------------------------------------------------
  */
 
 import Reveal from "@/components/ui/Reveal";
 import Link from "next/link";
 import { get } from "@/lib/db";
-import GoogleFormsEmbed from "@/components/site/GoogleFormsEmbed";
 import ModuleSelector from "@/components/site/ModuleSelector";
 
 export const metadata = {
   title: "Boek een training",
   description:
-    "Vul het intake-formulier in en kies uw modules om een workshop of webinar op maat aan te vragen bij WAIsely.",
+    "Kies uw modules om een workshop of webinar op maat aan te vragen bij WAIsely.",
 };
 
 export default async function BoekEenTrainingPage() {
@@ -51,40 +48,15 @@ export default async function BoekEenTrainingPage() {
         </p>
       </Reveal>
 
-      {/* Step 1: Intake form */}
+      {/* Module selection */}
       <Reveal delay={100}>
         <div className="mt-12">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground">
-              1
-            </span>
-            <h2
-              className="text-xl font-medium text-foreground"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              {bt.step1Title || "Intake-formulier"}
-            </h2>
-          </div>
-          <div className="rounded-[var(--radius)] bg-surface p-6 shadow-[var(--shadow-lg)] sm:p-8">
-            <GoogleFormsEmbed formUrl={bt.googleFormsUrl} />
-          </div>
-        </div>
-      </Reveal>
-
-      {/* Step 2: Module selection */}
-      <Reveal delay={200}>
-        <div className="mt-16">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground">
-              2
-            </span>
-            <h2
-              className="text-xl font-medium text-foreground"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              {bt.step2Title || "Kies uw modules"}
-            </h2>
-          </div>
+          <h2
+            className="mb-3 text-xl font-medium text-foreground"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
+            {bt.step2Title || "Kies uw modules"}
+          </h2>
           <p className="prose-muted mb-8 max-w-2xl whitespace-pre-line">
             {bt.step2Description ||
               "Kies tot drie modules die je combineert in een workshop van 2 uur. Elke module bevat concrete lesvoorbeelden en werkvormen die je meteen kunt inzetten."}

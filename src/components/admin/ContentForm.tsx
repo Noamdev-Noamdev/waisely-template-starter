@@ -1261,16 +1261,7 @@ export default function ContentForm({
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <FieldInput
-                    label="Stap 1 koptekst"
-                    value={
-                      content.bookTraining.step1Title ?? "Intake-formulier"
-                    }
-                    onChange={(e) =>
-                      patch("bookTraining", "step1Title", e.target.value)
-                    }
-                  />
-                  <FieldInput
-                    label="Stap 2 koptekst"
+                    label="Modules-sectie koptekst"
                     value={
                       content.bookTraining.step2Title ?? "Kies uw modules"
                     }
@@ -1278,9 +1269,19 @@ export default function ContentForm({
                       patch("bookTraining", "step2Title", e.target.value)
                     }
                   />
+                  <FieldInput
+                    label="Knoptekst sticky module-balk"
+                    value={
+                      content.bookTraining.moduleSelectorCta ??
+                      "Workshop aanvragen"
+                    }
+                    onChange={(e) =>
+                      patch("bookTraining", "moduleSelectorCta", e.target.value)
+                    }
+                  />
                 </div>
                 <FieldTextarea
-                  label="Stap 2 toelichting"
+                  label="Modules-sectie toelichting"
                   rows={2}
                   value={
                     content.bookTraining.step2Description ??
@@ -1290,28 +1291,27 @@ export default function ContentForm({
                     patch("bookTraining", "step2Description", e.target.value)
                   }
                 />
-                <FieldInput
-                  label="Knoptekst sticky module-balk"
-                  value={
-                    content.bookTraining.moduleSelectorCta ??
-                    "Workshop aanvragen"
-                  }
-                  onChange={(e) =>
-                    patch("bookTraining", "moduleSelectorCta", e.target.value)
-                  }
-                />
               </div>
             </div>
 
-            {/* Google Forms Intake link */}
+            {/* Google Forms Intake link (/aanvraag) */}
             <div className="pt-4 border-t border-border">
               <h3 className="text-base font-semibold text-foreground mb-1">
-                2. Google Forms Intake-formulier
+                2. Google Forms Intake-formulier (/aanvraag)
               </h3>
               <p className="text-xs text-muted-foreground mb-4">
-                Het intake-formulier wordt geladen vanuit Google Forms. Plak hier de deelbare link van het Google Formulier.
+                Het intake-formulier op <code>/aanvraag</code> wordt geladen vanuit Google Forms. Pas hier de koptekst en de link van het Google Formulier aan.
               </p>
               <div className="space-y-4">
+                <FieldInput
+                  label="Eyebrow-tekst op /aanvraag"
+                  value={
+                    content.bookTraining.step1Title ?? "Intake-formulier"
+                  }
+                  onChange={(e) =>
+                    patch("bookTraining", "step1Title", e.target.value)
+                  }
+                />
                 <FieldInput
                   label="Google Forms URL"
                   value={

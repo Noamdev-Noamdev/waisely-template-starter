@@ -217,25 +217,55 @@ export default async function AdminIndexPage() {
           </Link>
         </div>
         <div className="mt-4 space-y-3">
-          {bookings.slice(-4).reverse().map((b) => (
-            <div
-              key={b.id}
-              className="flex flex-col gap-2 rounded-[var(--radius)] border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div>
-                <p className="text-sm font-semibold text-foreground">
-                  {b.topic}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {b.type} · {formatDate(b.date)} ·{" "}
-                  {b.audience}
-                </p>
+          {bookings.slice(-4).reverse().map((b) => {
+            const account = users.find((u) => u.id === b.userId);
+            const requesterName =
+              b.userId === "guest"
+                ? b.userName || "(contactformulier)"
+                : b.userName || account?.name || b.userId;
+            const requesterEmail =
+              b.userId === "guest"
+                ? b.userEmail || (b.type === "contact" ? b.audience : "")
+                : b.userEmail || account?.email || "";
+
+            return (
+              <div
+                key={b.id}
+                className="flex flex-col gap-2 rounded-[var(--radius)] border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <p className="text-sm font-semibold text-foreground">
+                    {b.topic}
+                  </p>
+                  <p className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+                    <span className="font-medium text-foreground">
+                      {requesterName}
+                    </span>
+                    {requesterEmail ? (
+                      <span>
+                        (
+                        <a
+                          href={`mailto:${requesterEmail}`}
+                          className="text-accent underline-offset-2 hover:underline"
+                          title={`Mail naar ${requesterEmail}`}
+                        >
+                          {requesterEmail}
+                        </a>
+                        )
+                      </span>
+                    ) : null}
+                    <span>· {b.type}</span>
+                    {b.type !== "contact" ? (
+                      <span>· {formatDate(b.date)} · {b.audience}</span>
+                    ) : null}
+                  </p>
+                </div>
+                <Badge tone={bookingStatusTone(b.status)}>
+                  {bookingStatusLabel(b.status)}
+                </Badge>
               </div>
-              <Badge tone={bookingStatusTone(b.status)}>
-                {bookingStatusLabel(b.status)}
-              </Badge>
-            </div>
-          ))}
+            );
+          })}
           {bookings.length === 0 ? (
             <p className="rounded-[var(--radius)] border border-dashed border-border bg-surface-muted p-6 text-center text-sm text-muted-foreground">
               Nog geen aanvragen.

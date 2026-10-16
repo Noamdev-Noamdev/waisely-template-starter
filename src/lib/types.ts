@@ -274,6 +274,10 @@ export type BookingStatus = "new" | "confirmed" | "done" | "cancelled";
 export interface Booking {
   id: string;
   userId: string;
+  /** E-mailadres van de aanvrager (opgeslagen bij aanmaken voor directe inzage). */
+  userEmail?: string;
+  /** Naam van de aanvrager (opgeslagen bij aanmaken). */
+  userName?: string;
   type: BookingType;
   topic: string;
   audience: string;
