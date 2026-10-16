@@ -1,95 +1,73 @@
-# WAIsely — Deployment Handleiding (Cloudflare Workers & Google Business)
+# WAIsely — Deployment Handleiding (Vercel & Google Business)
 
-Deze handleiding legt stap-voor-stap uit hoe je de WAIsely website deployt naar Cloudflare Workers en je Google Business domein (`waisely.biz`) koppelt, **zonder dat je Google Business e-mail onderbroken wordt**.
-
----
-
-## 1. Voorbereiding & Cloudflare Account
-
-1. Maak een gratis account aan op [Cloudflare.com](https://dash.cloudflare.com/sign-up) (als je dat nog niet hebt).
-2. Log lokaal in op Cloudflare via je terminal:
-   ```bash
-   npx wrangler login
-   ```
-   Er opent een browservenster waarin je Cloudflare toestemming geeft.
+Deze handleiding legt stap-voor-stap uit hoe je de WAIsely website deployt naar Vercel met Upstash Redis en je Google Business domein (`waisely.biz`) koppelt, **zonder dat je Google Business e-mail onderbroken wordt**.
 
 ---
 
-## 2. Cloudflare KV Database Aanmaken (voor live content & accounts)
+## 1. Project Deployen naar Vercel
 
-Cloudflare KV bewaart live CMS-wijzigingen, accounts en boekingen.
-
-Voer in de terminal uit:
-```bash
-pnpm run cf:kv-create
-```
-Je krijgt een uitvoer zoals deze te zien:
-```bash
-[[kv_namespaces]]
-binding = "KV"
-id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-```
-Kopieer dat `id` en voeg het toe aan [wrangler.json](file:///home/noam/Projects/Site_WAIsely/waisely-template-starter/wrangler.json):
-```json
-{
-  "name": "waisely-site",
-  "main": ".open-next/worker.js",
-  "compatibility_date": "2024-12-30",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "JOUW_GEKOPIEERDE_KV_ID_HIER"
-    }
-  ],
-  "vars": {
-    "SESSION_SECRET": "d511f3e59cb0207808e7ef8eb0097ac37e064d85142f29c746e37d3649c22d9e",
-    "ADMIN_EMAIL": "info@waisely.biz"
-  }
-}
-```
+1. Zorg dat je code op GitHub staat in een repository.
+2. Ga naar [Vercel.com](https://vercel.com/) en log in.
+3. Klik op **Add New…** → **Project**.
+4. Importeer de repository van WAIsely.
+5. Kies als framework preset **Next.js** (dit herkent Vercel automatisch).
 
 ---
 
-## 3. Website Deployen naar Cloudflare
+## 2. Upstash Redis Databank Koppelen
 
-Bouw en deploy het project met één commando:
-```bash
-pnpm run cf:deploy
-```
-Wrangler bouwt de Next.js applicatie en uploadt deze naar Cloudflare. Na afronding toont de terminal een URL zoals:
-`https://waisely-site.<jouw-cloudflare-subdomein>.workers.dev`
+Voor het bewaren van live CMS-teksten, afbeeldingen, accounts, boekingen en intake-formulieren gebruikt de site Upstash Redis.
 
-Je kunt de site nu direct bezoeken en testen!
+### Methode A: Direct via de Vercel Marketplace (Aanbevolen)
+1. Ga in je Vercel project naar het tabblad **Storage**.
+2. Klik op **Connect Database** → selecteer **Upstash** (of Vercel KV / Redis).
+3. Kies de gratis tier (Free / Hobby).
+4. Vercel voegt de benodigde variabelen (`UPSTASH_REDIS_REST_URL` en `UPSTASH_REDIS_REST_TOKEN`) automatisch toe aan je omgeving!
+
+### Methode B: Zelf aanmaken op Upstash.com
+1. Maak een gratis database aan op [console.upstash.com](https://console.upstash.com/).
+2. Kopieer de `UPSTASH_REDIS_REST_URL` en `UPSTASH_REDIS_REST_TOKEN` (REST API).
+3. Voeg deze toe in Vercel onder **Settings** → **Environment Variables**.
+
+---
+
+## 3. Omgevingsvariabelen (Environment Variables)
+
+Stel onder **Settings** → **Environment Variables** in Vercel de volgende variabelen in voor **Production** (en eventueel **Preview**):
+
+| Variabele | Waarde / Uitleg |
+| :--- | :--- |
+| `SESSION_SECRET` | Een lange willekeurige geheime tekenreeks (bv. 64 tekens) voor veilige sessie-cookies |
+| `ADMIN_EMAIL` | `info@waisely.biz` |
+| `ADMIN_PASSWORD` | Jouw initiële beheerwachtwoord (alleen gebruikt bij de eerste start) |
+| `UPSTASH_REDIS_REST_URL` | Automatisch ingevuld via Storage, of handmatig van Upstash |
+| `UPSTASH_REDIS_REST_TOKEN` | Automatisch ingevuld via Storage, of handmatig van Upstash |
+
+*Zie ook `.env.example` in de repository voor een overzicht van alle variabelen.*
 
 ---
 
 ## 4. Google Business Domein (`waisely.biz`) Koppelen
 
-Omdat je e-mail via Google Workspace / Business loopt, is het belangrijk dat de **MX-records (mail)** intact blijven en alleen het **webverkeer (A/CNAME)** naar Cloudflare wijst.
+Omdat je zakelijke e-mail via Google Workspace / Google Domains loopt, moeten de **MX-records (mail) onaangeroerd blijven** en mag alleen het **webverkeer (A/CNAME)** naar Vercel wijzen.
 
-### Methode A: Custom Domain toevoegen in Cloudflare Workers (Aanbevolen)
-1. Ga in het [Cloudflare Dashboard](https://dash.cloudflare.com/) naar **Workers & Pages**.
-2. Klik op je worker **`waisely-site`**.
-3. Ga naar het tabblad **Settings** → **Domains & Routes**.
-4. Klik op **Add** → **Custom Domain**.
-5. Vul `waisely.biz` in (en herhaal eventueel voor `www.waisely.biz`).
-6. Cloudflare geeft je de exacte DNS-records die je moet instellen bij de registrar van je domein (bijvoorbeeld Google Domains / Squarespace).
+### Stap 4.1: Domein toevoegen in Vercel
+1. Ga in je Vercel project naar **Settings** → **Domains**.
+2. Vul in: `waisely.biz` (en voeg ook `www.waisely.biz` toe).
+3. Vercel toont de benodigde DNS-records:
+   - **A-record** voor `@` (apex domein) wijzend naar `76.76.21.21`
+   - **CNAME-record** voor `www` wijzend naar `cname.vercel-dns.com`
 
-### Methode B: DNS instellingen controleren bij Google Domains
+### Stap 4.2: DNS Instellen bij je registrar (bv. Squarespace / Google Domains)
 Controleer in het beheerpaneel van je domein:
-- **Webverkeer:** CNAME-record voor `www` of A-record voor het hoofddomein verwijst naar Cloudflare.
-- **E-mailverkeer (NIET wijzigen):** De Google Workspace MX-records moeten behouden blijven:
+- **Webverkeer:** Stel het A-record en CNAME in conform de Vercel instructies.
+- **E-mailverkeer (NIET wijzigen):** Behoud altijd de bestaande Google Workspace MX-records:
   - `ASPMX.L.GOOGLE.COM` (Prioriteit 1)
   - `ALT1.ASPMX.L.GOOGLE.COM` (Prioriteit 5)
   - `ALT2.ASPMX.L.GOOGLE.COM` (Prioriteit 5)
   - `ALT3.ASPMX.L.GOOGLE.COM` (Prioriteit 10)
   - `ALT4.ASPMX.L.GOOGLE.COM` (Prioriteit 10)
-  *(Hierdoor blijft je Google Business mail 100% ononderbroken werken).*
+  *(Hierdoor blijft je Google Business e-mail 100% ononderbroken werken).*
 
 ---
 
@@ -99,6 +77,25 @@ Zodra de site live staat op `https://waisely.biz`:
 1. Navigeer naar `https://waisely.biz/login`.
 2. Log in met:
    - **E-mail:** `info@waisely.biz`
-   - **Wachtwoord:** `WAIsely2026!`
-3. Je hebt direct toegang tot het volledige admin dashboard (`/admin`), waar je teksten, de Google Forms link, recensies en instellingen live kunt beheren.
-4. *Tip:* Wijzig je wachtwoord direct na de eerste login via het dashboard.
+   - **Wachtwoord:** Het ingestelde `ADMIN_PASSWORD` (standaard `WAIsely2026!`)
+3. Je hebt direct toegang tot het volledige dashboard (`/admin`), waar je teksten, modules, nieuws, formulieren en accountgegevens live kunt beheren.
+4. **Wachtwoord wijzigen:** Ga naar **Account** in het dashboard om je wachtwoord direct te personaliseren. Dit wachtwoord wordt veilig opgeslagen in Redis en wordt bij latere deployments of herstarts nooit meer overschreven.
+
+---
+
+## 6. Back-up & Restore van Productie-Data
+
+De repository bevat een ingebouwd back-upscript (`scripts/db-backup.mjs`):
+
+### Back-up maken (100% veilig & read-only):
+Exporteert alle live gegevens (content, accounts, boekingen, formulieren) naar een JSON-bestand:
+```bash
+UPSTASH_REDIS_REST_URL="<jouw_url>" UPSTASH_REDIS_REST_TOKEN="<jouw_token>" pnpm run db:export
+```
+Het bestand wordt opgeslagen in `backups/backup-<datum>.json`.
+
+### Back-up herstellen:
+Vereist de vlag `--confirm` zodat data nooit per ongeluk overschreven kan worden:
+```bash
+UPSTASH_REDIS_REST_URL="<jouw_url>" UPSTASH_REDIS_REST_TOKEN="<jouw_token>" node scripts/db-backup.mjs import --file=backups/backup-2026-10-16.json --confirm
+```
