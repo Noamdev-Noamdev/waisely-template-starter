@@ -289,9 +289,11 @@ export default function ContentForm({
   const termsContent = content.terms ?? {
     eyebrow: "Juridisch",
     title: "Algemene Voorwaarden",
-    subtitle: "Duidelijke afspraken voor workshops, webinars en begeleiding door WAIsely.",
-    lastUpdated: "Oktober 2026",
-    sections: [],
+    subtitle: "",
+    lastUpdated: "",
+    linkIntro: "Voor volledige voorwaarden zie:",
+    linkLabel: "Bekijk de volledige voorwaarden",
+    linkUrl: "",
   };
 
   function patchTermsField(field: string, val: unknown) {
@@ -302,29 +304,6 @@ export default function ContentForm({
         [field]: val,
       },
     }));
-  }
-
-  function patchTermsSection(index: number, part: "title" | "body", val: string) {
-    const sections = [...(content.terms?.sections ?? termsContent.sections)];
-    sections[index] = { ...sections[index], [part]: val };
-    patchTermsField("sections", sections);
-  }
-
-  function addTermsSection() {
-    const sections = [...(content.terms?.sections ?? termsContent.sections)];
-    sections.push({
-      id: `sec_${Date.now()}`,
-      title: `${sections.length + 1}. Nieuw artikel`,
-      body: "Beschrijving of voorwaarden van dit artikel...",
-    });
-    patchTermsField("sections", sections);
-  }
-
-  function removeTermsSection(index: number) {
-    const sections = [...(content.terms?.sections ?? termsContent.sections)].filter(
-      (_, i) => i !== index
-    );
-    patchTermsField("sections", sections);
   }
 
   /* -------------------- Privacyverklaring helpers -------------------- */
@@ -1506,61 +1485,26 @@ export default function ContentForm({
               placeholder="Duidelijke afspraken voor workshops en webinars..."
             />
 
-            <div className="mt-6 border-t border-border pt-4">
-              <div className="mb-3 flex items-center justify-between">
-                <FieldLabel>
-                  Artikelen / Secties ({termsContent.sections.length})
-                </FieldLabel>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="px-3.5 py-1.5 text-xs"
-                  onClick={addTermsSection}
-                >
-                  <Icon name="plus" size={14} />
-                  Artikel toevoegen
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                {termsContent.sections.map((section, idx) => (
-                  <div
-                    key={section.id || idx}
-                    className="rounded-[var(--radius)] border border-border bg-surface-muted p-4 space-y-3"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex-1">
-                        <FieldInput
-                          label={`Artikel ${idx + 1} — Titel`}
-                          value={section.title}
-                          onChange={(e) =>
-                            patchTermsSection(idx, "title", e.target.value)
-                          }
-                          placeholder="bv. 1. Toepasselijkheid"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeTermsSection(idx)}
-                        className="mt-6 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius)] border border-red-200 text-red-600 transition-colors hover:bg-red-50"
-                        title="Artikel verwijderen"
-                      >
-                        <Icon name="trash" size={15} />
-                      </button>
-                    </div>
-                    <FieldTextarea
-                      label="Inhoud van het artikel"
-                      rows={3}
-                      value={section.body}
-                      onChange={(e) =>
-                        patchTermsSection(idx, "body", e.target.value)
-                      }
-                      placeholder="Tekst van dit artikel..."
-                    />
-                  </div>
-                ))}
-              </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <FieldInput
+                label="Tekst voor de link"
+                value={termsContent.linkIntro}
+                onChange={(e) => patchTermsField("linkIntro", e.target.value)}
+                placeholder="Voor volledige voorwaarden zie:"
+              />
+              <FieldInput
+                label="Linktekst"
+                value={termsContent.linkLabel}
+                onChange={(e) => patchTermsField("linkLabel", e.target.value)}
+                placeholder="Bekijk de volledige voorwaarden"
+              />
             </div>
+            <FieldInput
+              label="Link (URL)"
+              value={termsContent.linkUrl}
+              onChange={(e) => patchTermsField("linkUrl", e.target.value)}
+              placeholder="https://..."
+            />
           </div>
         </fieldset>
       ) : null}

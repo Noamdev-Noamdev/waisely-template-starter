@@ -204,38 +204,9 @@
     "title": "Algemene Voorwaarden",
     "subtitle": "Duidelijke afspraken voor workshops, webinars en begeleiding door WAIsely.",
     "lastUpdated": "[Oktober 2026]",
-    "sections": [
-      {
-        "id": "sec_1",
-        "title": "1. Toepasselijkheid",
-        "body": "Deze algemene voorwaarden zijn van toepassing op alle aanbiedingen, offertes, workshops, webinars en overeenkomsten van WAIsely, gevestigd te [straat en nummer, postcode en gemeente], tenzij schriftelijk uitdrukkelijk anders is overeengekomen."
-      },
-      {
-        "id": "sec_2",
-        "title": "2. Aanbod en totstandkoming van de overeenkomst",
-        "body": "Elk aanbod en elke offerte van WAIsely is vrijblijvend en geldig gedurende 30 dagen, tenzij anders aangegeven. De overeenkomst komt tot stand zodra de opdrachtgever de offerte schriftelijk of elektronisch bevestigt, of wanneer WAIsely met de uitvoering van de opdracht is begonnen."
-      },
-      {
-        "id": "sec_3",
-        "title": "3. Tarieven en betaling",
-        "body": "Alle prijzen worden vermeld in euro en zijn exclusief btw (tenzij anders vermeld). Facturen dienen te worden voldaan binnen [30 dagen] na factuurdatum. Bij niet-tijdige betaling kan van rechtswege en zonder ingebrekestelling een verwijlintrest worden aangerekend conform de toepasselijke wetgeving."
-      },
-      {
-        "id": "sec_4",
-        "title": "4. Annulering en verplaatsing",
-        "body": "Annulering van een geplande workshop of webinar dient steeds schriftelijk te gebeuren. Bij annulering tot 14 dagen voor de geplande datum worden geen kosten in rekening gebracht. Bij annulering tussen 14 en 7 dagen voor aanvang wordt [50%] van het overeengekomen bedrag aangerekend. Bij annulering binnen 7 dagen voor aanvang is het volledige bedrag verschuldigd."
-      },
-      {
-        "id": "sec_5",
-        "title": "5. Intellectueel eigendom",
-        "body": "Alle ontwikkelde presentaties, hand-outs, lesmaterialen, prompts en andere cursusmaterialen blijven het exclusieve intellectuele eigendom van WAIsely. Materialen mogen uitsluitend worden gebruikt voor eigen interne educatieve doeleinden binnen de deelnemende school en mogen niet zonder voorafgaande schriftelijke toestemming worden verspreid of vermenigvuldigd."
-      },
-      {
-        "id": "sec_6",
-        "title": "6. Aansprakelijkheid",
-        "body": "WAIsely spant zich in om de diensten met de nodige zorgvuldigheid en deskundigheid uit te voeren. De aansprakelijkheid van WAIsely is te allen tijde beperkt tot het factuurbedrag van de desbetreffende opdracht. WAIsely is niet aansprakelijk voor indirecte schade of gevolgschade."
-      }
-    ]
+    "linkIntro": "Voor volledige voorwaarden zie:",
+    "linkLabel": "Bekijk de volledige voorwaarden",
+    "linkUrl": ""
   },
   "privacy": {
     "eyebrow": "Privacy",

@@ -153,7 +153,7 @@ export interface SiteContent {
   /** Alles wat op de /pers-pagina staat (teksten, reviews, Instagram-posts). */
   press: PressContent;
   /** Algemene voorwaarden pagina */
-  terms?: LegalPageContent;
+  terms?: TermsContent;
   /** Privacyverklaring pagina */
   privacy?: LegalPageContent;
   /** Cookieverklaring pagina + teksten van de cookiebanner */
@@ -186,6 +186,20 @@ export interface LegalSection {
   id: string;
   title: string;
   body: string;
+}
+
+/** Algemene voorwaarden: een kort tekstje met een link naar de volledige voorwaarden. */
+export interface TermsContent {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  lastUpdated?: string;
+  /** Tekst vóór de link, b.v. "Voor volledige voorwaarden zie:". */
+  linkIntro: string;
+  /** Zichtbare tekst van de link. */
+  linkLabel: string;
+  /** Doel van de link (leeg = geen link tonen). */
+  linkUrl: string;
 }
 
 /** Inhoud van een juridische pagina. */

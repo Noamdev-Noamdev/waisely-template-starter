@@ -85,7 +85,15 @@ export async function PUT(request: Request) {
             title: body.terms.title ?? current.terms?.title ?? "Algemene Voorwaarden",
             subtitle: body.terms.subtitle ?? current.terms?.subtitle ?? "",
             lastUpdated: body.terms.lastUpdated ?? current.terms?.lastUpdated ?? "",
-            sections: body.terms.sections ?? current.terms?.sections ?? [],
+            linkIntro:
+              body.terms.linkIntro ??
+              current.terms?.linkIntro ??
+              "Voor volledige voorwaarden zie:",
+            linkLabel:
+              body.terms.linkLabel ??
+              current.terms?.linkLabel ??
+              "Bekijk de volledige voorwaarden",
+            linkUrl: body.terms.linkUrl ?? current.terms?.linkUrl ?? "",
           }
         : current.terms,
       privacy: body.privacy

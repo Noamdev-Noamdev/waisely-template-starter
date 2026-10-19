@@ -92,7 +92,6 @@ export default async function AdminIndexPage() {
       icon: "shield",
       title: "Voorwaarden & Privacy",
       count:
-        (content.terms?.sections.length ?? 0) +
         (content.privacy?.sections.length ?? 0),
       hint: "Algemene voorwaarden & privacyverklaring",
     },

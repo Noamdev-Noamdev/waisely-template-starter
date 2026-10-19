@@ -3,7 +3,7 @@
  * AlgemeneVoorwaardenPage (/algemene-voorwaarden)
  * ---------------------------------------------------------------------------
  * Toont de algemene voorwaarden van WAIsely in de Quiet Warm Minimal stijl.
- * Volledig bewerkbaar via het admin-dashboard onder "Voorwaarden & Privacy".
+ * Tekst en link zijn bewerkbaar via het admin-dashboard onder "Voorwaarden & Privacy".
  * ---------------------------------------------------------------------------
  */
 
@@ -20,7 +20,7 @@ export const metadata = {
 
 export default async function AlgemeneVoorwaardenPage() {
   const content = await get("siteContent");
-  const terms = content.terms ?? seedSiteContent.terms!;
+  const terms = { ...seedSiteContent.terms!, ...content.terms };
 
   return (
     <div className="mx-auto max-w-[860px] px-4 py-14 sm:px-6 md:py-20">
@@ -55,24 +55,24 @@ export default async function AlgemeneVoorwaardenPage() {
         </div>
       </Reveal>
 
-      {/* Artikelen */}
-      <div className="mt-12 space-y-6">
-        {terms.sections.map((section, i) => (
-          <Reveal key={section.id || i} delay={150 + i * 50}>
-            <article className="rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)] sm:p-7">
-              <h2
-                className="text-lg font-medium text-foreground"
-                style={{ fontFamily: "var(--font-heading)" }}
+      {/* Verwijzing naar de volledige voorwaarden */}
+      <Reveal delay={150}>
+        <div className="mt-12 rounded-[var(--radius)] border border-border bg-surface p-6 shadow-[var(--shadow-sm)] sm:p-7">
+          <p className="text-base text-foreground">
+            {terms.linkIntro}{" "}
+            {terms.linkUrl ? (
+              <a
+                href={terms.linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline hover:text-accent"
               >
-                {section.title}
-              </h2>
-              <div className="prose-muted mt-3 whitespace-pre-line text-sm leading-relaxed">
-                {section.body}
-              </div>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+                {terms.linkLabel || terms.linkUrl}
+              </a>
+            ) : null}
+          </p>
+        </div>
+      </Reveal>
 
       {/* Vragen footer-blok */}
       <Reveal delay={400}>
