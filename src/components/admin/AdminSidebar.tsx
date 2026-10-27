@@ -25,6 +25,11 @@ const SECTIONS = [
     exact: true,
   },
   {
+    href: "/admin/statistieken",
+    label: "Statistieken",
+    icon: "chart" as const,
+  },
+  {
     href: "/admin/content/teksten",
     label: "Site-teksten",
     icon: "pen" as const,

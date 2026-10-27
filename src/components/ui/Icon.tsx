@@ -62,7 +62,8 @@ export type IconName =
   | "tag"
   | "instagram"
   | "linkedin"
-  | "chevron-up";
+  | "chevron-up"
+  | "chart";
 
 /** Standaard afmeting; overschrijf via className of width/height-props. */
 export default function Icon({
@@ -295,6 +296,13 @@ export default function Icon({
         <svg {...common}>
           <path d="M10 11H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6c0 2.5-1.5 4.5-4 5.5" />
           <path d="M20 11h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6c0 2.5-1.5 4.5-4 5.5" />
+        </svg>
+      );
+    case "chart":
+      return (
+        <svg {...common}>
+          <path d="M3 3v18h18" />
+          <path d="M7 15l4-4 3 3 6-6" />
         </svg>
       );
     case "eye":

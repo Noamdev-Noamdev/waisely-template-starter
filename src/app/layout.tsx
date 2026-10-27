@@ -13,6 +13,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/ui/CookieConsent";
+import PageviewTracker from "@/components/site/PageviewTracker";
 import { ensureSeeded, get } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { SITE_NAME, SITE_URL } from "@/lib/siteConfig";
@@ -59,6 +60,7 @@ export default async function RootLayout({
         <main className="page-enter flex-1">{children}</main>
         <Footer content={siteContent} />
         <CookieConsent bannerContent={siteContent?.cookiePolicy} />
+        <PageviewTracker />
       </body>
     </html>
   );

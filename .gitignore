@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# lokale bezoekersstatistieken (dev)
+src/data/analytics.dev.json
