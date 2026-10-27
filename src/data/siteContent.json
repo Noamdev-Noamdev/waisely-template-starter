@@ -222,12 +222,12 @@
       {
         "id": "sec_p2",
         "title": "2. Welke persoonsgegevens verwerken we?",
-        "body": "Wij verwerken uitsluitend persoonsgegevens die noodzakelijk zijn voor onze dienstverlening of die je zelf actief aan ons bezorgt via de website:\n\n• Contactformulier: naam, e-mailadres en de inhoud van je vraag of bericht.\n• Intakeformulier & workshopaanvragen: naam van de contactpersoon, functie, school of onderwijsinstelling, e-mailadres, doelgroep, opleidingswensen en eventuele toelichtingen.\n• Gebruikersaccounts: naam, e-mailadres, gehasht wachtwoord en rol (voor toegang tot het dashboard/kennisbank).\n• Cookie-toestemming: een unieke anonieme identificatiecode (consentId), tijdstempel en je gekozen categorieën om je keuze aan te tonen en te onthouden.\n• Serverlogs: technische verbindingsgegevens (zoals browsertype en IP-adres) die tijdelijk door de hostinginfrastructuur worden verwerkt om de website veilig en betrouwbaar te leveren."
+        "body": "Wij verwerken uitsluitend persoonsgegevens die noodzakelijk zijn voor onze dienstverlening of die je zelf actief aan ons bezorgt via de website:\n\n• Contactformulier: naam, e-mailadres en de inhoud van je vraag of bericht.\n• Intakeformulier & workshopaanvragen: naam van de contactpersoon, functie, school of onderwijsinstelling, e-mailadres, doelgroep, opleidingswensen en eventuele toelichtingen.\n• Gebruikersaccounts: naam, e-mailadres, gehasht wachtwoord en rol (voor toegang tot het dashboard/kennisbank).\n• Cookie-toestemming: een unieke anonieme identificatiecode (consentId), tijdstempel en je gekozen categorieën om je keuze aan te tonen en te onthouden.\n• Bezoekersstatistieken: geaggregeerde, anonieme tellingen van paginabezoeken (bezochte pagina, verwijzende website en een dagelijks wisselende anonieme code). Er worden hiervoor geen cookies geplaatst en geen IP-adressen bewaard.\n• Serverlogs: technische verbindingsgegevens (zoals browsertype en IP-adres) die tijdelijk door de hostinginfrastructuur worden verwerkt om de website veilig en betrouwbaar te leveren."
       },
       {
         "id": "sec_p3",
         "title": "3. Waarom en op welke grond?",
-        "body": "Wij verwerken persoonsgegevens uitsluitend op basis van een geldige AVG/GDPR-rechtsgrond:\n\n• Uitvoering van een overeenkomst of precontractuele maatregelen: voor het behandelen van je workshop- of webinar-aanvraag, het afstemmen van de inhoud van trainingen, het opmaken van offertes en het beheren van je account.\n• Wettelijke verplichting: voor het opmaken en bewaren van facturen en het voldoen aan de Belgische boekhoudkundige en fiscale wetgeving.\n• Gerechtvaardigd belang: voor het beantwoorden van vragen via het contactformulier, de beveiliging van onze systemen en het voorkomen van misbruik.\n• Toestemming: voor het eventueel laden van externe interactieve media (zoals Instagram-embeds). Deze toestemming kun je op elk moment intrekken via 'Cookie-instellingen' in de footer."
+        "body": "Wij verwerken persoonsgegevens uitsluitend op basis van een geldige AVG/GDPR-rechtsgrond:\n\n• Uitvoering van een overeenkomst of precontractuele maatregelen: voor het behandelen van je workshop- of webinar-aanvraag, het afstemmen van de inhoud van trainingen, het opmaken van offertes en het beheren van je account.\n• Wettelijke verplichting: voor het opmaken en bewaren van facturen en het voldoen aan de Belgische boekhoudkundige en fiscale wetgeving.\n• Gerechtvaardigd belang: voor het beantwoorden van vragen via het contactformulier, de beveiliging van onze systemen, het voorkomen van misbruik en het bijhouden van anonieme bezoekersstatistieken om de website te verbeteren.\n• Toestemming: voor het eventueel laden van externe interactieve media (zoals Instagram-embeds). Deze toestemming kun je op elk moment intrekken via 'Cookie-instellingen' in de footer."
       },
       {
         "id": "sec_p4",
@@ -237,7 +237,7 @@
       {
         "id": "sec_p5",
         "title": "5. Hoelang bewaren we gegevens?",
-        "body": "Wij bewaren persoonsgegevens niet langer dan strikt nodig voor de doelen waarvoor ze verzameld zijn:\n\n• Facturen en boekhoudkundige stukken: [wettelijke fiscale bewaartermijn, bv. 7 of 10 jaar, te bevestigen door boekhouder].\n• Contact- en intake-aanvragen: [bewaartermijn, bv. tot 2 jaar na afronding van de opleiding of afhandeling van de aanvraag].\n• Gebruikersaccounts: tot het moment dat je je account laat verwijderen of na [periode van inactiviteit].\n• Cookie-toestemming: [12 maanden, waarna opnieuw om toestemming wordt gevraagd]."
+        "body": "Wij bewaren persoonsgegevens niet langer dan strikt nodig voor de doelen waarvoor ze verzameld zijn:\n\n• Facturen en boekhoudkundige stukken: [wettelijke fiscale bewaartermijn, bv. 7 of 10 jaar, te bevestigen door boekhouder].\n• Contact- en intake-aanvragen: [bewaartermijn, bv. tot 2 jaar na afronding van de opleiding of afhandeling van de aanvraag].\n• Gebruikersaccounts: tot het moment dat je je account laat verwijderen of na [periode van inactiviteit].\n• Anonieme bezoekersstatistieken: maximaal 13 maanden, daarna automatisch verwijderd.\n• Cookie-toestemming: [12 maanden, waarna opnieuw om toestemming wordt gevraagd]."
       },
       {
         "id": "sec_p6",
@@ -275,6 +275,11 @@
         "id": "ck_sec_2",
         "title": "Welke cookies gebruiken we?",
         "body": "In onderstaande tabel vind je een volledig overzicht van alle cookies die via deze website geplaatst kunnen worden, inclusief doel, bewaartermijn, aanbieder en categorie."
+      },
+      {
+        "id": "ck_sec_6",
+        "title": "Anonieme bezoekersstatistieken (zonder cookies)",
+        "body": "Om te begrijpen hoeveel mensen de website bezoeken en welke pagina's populair zijn, houden we eenvoudige bezoekersstatistieken bij met een eigen, ingebouwde tool. Hiervoor plaatsen we geen cookies en gebruiken we geen externe diensten zoals Google Analytics.\n\nBij een paginabezoek berekenen we een anonieme code op basis van je IP-adres en browsertype, gecombineerd met een geheime sleutel die elke dag verandert. Je IP-adres zelf wordt nooit opgeslagen, en omdat de code dagelijks wijzigt, kunnen bezoeken niet over meerdere dagen aan elkaar of aan jou gekoppeld worden. We bewaren enkel geaggregeerde tellingen (aantal bezoekers en paginaweergaven per dag, bezochte pagina's en de website waarvan je kwam), en dit maximaal 13 maanden.\n\nHeb je in je browser 'Do Not Track' of 'Global Privacy Control' ingeschakeld? Dan wordt je bezoek helemaal niet meegeteld."
       },
       {
         "id": "ck_sec_3",
